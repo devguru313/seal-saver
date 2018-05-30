@@ -1,2 +1,2 @@
 # seal-saver
-Seal Saver
+Seal Saver (conversion of Raccoon Rescue)
