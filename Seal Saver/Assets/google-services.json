@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "23222938092",
+    "firebase_url": "https://edplusaccounts.firebaseio.com",
+    "project_id": "edplusaccounts",
+    "storage_bucket": "edplusaccounts.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23222938092:android:4feba6ebfb1eb703",
+        "android_client_info": {
+          "package_name": "com.edplus.sealsaver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23222938092-2ph1cthdkp8kv6d5fpgl6eour3qv5mq1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7KUvW5t499UZW7TPUmW7FDK67EdJlhmE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
