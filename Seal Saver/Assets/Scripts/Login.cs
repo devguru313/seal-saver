@@ -112,7 +112,7 @@ public class Login : MonoBehaviour {
                     }
                     else
                     {
-                        errorTextSignIn.text = "Invalid Email/Password";
+                        errorTextSignIn.text = "Oops, that's not the correct email/password combination. Try again or reset your password.";
                     }
                     loadingScreen.SetActive(false);
                     loggedIn = false;
