@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
 using Firebase.Auth;
+using Facebook.Unity;
+using System.Collections.Generic;
 
 public class Login : MonoBehaviour {
 
@@ -11,6 +13,8 @@ public class Login : MonoBehaviour {
     public InputField Password;
     public Text errorTextSignIn;
     public static bool loggedIn;
+    public static bool loggedInEmail;
+    public static bool loggedInFacebook;
     public static string user;
     public static string userID;
     public static string email;
@@ -114,14 +118,15 @@ public class Login : MonoBehaviour {
                     loggedIn = false;
                     return;
                 }
-                Firebase.Auth.FirebaseUser newUser = task.Result;
+                FirebaseUser newUser = task.Result;
                 //Debug.LogFormat("User signed in successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
                 SyncTables.firebaseUID = newUser.UserId;
                 user = email;
                 PlayerPrefs.SetString("Username", email);
                 PlayerPrefs.SetString("Password", password);
                 loggedIn = true;
-                StartCoroutine(GetUID());
+                loggedInEmail = true;
+                StartCoroutine(GetUID("Email"));
             });
         }
         else
@@ -178,11 +183,63 @@ public class Login : MonoBehaviour {
             PlayerPrefs.SetString("Username", email);
             PlayerPrefs.SetString("Password", password);
             loggedIn = true;
-            StartCoroutine(GetUID());
+            loggedInEmail = true;
+            StartCoroutine(GetUID("Email"));
         }
     }
 
-    IEnumerator GetUID()
+    #region FACEBOOK
+
+    public void FacebookLogin()
+    {
+        loadingScreen.SetActive(true);
+        errorTextSignIn.text = "";
+        var permissions = new List<string>() { "public_profile", "email", "user_location" };
+        FB.LogInWithReadPermissions(permissions, AuthCallback);
+    }
+
+    private void AuthCallback(ILoginResult result)
+    {
+        if (FB.IsLoggedIn)
+        {
+            // AccessToken class will have session details
+            var aToken = AccessToken.CurrentAccessToken;
+            // Print current access token's User ID
+            SyncTables.facebookUID = aToken.UserId;
+            Debug.Log("User ID: " + SyncTables.facebookUID);
+            FB.API("/me?fields=name,email", HttpMethod.GET, FetchProfileCallback, new Dictionary<string, string>() { });
+        }
+        else
+        {
+            Debug.Log("User cancelled login");
+            loadingScreen.SetActive(false);
+            loggedIn = false;
+            return;
+        }
+    }
+
+    private void FetchProfileCallback(IResult result)
+    {
+        if (FB.IsLoggedIn)
+        {
+            user = (string)result.ResultDictionary["email"];
+            Debug.Log("Email: " + user);
+            Debug.Log("Name: " + result.ResultDictionary["name"]);
+            loggedIn = true;
+            loggedInFacebook = true;
+            StartCoroutine(GetUID("Facebook"));
+        }
+        else
+        {
+            loadingScreen.SetActive(false);
+            loggedIn = false;
+            return;
+        }
+    }
+
+    #endregion
+
+    IEnumerator GetUID(string loginMethod)
     {
         //Debug.Log("Getting UID");
         string findUIDURL = "https://edplus.net/findUID";
@@ -190,7 +247,10 @@ public class Login : MonoBehaviour {
         //Debug.Log(SyncTables.firebaseUID);
         FindUIDJSON findUIDJSON = new FindUIDJSON()
         {
-            FirebaseUID = SyncTables.firebaseUID
+            Email = user,
+            FirebaseUID = SyncTables.firebaseUID,
+            FacebookUID = SyncTables.facebookUID,
+            Method = loginMethod
         };
         string json = JsonUtility.ToJson(findUIDJSON);
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);

@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Edplus
-  productName: SealSaver 0.56
+  productName: SealSaver 0.57
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -618,12 +618,12 @@ PlayerSettings:
   webGLLinkerTarget: 0
   scriptingDefineSymbols:
     1: 
-    4: 
-    7: 
-    13: 
-    14: 
+    4: FACEBOOK
+    7: FACEBOOK
+    13: FACEBOOK
+    14: FACEBOOK
     15: 
-    26: 
+    26: FACEBOOK
   platformArchitecture:
     iOS: 2
   scriptingBackend:
@@ -716,7 +716,7 @@ PlayerSettings:
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled:
     Build: 0
-    Collab: 1
+    Collab: 0
     ErrorHub: 0
     Hub: 0
     UNet: 1

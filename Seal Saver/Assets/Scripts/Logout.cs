@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using Firebase.Auth;
+using Facebook.Unity;
 
 public class Logout : MonoBehaviour {
     
@@ -32,10 +33,19 @@ public class Logout : MonoBehaviour {
     public void Launch()
     {
         string deviceModel = SystemInfo.deviceModel.ToLower();
-        //Amazon Device check
-        if (!deviceModel.Contains("amazon"))
+        if (Login.loggedInEmail)
         {
-            auth.SignOut();
+            //Amazon Device check
+            if (!deviceModel.Contains("amazon"))
+            {
+                auth.SignOut();
+            }
+            Login.loggedInEmail = false;
+        }
+        else if (Login.loggedInFacebook)
+        {
+            FB.LogOut();
+            Login.loggedInFacebook = false;
         }
         Login.loggedIn = false;
         PlayerPrefs.DeleteAll();

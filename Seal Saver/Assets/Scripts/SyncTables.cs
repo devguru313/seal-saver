@@ -41,6 +41,7 @@ public class SyncTables : MonoBehaviour {
     public static bool isLoggingIn;
     public static string gameName;
     public static string firebaseUID;
+    public static string facebookUID;
 
     private void Start()
     {
