@@ -14,6 +14,7 @@ public class Register : MonoBehaviour {
     public GameObject emailField;
     public GameObject passwordField;
     public GameObject nameField;
+    public GameObject infoText;
     public GameObject nextButton1;
     public GameObject nextButton2;
     public GameObject signupButton;
@@ -31,6 +32,7 @@ public class Register : MonoBehaviour {
         passwordField.SetActive(false);
         nextButton2.SetActive(false);
         nameField.SetActive(false);
+        infoText.SetActive(false);
         signupButton.SetActive(false);
         backButton.SetActive(false);
         errorTextSignUp.text = "";
@@ -55,6 +57,7 @@ public class Register : MonoBehaviour {
         passwordField.SetActive(false);
         nextButton2.SetActive(false);
         nameField.SetActive(false);
+        infoText.SetActive(false);
         signupButton.SetActive(false);
         backButton.SetActive(false);
     }
@@ -77,6 +80,7 @@ public class Register : MonoBehaviour {
             passwordField.SetActive(true);
             nextButton2.SetActive(true);
             nameField.SetActive(false);
+            infoText.SetActive(false);
             signupButton.SetActive(false);
             backButton.SetActive(true);
             errorTextSignUp.text = "";
@@ -101,6 +105,7 @@ public class Register : MonoBehaviour {
             passwordField.SetActive(false);
             nextButton2.SetActive(false);
             nameField.SetActive(true);
+            infoText.SetActive(true);
             signupButton.SetActive(true);
             backButton.SetActive(true);
             errorTextSignUp.text = "";

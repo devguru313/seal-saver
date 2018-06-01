@@ -335,7 +335,7 @@ public class SyncTables : MonoBehaviour {
             yield return null;
         }
         internet = CheckInternetPing(true);
-        Debug.Log("Response: " + request.downloadHandler.text);
+        //Debug.Log("Response: " + request.downloadHandler.text);
     }
 
     void WriteCoinsSQL()

@@ -12,6 +12,7 @@ public class LoginManager : MonoBehaviour {
     public GameObject signUpNext1;
     public GameObject signUpNext2;
     public GameObject signUpButton;
+    public GameObject clickToReset;
     public Text signInError;
     public Text signUpError;
     public GameObject forgotPasswordMenu;
@@ -22,6 +23,7 @@ public class LoginManager : MonoBehaviour {
         forgotPasswordMenu.SetActive(false);
         signInMenu.SetActive(true);
         signInError.text = "";
+        clickToReset.SetActive(false);
     }
 
     public void OpenSignUpMenu()

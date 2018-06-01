@@ -1,8 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
+using UnityEngine.SceneManagement;
 using Firebase.Auth;
 using Facebook.Unity;
 using System.Collections.Generic;
@@ -19,8 +19,7 @@ public class Login : MonoBehaviour {
     public static string userID;
     public static string email;
     public string password;
-    public GameObject loggedInMessage;
-    public Button loggedInMessageButton;
+    public GameObject clickToReset;
     public GameObject loadingScreen;
     public static bool subscribed;
     public static bool newUser;
@@ -28,9 +27,6 @@ public class Login : MonoBehaviour {
 
     void Start()
     {
-        // Prefill fields with saved datas
-        //LoadPlayerPrefs();
-        loggedInMessage.SetActive(false);
         string deviceModel = SystemInfo.deviceModel.ToLower();
         //Amazon Device check
         if (!deviceModel.Contains("amazon"))
@@ -83,6 +79,7 @@ public class Login : MonoBehaviour {
     {
         loadingScreen.SetActive(true);
         errorTextSignIn.text = "";
+        clickToReset.SetActive(false);
         if (Username.text == "" || Password.text == "")
         {
             errorTextSignIn.text = "Please complete all fields";
@@ -112,7 +109,8 @@ public class Login : MonoBehaviour {
                     }
                     else
                     {
-                        errorTextSignIn.text = "Oops, that's not the correct email/password combination. Try again or reset your password.";
+                        errorTextSignIn.text = "Oops, that's not the correct email/password combination.";
+                        clickToReset.SetActive(true);
                     }
                     loadingScreen.SetActive(false);
                     loggedIn = false;
@@ -162,7 +160,8 @@ public class Login : MonoBehaviour {
             //Debug.Log(sendAuthDetailsJSONResponse.data);
             if (sendAuthDetailsJSONResponse.data == "EMAIL_NOT_FOUND" || sendAuthDetailsJSONResponse.data == "INVALID_PASSWORD")
             {
-                errorTextSignIn.text = "Invalid Email/Password";
+                errorTextSignIn.text = "Oops, that's not the correct email/password combination.";
+                clickToReset.SetActive(true);
                 yield return null;
             }
             else if (SyncTables.internetLogin == false)
@@ -194,7 +193,7 @@ public class Login : MonoBehaviour {
     {
         loadingScreen.SetActive(true);
         errorTextSignIn.text = "";
-        var permissions = new List<string>() { "public_profile", "email", "user_location" };
+        var permissions = new List<string>() { "public_profile", "email"};
         FB.LogInWithReadPermissions(permissions, AuthCallback);
     }
 
@@ -281,9 +280,7 @@ public class Login : MonoBehaviour {
             {
                 subscribed = false;
             }
-            //Debug.Log(userID + " " + subscribed);
         }
-        ShowLoggedInMessage();
         if (newUser)
         {
             newUser = false;
@@ -295,11 +292,6 @@ public class Login : MonoBehaviour {
             SyncTables.getStarsAndLevels = true;
         }
         loadingScreen.SetActive(false);
-        loggedInMessageButton.onClick.Invoke();
-    }
-
-    public void ShowLoggedInMessage()
-    {
-        loggedInMessage.SetActive(true);
+        SceneManager.LoadScene("Hub");
     }
 }
