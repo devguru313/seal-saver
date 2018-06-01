@@ -6,35 +6,43 @@ using UnityEngine.Networking;
 
 public class Register : MonoBehaviour {
 
-    public InputField Username;
+    //public InputField Username;
     public InputField Mail;
     public InputField Password;
     public Text errorTextSignUp;
     public static bool registered = false;
     public GameObject emailField;
     public GameObject passwordField;
-    public GameObject nameField;
-    public GameObject infoText;
-    public GameObject nextButton1;
-    public GameObject nextButton2;
-    public GameObject signupButton;
-    public GameObject backButton;
+    public GameObject registerButton;
+    public GameObject nextButton;
+    public GameObject trialText;
+    public GameObject bulletPointsText;
+    //public GameObject nameField;
+    //public GameObject infoText;
     public string email;
     public string password;
-    public string userName;
+    //public string userName;
     public FirebaseAuth auth;
     public GameObject loadingScreen;
+    public GameObject termsConditions;
+    public Toggle termsToggle;
+
+    void InitializeFirebase()
+    {
+        auth = FirebaseAuth.DefaultInstance;
+    }
 
     private void Start()
     {
-        emailField.SetActive(true);
-        nextButton1.SetActive(true);
+        nextButton.SetActive(true);
+        trialText.SetActive(true); ;
+        bulletPointsText.SetActive(true);
+        emailField.SetActive(false);
+        registerButton.SetActive(false);
         passwordField.SetActive(false);
-        nextButton2.SetActive(false);
-        nameField.SetActive(false);
-        infoText.SetActive(false);
-        signupButton.SetActive(false);
-        backButton.SetActive(false);
+        termsConditions.SetActive(false);
+        //nameField.SetActive(false);
+        //infoText.SetActive(false);
         errorTextSignUp.text = "";
         string deviceModel = SystemInfo.deviceModel.ToLower();
         //Amazon Device check
@@ -44,27 +52,23 @@ public class Register : MonoBehaviour {
         }
     }
 
-    void InitializeFirebase()
-    {
-        auth = FirebaseAuth.DefaultInstance;
-    }
-
-    public void GoSignUpPage1()
+    public void GoSignUpPage2()
     {
         errorTextSignUp.text = "";
         emailField.SetActive(true);
-        nextButton1.SetActive(true);
-        passwordField.SetActive(false);
-        nextButton2.SetActive(false);
-        nameField.SetActive(false);
-        infoText.SetActive(false);
-        signupButton.SetActive(false);
-        backButton.SetActive(false);
+        registerButton.SetActive(true);
+        passwordField.SetActive(true);
+        termsConditions.SetActive(true);
+        nextButton.SetActive(false);
+        trialText.SetActive(false);
+        bulletPointsText.SetActive(false);
+        //nameField.SetActive(false);
+        //infoText.SetActive(false);
     }
 
-    public void GoSignUpPage2()
+    /*public void GoSignUpPage3()
     {
-        if (Mail.text == "")
+        if (Mail.text == "" || Password.text == "")
         {
             errorTextSignUp.text = "Please complete all fields";
         }
@@ -72,16 +76,20 @@ public class Register : MonoBehaviour {
         {
             errorTextSignUp.text = "Invalid Email";
         }
+        else if (Password.text.Length < 6)
+        {
+            errorTextSignUp.text = "Password should contain at least 6 characters";
+        }
         else
         {
             email = Mail.text.ToLower();
+            password = Password.text;
             emailField.SetActive(false);
-            nextButton1.SetActive(false);
-            passwordField.SetActive(true);
-            nextButton2.SetActive(true);
-            nameField.SetActive(false);
-            infoText.SetActive(false);
-            signupButton.SetActive(false);
+            registerButton.SetActive(false);
+            passwordField.SetActive(false);
+            //nextButton2.SetActive(true);
+            //nameField.SetActive(false);
+            //infoText.SetActive(false);
             backButton.SetActive(true);
             errorTextSignUp.text = "";
         }
@@ -101,31 +109,49 @@ public class Register : MonoBehaviour {
         {
             password = Password.text;
             emailField.SetActive(false);
-            nextButton1.SetActive(false);
+            registerButton.SetActive(false);
             passwordField.SetActive(false);
-            nextButton2.SetActive(false);
-            nameField.SetActive(true);
-            infoText.SetActive(true);
-            signupButton.SetActive(true);
+            //nextButton2.SetActive(false);
+            //nameField.SetActive(true);
+            //infoText.SetActive(true);
             backButton.SetActive(true);
             errorTextSignUp.text = "";
         }
-    }
+    }*/
 
     public void Launch()
     {
         loadingScreen.SetActive(true);
         errorTextSignUp.text = "";
-        // Check that all field are set
-        if (Username.text == "")
+        //Check for errors
+        if (Mail.text == "" || Password.text == "")
         {
             errorTextSignUp.text = "Please complete all fields";
             loadingScreen.SetActive(false);
             return;
         }
-        userName = Username.text;
-        Debug.Log("Registration launched.");
-        //Debug.Log(email);
+        else if (Mail.text.Length < 6 || !Mail.text.Contains("@") || Mail.text[0].Equals('@') || Mail.text[0].Equals('.'))
+        {
+            errorTextSignUp.text = "Invalid Email";
+            loadingScreen.SetActive(false);
+            return;
+        }
+        else if (Password.text.Length < 6)
+        {
+            errorTextSignUp.text = "Password should contain at least 6 characters";
+            loadingScreen.SetActive(false);
+            return;
+        }
+        else if (!termsToggle.isOn)
+        {
+            errorTextSignUp.text = "Please confirm you have read and accept the terms if you wish to continue";
+            loadingScreen.SetActive(false);
+            return;
+        }
+        //userName = Username.text;
+        email = Mail.text.ToLower();
+        password = Password.text;
+        errorTextSignUp.text = "";
         string deviceModel = SystemInfo.deviceModel.ToLower();
         //Amazon Device check
         if (!deviceModel.Contains("amazon"))
@@ -141,7 +167,7 @@ public class Register : MonoBehaviour {
                 {
                     Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
                     loadingScreen.SetActive(false);
-                    errorTextSignUp.text = "Email already exists";
+                    errorTextSignUp.text = "Oops - this is not a valid email address or it has already been used";
                     return;
                 }
 

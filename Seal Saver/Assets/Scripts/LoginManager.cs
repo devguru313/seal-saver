@@ -9,9 +9,9 @@ public class LoginManager : MonoBehaviour {
     public GameObject signUpEmail;
     public GameObject signUpPassword;
     public GameObject signUpName;
-    public GameObject signUpNext1;
-    public GameObject signUpNext2;
-    public GameObject signUpButton;
+    public GameObject signUpNext;
+    public GameObject registerButton;
+    public GameObject termsConditions;
     public GameObject clickToReset;
     public Text signInError;
     public Text signUpError;
@@ -31,12 +31,12 @@ public class LoginManager : MonoBehaviour {
         signInMenu.SetActive(false);
         forgotPasswordMenu.SetActive(false);
         signUpMenu.SetActive(true);
-        signUpEmail.SetActive(true);
-        signUpNext1.SetActive(true);
+        signUpEmail.SetActive(false);
         signUpPassword.SetActive(false);
-        signUpNext2.SetActive(false);
+        signUpNext.SetActive(true);
         signUpName.SetActive(false);
-        signUpButton.SetActive(false);
+        registerButton.SetActive(false);
+        termsConditions.SetActive(false);
         signUpError.text = "";
     }
 
