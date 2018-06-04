@@ -193,8 +193,8 @@ public class Login : MonoBehaviour {
     {
         loadingScreen.SetActive(true);
         errorTextSignIn.text = "";
-        var permissions = new List<string>() {"public_profile", "email"};
-        //FB.LogInWithReadPermissions(permissions, AuthCallback);
+        var permissions = new List<string>() {"public_profile", "email", "user_location" };
+        FB.LogInWithReadPermissions(permissions, AuthCallback);
     }
 
     private void AuthCallback(ILoginResult result)
