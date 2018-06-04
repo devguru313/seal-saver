@@ -12,6 +12,7 @@ public class Login : MonoBehaviour {
     public InputField Username;
     public InputField Password;
     public Text errorTextSignIn;
+    public Text errorTextFirstLoginMenu;
     public static bool loggedIn;
     public static bool loggedInEmail;
     public static bool loggedInFacebook;
@@ -21,12 +22,15 @@ public class Login : MonoBehaviour {
     public string password;
     public GameObject clickToReset;
     public GameObject loadingScreen;
+    public GameObject firstLoginMenu;
+    public Toggle termsAndConditions;
     public static bool subscribed;
     public static bool newUser;
     public FirebaseAuth auth;
 
     void Start()
     {
+        firstLoginMenu.SetActive(false);
         string deviceModel = SystemInfo.deviceModel.ToLower();
         //Amazon Device check
         if (!deviceModel.Contains("amazon"))
@@ -124,7 +128,7 @@ public class Login : MonoBehaviour {
                 PlayerPrefs.SetString("Password", password);
                 loggedIn = true;
                 loggedInEmail = true;
-                StartCoroutine(GetUID("Email"));
+                StartCoroutine(GetUID("Firebase"));
             });
         }
         else
@@ -183,7 +187,7 @@ public class Login : MonoBehaviour {
             PlayerPrefs.SetString("Password", password);
             loggedIn = true;
             loggedInEmail = true;
-            StartCoroutine(GetUID("Email"));
+            StartCoroutine(GetUID("Firebase"));
         }
     }
 
@@ -205,6 +209,23 @@ public class Login : MonoBehaviour {
             var aToken = AccessToken.CurrentAccessToken;
             // Print current access token's User ID
             SyncTables.facebookUID = aToken.UserId;
+            //Debug.Log(aToken);
+            Credential credential = FacebookAuthProvider.GetCredential(aToken.TokenString);
+            auth.SignInWithCredentialAsync(credential).ContinueWith(task => {
+                if (task.IsCanceled)
+                {
+                    Debug.LogError("SignInWithCredentialAsync was canceled.");
+                    return;
+                }
+                if (task.IsFaulted)
+                {
+                    Debug.LogError("SignInWithCredentialAsync encountered an error: " + task.Exception);
+                    errorTextSignIn.text = "You have to accept all permissions on Facebook to login using Facebook";
+                    return;
+                }
+                FirebaseUser newUser = task.Result;
+                Debug.LogFormat("User signed in successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
+            });
             Debug.Log("User ID: " + SyncTables.facebookUID);
             FB.API("/me?fields=name,email", HttpMethod.GET, FetchProfileCallback, new Dictionary<string, string>() { });
         }
@@ -262,8 +283,9 @@ public class Login : MonoBehaviour {
         {
             yield return null;
         }
-        //Debug.Log("Response: " + request.downloadHandler.text);
+        Debug.Log("Response: " + request.downloadHandler.text);
         FindUIDJSONResponse findUIDJSONResponse = JsonUtility.FromJson<FindUIDJSONResponse>(request.downloadHandler.text);
+        Debug.Log(findUIDJSONResponse.data);
         if (findUIDJSONResponse.status != "success")
         {
             Debug.Log(findUIDJSONResponse.data);
@@ -292,6 +314,26 @@ public class Login : MonoBehaviour {
             SyncTables.getStarsAndLevels = true;
         }
         loadingScreen.SetActive(false);
-        SceneManager.LoadScene("Hub");
+        if(findUIDJSONResponse.firstTimeLogin == 1)
+        {
+            firstLoginMenu.SetActive(true);
+        }
+        else
+        {
+            SceneManager.LoadScene("Hub");
+        }
+    }
+
+    public void ShowFirstLoginScreen()
+    {
+        if (!termsAndConditions.isOn)
+        {
+            errorTextFirstLoginMenu.text = "You have to accept the Terms and Conditions before continuing";
+            return;
+        }
+        else
+        {
+            SceneManager.LoadScene("Hub");
+        }
     }
 }

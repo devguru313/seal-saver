@@ -98,6 +98,7 @@ public class PlayerManager : MonoBehaviour {
             NewPlayer = playerName
         };
         string jsonChangePlayerData = JsonUtility.ToJson(changePlayerDataJSON);
+        Debug.Log(jsonChangePlayerData);
         StartCoroutine(WaitForUnityWebRequest(varChangePlayerDataRequest, jsonChangePlayerData));
     }
 
@@ -112,7 +113,7 @@ public class PlayerManager : MonoBehaviour {
         {
             yield return null;
         }
-        //Debug.Log("Response: " + request.downloadHandler.text);
+        Debug.Log("Response: " + request.downloadHandler.text);
         GetPlayerDataJSONResponse getPlayerDataJSONResponse = JsonUtility.FromJson<GetPlayerDataJSONResponse>(request.downloadHandler.text);
     }
 

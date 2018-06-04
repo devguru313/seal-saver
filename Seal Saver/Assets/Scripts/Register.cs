@@ -200,6 +200,7 @@ public class Register : MonoBehaviour {
             Mail = email
         };
         string json = JsonUtility.ToJson(sendUIDJSON);
+        Debug.Log(json);
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
@@ -209,7 +210,7 @@ public class Register : MonoBehaviour {
         {
             yield return null;
         }
-        //Debug.Log("Response: " + request.downloadHandler.text);
+        Debug.Log("Response: " + request.downloadHandler.text);
     }
 
     IEnumerator SendDetails()
