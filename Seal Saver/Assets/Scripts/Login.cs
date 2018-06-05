@@ -128,7 +128,7 @@ public class Login : MonoBehaviour {
                 PlayerPrefs.SetString("Password", password);
                 loggedIn = true;
                 loggedInEmail = true;
-                StartCoroutine(GetUID("Firebase"));
+                StartCoroutine(GetUID("Email"));
             });
         }
         else
@@ -187,7 +187,7 @@ public class Login : MonoBehaviour {
             PlayerPrefs.SetString("Password", password);
             loggedIn = true;
             loggedInEmail = true;
-            StartCoroutine(GetUID("Firebase"));
+            StartCoroutine(GetUID("Email"));
         }
     }
 
@@ -283,9 +283,9 @@ public class Login : MonoBehaviour {
         {
             yield return null;
         }
-        Debug.Log("Response: " + request.downloadHandler.text);
+        //Debug.Log("Response: " + request.downloadHandler.text);
         FindUIDJSONResponse findUIDJSONResponse = JsonUtility.FromJson<FindUIDJSONResponse>(request.downloadHandler.text);
-        Debug.Log(findUIDJSONResponse.data);
+        //Debug.Log(findUIDJSONResponse.data);
         if (findUIDJSONResponse.status != "success")
         {
             Debug.Log(findUIDJSONResponse.data);

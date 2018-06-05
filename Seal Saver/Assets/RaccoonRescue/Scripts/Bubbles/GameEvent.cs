@@ -137,7 +137,7 @@ public class GameEvent : MonoBehaviour
 
 	void Update()
 	{
-		if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.OSXEditor) {
+		/*if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.OSXEditor) {
 			if (Input.GetKey(KeyCode.W))
 				GameEvent.Instance.GameStatus = GameState.WinProccess;
 			if (Input.GetKey(KeyCode.L)) {
@@ -149,7 +149,7 @@ public class GameEvent : MonoBehaviour
 			if (Input.GetKey(KeyCode.M))
 				LevelData.LimitAmount = 1;
 
-		}
+		}*/
 	}
 
 	// Update is called once per frame
