@@ -16,8 +16,9 @@ public class PlayerManager : MonoBehaviour {
 
     private void Start()
     {
+        //ADD IF CONDITION
+        //newNameMenu.SetActive(false);
         loadingScreen.SetActive(true);
-        newNameMenu.SetActive(false);
         numPlayers = 0;
         playerList = "";
         currentUserText.text = Login.user;
