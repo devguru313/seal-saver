@@ -9,4 +9,5 @@ public class GetPlayerDataJSONResponse
     public string status;
     public string data;
     public string RESTEndPoint;
+    public int firstTimeLogin;
 }

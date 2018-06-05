@@ -47,6 +47,7 @@ public class PlayerManager : MonoBehaviour {
             LoggedInUserID = Login.userID
         };
         string jsonGetPlayerData = JsonUtility.ToJson(getPlayerDataJSON);
+        Debug.Log(jsonGetPlayerData);
         StartCoroutine(WaitForUnityWebRequestPlayerData(varGetPlayerDataRequest, jsonGetPlayerData));
     }
 
@@ -62,7 +63,7 @@ public class PlayerManager : MonoBehaviour {
         {
             yield return null;
         }
-        //Debug.Log("Response: " + request.downloadHandler.text);
+        Debug.Log("Response: " + request.downloadHandler.text);
         GetPlayerDataJSONResponse getPlayerDataJSONResponse = JsonUtility.FromJson<GetPlayerDataJSONResponse>(request.downloadHandler.text);
         if (getPlayerDataJSONResponse.status != "success")
         {
