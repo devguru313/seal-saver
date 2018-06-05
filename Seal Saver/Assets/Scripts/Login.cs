@@ -261,7 +261,7 @@ public class Login : MonoBehaviour {
 
     IEnumerator GetUID(string loginMethod)
     {
-        Debug.Log("Getting UID");
+        //Debug.Log("Getting UID");
         string findUIDURL = "https://edplus.net/findUID";
         var request = new UnityWebRequest(findUIDURL, "POST");
         //Debug.Log(SyncTables.firebaseUID);
@@ -283,7 +283,7 @@ public class Login : MonoBehaviour {
         {
             yield return null;
         }
-        Debug.Log("Response: " + request.downloadHandler.text);
+        //Debug.Log("Response: " + request.downloadHandler.text);
         FindUIDJSONResponse findUIDJSONResponse = JsonUtility.FromJson<FindUIDJSONResponse>(request.downloadHandler.text);
         //Debug.Log(findUIDJSONResponse.data);
         if (findUIDJSONResponse.status != "success")

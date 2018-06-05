@@ -46,17 +46,17 @@ public class SendFeedback : MonoBehaviour {
         {
             Email = Login.user,
             UserID = Login.userID,
-            PlayerID = Login.userID + "_" + SyncTables.currentPlayerIndex.ToString(),
+            PlayerID = SyncTables.currentPlayerIndex.ToString(),
             Emotion = emotion,
             Feedback = feedbackField.text,
-            Time = DateTime.Now.ToString(),
+            TimeFeedbackProvided = DateTime.Now.ToString(),
             App = SyncTables.gameName,
             DeviceModel = SystemInfo.deviceModel,
             DeviceOS = SystemInfo.operatingSystem,
             Company = Application.companyName
     };
         string jsonSendFeedback = JsonUtility.ToJson(sendFeedbackJSON);
-        Debug.Log(jsonSendFeedback);
+        //Debug.Log(jsonSendFeedback);
         StartCoroutine(WaitForUnityWebRequest(varSendFeedbackRequest, jsonSendFeedback));
     }
 
@@ -71,7 +71,7 @@ public class SendFeedback : MonoBehaviour {
         {
             yield return null;
         }
-        Debug.Log("Response: " + request.downloadHandler.text);
+        //Debug.Log("Response: " + request.downloadHandler.text);
         SendFeedbackJSONResponse sendFeedbackJSONResponse = JsonUtility.FromJson<SendFeedbackJSONResponse>(request.downloadHandler.text);
         if (sendFeedbackJSONResponse.status == "success")
         {
@@ -97,6 +97,7 @@ public class SendFeedback : MonoBehaviour {
 
     public void CloseMenu()
     {
+        confirmationMenu.SetActive(false);
         feedbackMenu.SetActive(false);
     }
 }

@@ -5,7 +5,7 @@
     public string PlayerID;
     public string Emotion;
     public string Feedback;
-    public string Time;
+    public string TimeFeedbackProvided;
     public string App;
     public string DeviceModel;
     public string DeviceOS;
