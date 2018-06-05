@@ -226,7 +226,7 @@ public class Login : MonoBehaviour {
                 FirebaseUser newUser = task.Result;
                 Debug.LogFormat("User signed in successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
             });
-            Debug.Log("User ID: " + SyncTables.facebookUID);
+            //Debug.Log("User ID: " + SyncTables.facebookUID);
             FB.API("/me?fields=name,email", HttpMethod.GET, FetchProfileCallback, new Dictionary<string, string>() { });
         }
         else
@@ -243,8 +243,8 @@ public class Login : MonoBehaviour {
         if (FB.IsLoggedIn)
         {
             user = (string)result.ResultDictionary["email"];
-            Debug.Log("Email: " + user);
-            Debug.Log("Name: " + result.ResultDictionary["name"]);
+            //Debug.Log("Email: " + user);
+            //Debug.Log("Name: " + result.ResultDictionary["name"]);
             loggedIn = true;
             loggedInFacebook = true;
             StartCoroutine(GetUID("Facebook"));
@@ -261,7 +261,7 @@ public class Login : MonoBehaviour {
 
     IEnumerator GetUID(string loginMethod)
     {
-        //Debug.Log("Getting UID");
+        Debug.Log("Getting UID");
         string findUIDURL = "https://edplus.net/findUID";
         var request = new UnityWebRequest(findUIDURL, "POST");
         //Debug.Log(SyncTables.firebaseUID);
@@ -283,7 +283,7 @@ public class Login : MonoBehaviour {
         {
             yield return null;
         }
-        //Debug.Log("Response: " + request.downloadHandler.text);
+        Debug.Log("Response: " + request.downloadHandler.text);
         FindUIDJSONResponse findUIDJSONResponse = JsonUtility.FromJson<FindUIDJSONResponse>(request.downloadHandler.text);
         //Debug.Log(findUIDJSONResponse.data);
         if (findUIDJSONResponse.status != "success")

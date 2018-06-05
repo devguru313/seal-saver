@@ -40,6 +40,7 @@ public class PlayerManager : MonoBehaviour {
 
     public void ReadPlayerDataSQL()
     {
+        Debug.Log("Get Player Data");
         string getPlayerDataURL = "https://edplus.net/getPlayerData";
         var varGetPlayerDataRequest = new UnityWebRequest(getPlayerDataURL, "POST");
         GetPlayerDataJSON getPlayerDataJSON = new GetPlayerDataJSON()
