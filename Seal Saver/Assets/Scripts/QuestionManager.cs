@@ -172,7 +172,7 @@ public class QuestionManager : MonoBehaviour
             answerSelected = option1;
             questionCount += 1;
             WriteOutput();
-            changeQuestion = true;
+            //changeQuestion = true;
             //Get a coin if answered 3 questions correctly
             if (questionCount >= 3)
             {
@@ -214,7 +214,7 @@ public class QuestionManager : MonoBehaviour
                     break;
             }
             WriteOutput();
-            changeQuestion = true;
+            //changeQuestion = true;
             Invoke("ResetOnWrong", 1.5f);
         }
     }
@@ -236,7 +236,7 @@ public class QuestionManager : MonoBehaviour
             answerSelected = option2;
             questionCount += 1;
             WriteOutput();
-            changeQuestion = true;
+            //changeQuestion = true;
             //Get a coin if answered 3 questions correctly
             if (questionCount >= 3)
             {
@@ -278,7 +278,7 @@ public class QuestionManager : MonoBehaviour
                     break;
             }
             WriteOutput();
-            changeQuestion = true;
+            //changeQuestion = true;
             Invoke("ResetOnWrong", 1.5f);
         }
     }
@@ -300,7 +300,7 @@ public class QuestionManager : MonoBehaviour
             answerSelected = option3;
             questionCount += 1;
             WriteOutput();
-            changeQuestion = true;
+            //changeQuestion = true;
             //Get a coin if answered 3 questions correctly
             if (questionCount >= 3)
             {
@@ -342,7 +342,7 @@ public class QuestionManager : MonoBehaviour
                     break;
             }
             WriteOutput();
-            changeQuestion = true;
+            //changeQuestion = true;
             Invoke("ResetOnWrong", 1.5f);
         }
     }
@@ -364,7 +364,7 @@ public class QuestionManager : MonoBehaviour
             answerSelected = option4;
             questionCount += 1;
             WriteOutput();
-            changeQuestion = true;
+            //changeQuestion = true;
             //Get a coin if answered 3 questions correctly
             if (questionCount >= 3)
             {
@@ -406,7 +406,7 @@ public class QuestionManager : MonoBehaviour
                     break;
             }
             WriteOutput();
-            changeQuestion = true;
+            //changeQuestion = true;
             Invoke("ResetOnWrong", 1.5f);
         }
     }
@@ -421,6 +421,7 @@ public class QuestionManager : MonoBehaviour
         coinRewardUI.SetActive(false);
         questionUI.GetComponent<AnimationManager>().CloseMenu();
         SyncTables.syncOutputNow = true;
+        changeQuestion = true;
         SetQuestion();
         optionImage1.sprite = defaultButton;
         optionImage2.sprite = defaultButton;
@@ -441,6 +442,7 @@ public class QuestionManager : MonoBehaviour
         button4.gameObject.SetActive(true);
         questionUI.GetComponent<AnimationManager>().CloseMenu();
         SyncTables.syncOutputNow = true;
+        changeQuestion = true;
         SetQuestion();
         GameEvent.ShowQuestion();
         optionImage1.sprite = defaultButton;

@@ -13,6 +13,7 @@ public class Login : MonoBehaviour {
     public InputField Password;
     public Text errorTextSignIn;
     public Text errorTextFirstLoginMenu;
+    public Text forgotPasswordText;
     public static bool loggedIn;
     public static bool loggedInEmail;
     public static bool loggedInFacebook;
@@ -20,7 +21,6 @@ public class Login : MonoBehaviour {
     public static string userID;
     public static string email;
     public string password;
-    public GameObject clickToReset;
     public GameObject loadingScreen;
     public GameObject firstLoginMenu;
     public Toggle termsAndConditions;
@@ -83,7 +83,7 @@ public class Login : MonoBehaviour {
     {
         loadingScreen.SetActive(true);
         errorTextSignIn.text = "";
-        clickToReset.SetActive(false);
+        forgotPasswordText.color = new Color(0.7137255f, 0.6627451f, 0.7019608f);
         if (Username.text == "" || Password.text == "")
         {
             errorTextSignIn.text = "Please complete all fields";
@@ -114,7 +114,7 @@ public class Login : MonoBehaviour {
                     else
                     {
                         errorTextSignIn.text = "Oops, that's not the correct email/password combination.";
-                        clickToReset.SetActive(true);
+                        forgotPasswordText.color = Color.red;
                     }
                     loadingScreen.SetActive(false);
                     loggedIn = false;
@@ -165,7 +165,7 @@ public class Login : MonoBehaviour {
             if (sendAuthDetailsJSONResponse.data == "EMAIL_NOT_FOUND" || sendAuthDetailsJSONResponse.data == "INVALID_PASSWORD")
             {
                 errorTextSignIn.text = "Oops, that's not the correct email/password combination.";
-                clickToReset.SetActive(true);
+                forgotPasswordText.color = Color.red;
                 yield return null;
             }
             else if (SyncTables.internetLogin == false)

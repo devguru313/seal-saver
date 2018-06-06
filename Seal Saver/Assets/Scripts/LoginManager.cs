@@ -12,9 +12,9 @@ public class LoginManager : MonoBehaviour {
     public GameObject signUpNext;
     public GameObject registerButton;
     public GameObject termsConditions;
-    public GameObject clickToReset;
     public Text signInError;
     public Text signUpError;
+    public Text forgotText;
     public GameObject forgotPasswordMenu;
 
     public void OpenSignInMenu()
@@ -23,7 +23,7 @@ public class LoginManager : MonoBehaviour {
         forgotPasswordMenu.SetActive(false);
         signInMenu.SetActive(true);
         signInError.text = "";
-        clickToReset.SetActive(false);
+        forgotText.color = new Color(0.7137255f, 0.6627451f, 0.7019608f);
     }
 
     public void OpenSignUpMenu()
