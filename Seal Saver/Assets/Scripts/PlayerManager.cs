@@ -10,9 +10,11 @@ public class PlayerManager : MonoBehaviour {
     public int numPlayers;
     public int playerIndex;
     public InputField nameField;
+    public InputField yearField;
     public string playerList;
     public Text currentUserText;
     public GameObject loadingScreen;
+    public Text errorTextCreateUser;
 
     private void Start()
     {
@@ -80,6 +82,11 @@ public class PlayerManager : MonoBehaviour {
 
     public void CreateUser()
     {
+        if(nameField.text == "" || yearField.text == "")
+        {
+            errorTextCreateUser.text = "Please complete all fields before continuing";
+            return;
+        }
         numPlayers += 1;
         GameObject newButton = Instantiate(playerButtonTemplate) as GameObject;
         newButton.SetActive(true);
@@ -89,10 +96,10 @@ public class PlayerManager : MonoBehaviour {
         playerList += nameField.text + " ";
         SyncTables.playerCoins.Add(numPlayers + "@20");
         //Debug.Log(playerList + numPlayers);
-        WritePlayerDataSQL(nameField.text);
+        WritePlayerDataSQL(nameField.text, yearField.text);
     }
 
-    public void WritePlayerDataSQL(string playerName)
+    public void WritePlayerDataSQL(string playerName, string year)
     {
         string changePlayerDataURL = "https://edplus.net/changePlayerData";
         var varChangePlayerDataRequest = new UnityWebRequest(changePlayerDataURL, "POST");
@@ -100,7 +107,8 @@ public class PlayerManager : MonoBehaviour {
         {
             LoggedInUserID = Login.userID,
             NumPlayers = numPlayers.ToString(),
-            NewPlayer = playerName
+            NewPlayer = playerName,
+            BirthYear = year
         };
         string jsonChangePlayerData = JsonUtility.ToJson(changePlayerDataJSON);
         Debug.Log(jsonChangePlayerData);
