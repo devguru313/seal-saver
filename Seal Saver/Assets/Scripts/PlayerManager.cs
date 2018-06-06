@@ -16,27 +16,12 @@ public class PlayerManager : MonoBehaviour {
 
     private void Start()
     {
-        //ADD IF CONDITION
-        //newNameMenu.SetActive(false);
+        newNameMenu.SetActive(false);
         loadingScreen.SetActive(true);
         numPlayers = 0;
         playerList = "";
         currentUserText.text = Login.user;
         ReadPlayerDataSQL();
-    }
-
-    public void CreateUser()
-    {
-        numPlayers += 1;
-        GameObject newButton = Instantiate(playerButtonTemplate) as GameObject;
-        newButton.SetActive(true);
-        newButton.GetComponent<PlayerButtonController>().SetText(nameField.text, numPlayers);
-        newButton.transform.SetParent(playerButtonTemplate.transform.parent, false);
-        newNameMenu.SetActive(false);
-        playerList += nameField.text + " ";
-        SyncTables.playerCoins.Add(numPlayers + "@20");
-        //Debug.Log(playerList + numPlayers);
-        WritePlayerDataSQL(nameField.text);
     }
 
     public void ReadPlayerDataSQL()
@@ -74,10 +59,9 @@ public class PlayerManager : MonoBehaviour {
         else
         {
             string playerText = getPlayerDataJSONResponse.data;
-            //Debug.Log(playerText);
-            var lines = playerText.Split('&');
-            int.TryParse(lines[0], out numPlayers);
-            var playerNames = lines[1].Split(' ');
+            numPlayers = getPlayerDataJSONResponse.numPlayers;
+            //Debug.Log(numPlayers);
+            var playerNames = playerText.Split(' ');
             for (int i = 0; i < numPlayers; i++)
             {
                 playerList += playerNames[i] + " ";
@@ -87,7 +71,25 @@ public class PlayerManager : MonoBehaviour {
                 newButton.transform.SetParent(playerButtonTemplate.transform.parent, false);
             }
         }
+        if(numPlayers == 0)
+        {
+            newNameMenu.SetActive(true);
+        }
         loadingScreen.SetActive(false);
+    }
+
+    public void CreateUser()
+    {
+        numPlayers += 1;
+        GameObject newButton = Instantiate(playerButtonTemplate) as GameObject;
+        newButton.SetActive(true);
+        newButton.GetComponent<PlayerButtonController>().SetText(nameField.text, numPlayers);
+        newButton.transform.SetParent(playerButtonTemplate.transform.parent, false);
+        newNameMenu.SetActive(false);
+        playerList += nameField.text + " ";
+        SyncTables.playerCoins.Add(numPlayers + "@20");
+        //Debug.Log(playerList + numPlayers);
+        WritePlayerDataSQL(nameField.text);
     }
 
     public void WritePlayerDataSQL(string playerName)
