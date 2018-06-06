@@ -315,6 +315,7 @@ public class SyncTables : MonoBehaviour {
         };
         string json = JsonUtility.ToJson(insertOutputJSON);
         internet = CheckInternetPing(false);
+        //Debug.Log("Insert Output");
         if (internet)
         {
             StartCoroutine(WaitForUnityWebRequest(request, json));
@@ -323,7 +324,6 @@ public class SyncTables : MonoBehaviour {
 
     IEnumerator WaitForUnityWebRequest(UnityWebRequest request, string json)
     {
-        //Debug.Log(json);
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();

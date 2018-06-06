@@ -522,7 +522,7 @@ public class QuestionManager : MonoBehaviour
             };
             string json = JsonUtility.ToJson(readInputJSON);
             //Debug.Log(json);
-            //Debug.Log("CALLING READ INPUT SQL");
+            //Debug.Log("Get Next Questions");
             StartCoroutine(WaitForUnityWebRequestReadInput(request, json));
         }
     }
