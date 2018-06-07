@@ -9,7 +9,7 @@ public class LoginFlags : MonoBehaviour {
     
     public void OnSignInPress()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("Login");
     }
 
     public void QuitApp()
