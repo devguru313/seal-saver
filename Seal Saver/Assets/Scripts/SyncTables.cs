@@ -90,6 +90,8 @@ public class SyncTables : MonoBehaviour {
         inputTablePath = GetApplicationPath() + userID + "_InputTable.csv";
         //Debug.Log("CURRENT USER INDEX: " + userID);
 
+        #region Flags
+
         if (syncUploadNow)
         {
             syncUploadNow = false;
@@ -132,6 +134,8 @@ public class SyncTables : MonoBehaviour {
             setLevels = false;
             SetPlayerLevel(PlayerDataManager.levelCount);
         }
+
+        #endregion
     }
 
     #region Application Pause and Quit
@@ -177,13 +181,6 @@ public class SyncTables : MonoBehaviour {
         writer.Close();
     }
     #endregion
-
-    public void UploadData()
-    {
-        syncUploadNow = true;
-    }
-
-    #region Upload to SQL
 
     public void SetStars(int stars, int level)
     {
@@ -357,10 +354,6 @@ public class SyncTables : MonoBehaviour {
         }
     }
 
-    #endregion
-
-    #region Download from SQL
-
     void ReadLevelSQL()
     {
         string getPlayerLevelURL = "https://edplus.net/getPlayerLevel";
@@ -457,8 +450,6 @@ public class SyncTables : MonoBehaviour {
             }
         }
     }
-
-    #endregion
 
     #region Internet
     public void CheckInternet()

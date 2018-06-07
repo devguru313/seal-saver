@@ -27,17 +27,36 @@ public class Login : MonoBehaviour {
     public static bool subscribed;
     public static bool newUser;
     public FirebaseAuth auth;
+    public string advertID;
 
     void Start()
     {
         firstLoginMenu.SetActive(false);
         string deviceModel = SystemInfo.deviceModel.ToLower();
+
         //Amazon Device check
         if (!deviceModel.Contains("amazon"))
         {
             //Debug.Log("NOT AMAZON");
             InitializeFirebase();
         }
+
+        #region Advertising Check
+
+        bool adIDCheck;
+        adIDCheck = Application.RequestAdvertisingIdentifierAsync(
+        (string advertisingId, bool trackingEnabled, string error) =>
+            GetAdvertisingID(advertisingId)
+        );
+        if (!adIDCheck)
+        {
+            GetAdvertisingID("Error");
+        }
+
+        #endregion
+
+        #region Auto-Login
+
         if (PlayerPrefs.HasKey("Username") && PlayerPrefs.HasKey("Password"))
         {
             loadingScreen.SetActive(true);
@@ -45,6 +64,8 @@ public class Login : MonoBehaviour {
             Password.text = PlayerPrefs.GetString("Password");
             Launch();
         }
+
+        #endregion
     }
 
     void InitializeFirebase()
@@ -54,6 +75,8 @@ public class Login : MonoBehaviour {
 
     private void Update()
     {
+        #region Auto-Login after Register
+
         if (Register.registered == true && loggedIn == false)
         {
             //Deactivate flag first
@@ -67,17 +90,11 @@ public class Login : MonoBehaviour {
                 Launch();
             }
         }
+
+        #endregion
     }
 
-    public void LoadPlayerPrefs()
-    {
-        // Prefill fields with saved datas
-        if (PlayerPrefs.HasKey("Username") && PlayerPrefs.HasKey("Password"))
-        {
-            Username.text = PlayerPrefs.GetString("Username");
-            Password.text = PlayerPrefs.GetString("Password");
-        }
-    }
+    #region Main Login and GetUID
 
     public void Launch()
     {
@@ -137,6 +154,76 @@ public class Login : MonoBehaviour {
         }
     }
 
+    IEnumerator GetUID(string loginMethod)
+    {
+        //Debug.Log("Getting UID");
+        string findUIDURL = "https://edplus.net/findUID";
+        var request = new UnityWebRequest(findUIDURL, "POST");
+        //Debug.Log(SyncTables.firebaseUID);
+        FindUIDJSON findUIDJSON = new FindUIDJSON()
+        {
+            Email = user,
+            FirebaseUID = SyncTables.firebaseUID,
+            FacebookUID = SyncTables.facebookUID,
+            Method = loginMethod,
+            ADID = advertID
+        };
+        string json = JsonUtility.ToJson(findUIDJSON);
+        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+        while (!request.isDone)
+        {
+            yield return null;
+        }
+        Debug.Log("Response: " + request.downloadHandler.text);
+        FindUIDJSONResponse findUIDJSONResponse = JsonUtility.FromJson<FindUIDJSONResponse>(request.downloadHandler.text);
+        //Debug.Log(findUIDJSONResponse.data);
+        if (findUIDJSONResponse.status != "success")
+        {
+            Debug.Log(findUIDJSONResponse.data);
+        }
+        else
+        {
+            var cols = findUIDJSONResponse.data.Split('&');
+            userID = cols[0];
+            if (cols[1] == "1")
+            {
+                subscribed = true;
+            }
+            else
+            {
+                subscribed = false;
+            }
+        }
+        if (newUser)
+        {
+            newUser = false;
+            SyncTables.playerData.Clear();
+            SyncTables.playerCoins.Clear();
+        }
+        else
+        {
+            SyncTables.getStarsAndLevels = true;
+        }
+        loadingScreen.SetActive(false);
+        if (findUIDJSONResponse.firstTimeLogin == 1)
+        {
+            firstLoginMenu.SetActive(true);
+        }
+        else
+        {
+            SceneManager.LoadScene("Hub");
+        }
+    }
+
+    #endregion
+
+    #region Login API for Amazon Devices
+
     IEnumerator SendDetails()
     {
         //Debug.Log("SEND DETAILS");
@@ -190,6 +277,8 @@ public class Login : MonoBehaviour {
             StartCoroutine(GetUID("Email"));
         }
     }
+
+    #endregion
 
     #region FACEBOOK
 
@@ -259,68 +348,15 @@ public class Login : MonoBehaviour {
 
     #endregion
 
-    IEnumerator GetUID(string loginMethod)
-    {
-        //Debug.Log("Getting UID");
-        string findUIDURL = "https://edplus.net/findUID";
-        var request = new UnityWebRequest(findUIDURL, "POST");
-        //Debug.Log(SyncTables.firebaseUID);
-        FindUIDJSON findUIDJSON = new FindUIDJSON()
-        {
-            Email = user,
-            FirebaseUID = SyncTables.firebaseUID,
-            FacebookUID = SyncTables.facebookUID,
-            Method = loginMethod
-        };
-        string json = JsonUtility.ToJson(findUIDJSON);
-        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
+    #region Other Functions
 
-        yield return request.SendWebRequest();
-        while (!request.isDone)
+    public void LoadPlayerPrefs()
+    {
+        // Prefill fields with saved datas
+        if (PlayerPrefs.HasKey("Username") && PlayerPrefs.HasKey("Password"))
         {
-            yield return null;
-        }
-        //Debug.Log("Response: " + request.downloadHandler.text);
-        FindUIDJSONResponse findUIDJSONResponse = JsonUtility.FromJson<FindUIDJSONResponse>(request.downloadHandler.text);
-        //Debug.Log(findUIDJSONResponse.data);
-        if (findUIDJSONResponse.status != "success")
-        {
-            Debug.Log(findUIDJSONResponse.data);
-        }
-        else
-        {
-            var cols = findUIDJSONResponse.data.Split('&');
-            userID = cols[0];
-            if (cols[1] == "1")
-            {
-                subscribed = true;
-            }
-            else
-            {
-                subscribed = false;
-            }
-        }
-        if (newUser)
-        {
-            newUser = false;
-            SyncTables.playerData.Clear();
-            SyncTables.playerCoins.Clear();
-        }
-        else
-        {
-            SyncTables.getStarsAndLevels = true;
-        }
-        loadingScreen.SetActive(false);
-        if(findUIDJSONResponse.firstTimeLogin == 1)
-        {
-            firstLoginMenu.SetActive(true);
-        }
-        else
-        {
-            SceneManager.LoadScene("Hub");
+            Username.text = PlayerPrefs.GetString("Username");
+            Password.text = PlayerPrefs.GetString("Password");
         }
     }
 
@@ -336,4 +372,11 @@ public class Login : MonoBehaviour {
             SceneManager.LoadScene("Hub");
         }
     }
+
+    public void GetAdvertisingID(string adID)
+    {
+        advertID = adID;
+    }
+
+    #endregion
 }

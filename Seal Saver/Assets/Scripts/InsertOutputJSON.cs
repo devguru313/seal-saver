@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class InsertOutputJSON
+﻿public class InsertOutputJSON
 {
     public string UserID;
     public string Level;
