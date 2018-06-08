@@ -1721,11 +1721,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 422082897}
---- !u!82 &422708662 stripped
-AudioSource:
-  m_PrefabParentObject: {fileID: 8222382, guid: c4e1ba3bcd7ab5241be429c2dda019e8,
-    type: 2}
-  m_PrefabInternal: {fileID: 1987079196}
 --- !u!1 &422990484
 GameObject:
   m_ObjectHideFlags: 0
@@ -3485,8 +3480,6 @@ GameObject:
   - component: {fileID: 729910747}
   - component: {fileID: 729910745}
   - component: {fileID: 729910743}
-  - component: {fileID: 729910744}
-  - component: {fileID: 729910746}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3594,19 +3587,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameStatus: 0
---- !u!114 &729910744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 729910737}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1128ac4b9abbb894898e595164229dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  internetMenu: {fileID: 0}
-  answerText: 
 --- !u!114 &729910745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3694,17 +3674,6 @@ MonoBehaviour:
   blockCheckStarted: 0
   destroyingBalls: []
   fireEffect: {fileID: 1314626446717764, guid: 22fa732f81b8d45a3ba428586d8fe854, type: 2}
---- !u!114 &729910746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 729910737}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3d155fcb450ae144aec7588cd772ff4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &729910747
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6191,7 +6160,7 @@ Prefab:
     - target: {fileID: 11451204, guid: 54b64f081422d7043906038367a33816, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 729910744}
+      objectReference: {fileID: 0}
     - target: {fileID: 11451204, guid: 54b64f081422d7043906038367a33816, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: UploadData
@@ -6871,6 +6840,7 @@ GameObject:
   - component: {fileID: 1853914243}
   - component: {fileID: 1853914244}
   - component: {fileID: 1853914246}
+  - component: {fileID: 1853914241}
   m_Layer: 0
   m_Name: QuestionManager
   m_TagString: Untagged
@@ -6878,6 +6848,17 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1853914241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1853914240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e737e8050962827498ece3da64bf9ac7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1853914242
 Transform:
   m_ObjectHideFlags: 0
@@ -6945,7 +6926,6 @@ MonoBehaviour:
   audioCorrect: {fileID: 8300000, guid: 98e824b7bfd46884ca686544a915b19f, type: 3}
   audioWrong: {fileID: 8300000, guid: 5e02efb43d7a30c4babe4cea5c2d8d9e, type: 3}
   audioCoins: {fileID: 8300000, guid: 3dd3baaae647dea4f8b14de0b619b923, type: 3}
-  backMusic: {fileID: 422708662}
   currentPlayerIndex: 0
 --- !u!114 &1853914244
 MonoBehaviour:
@@ -6959,6 +6939,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   internetMenu: {fileID: 1617368601}
+  loadingScreen: {fileID: 2108772846}
   answerText: 
 --- !u!82 &1853914246
 AudioSource:
@@ -8436,6 +8417,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ad51c26393914ae2b03d50678cf8f56, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &2108772846 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1560029610575102, guid: 0ad51c26393914ae2b03d50678cf8f56,
+    type: 2}
+  m_PrefabInternal: {fileID: 2108772845}
 --- !u!1001 &2125262963
 Prefab:
   m_ObjectHideFlags: 0
@@ -8515,20 +8501,15 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114380364289109298, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 729910746}
-    - target: {fileID: 22328746, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 729910741}
     - target: {fileID: 114243706929207554, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1853914244}
+    - target: {fileID: 22328746, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 729910741}
     - target: {fileID: 114048316997819556, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 27907936}
   - component: {fileID: 27907937}
   - component: {fileID: 27907938}
+  - component: {fileID: 27907939}
   m_Layer: 0
   m_Name: LoginManager
   m_TagString: Untagged
@@ -151,7 +152,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 27907935}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8da15e22d1a38344ace2f0ac21ca025, type: 3}
+  m_Script: {fileID: 11500000, guid: b722a734fdff29747a9e99056c435363, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &27907938
@@ -166,7 +167,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   internetMenu: {fileID: 1811335970}
+  loadingScreen: {fileID: 1406158771}
   answerText: 
+--- !u!114 &27907939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 27907935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e737e8050962827498ece3da64bf9ac7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &198073806
 Prefab:
   m_ObjectHideFlags: 0

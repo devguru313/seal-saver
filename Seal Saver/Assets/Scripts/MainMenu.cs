@@ -1,12 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
+public class MainMenu : MonoBehaviour {
 
-public class LoginFlags : MonoBehaviour {
-    
     public void OnSignInPress()
     {
         SceneManager.LoadScene("Login");
@@ -18,5 +14,4 @@ public class LoginFlags : MonoBehaviour {
         Application.Quit();
 #endif
     }
-
 }

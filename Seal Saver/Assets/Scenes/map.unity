@@ -1688,15 +1688,15 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 22328746, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 382868945}
     - target: {fileID: 114243706929207554, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 382868951}
+    - target: {fileID: 22328746, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 382868945}
     - target: {fileID: 11460640, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
       propertyPath: Loading
       value: 
@@ -4921,6 +4921,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ad51c26393914ae2b03d50678cf8f56, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &375062353 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1560029610575102, guid: 0ad51c26393914ae2b03d50678cf8f56,
+    type: 2}
+  m_PrefabInternal: {fileID: 375062352}
 --- !u!1 &382868941
 GameObject:
   m_ObjectHideFlags: 0
@@ -4938,6 +4943,7 @@ GameObject:
   - component: {fileID: 382868949}
   - component: {fileID: 382868950}
   - component: {fileID: 382868951}
+  - component: {fileID: 382868952}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5084,7 +5090,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   internetMenu: {fileID: 584667905}
+  loadingScreen: {fileID: 375062353}
   answerText: 
+--- !u!114 &382868952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 382868941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e737e8050962827498ece3da64bf9ac7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &383798688
 GameObject:
   m_ObjectHideFlags: 0

@@ -65,7 +65,6 @@ public class QuestionManager : MonoBehaviour
     public AudioClip audioCorrect;
     public AudioClip audioWrong;
     public AudioClip audioCoins;
-    public AudioSource backMusic;
 
     public int currentPlayerIndex;
     private int questionCount;
@@ -95,7 +94,6 @@ public class QuestionManager : MonoBehaviour
         optionText3.text = "start";
         optionText4.text = "start";
         questionCount = 0;
-        backMusic.volume = 0.75f;
         currentPlayerIndex = SyncTables.currentPlayerIndex;
         if (Login.loggedIn)
         {
@@ -108,7 +106,6 @@ public class QuestionManager : MonoBehaviour
         inputPath = GetApplicationPath() + userID + "_InputTable.csv";
         outputPath = GetApplicationPath() + userID + "_OutputTable.csv";
         inputQuestionNo = 0;
-        //SetQuestion();
         changeQuestion = true;
     }
 
@@ -132,28 +129,6 @@ public class QuestionManager : MonoBehaviour
         }
     }
 
-    public void SetQuestion()
-    {
-        ReadInput();
-        questionText.text = question;
-        optionText1.text = option1;
-        optionText2.text = option2;
-        optionText3.text = option3;
-        optionText4.text = option4;
-    }
-
-    public int CorrectAnsIndex()
-    {
-        if (optionText1.text == correctAns)
-            return 0;
-        else if (optionText2.text == correctAns)
-            return 1;
-        else if (optionText3.text == correctAns)
-            return 2;
-        else
-            return 3;
-    }
-
     #region On Option Select Functions
     public void OnOptionSelect1()
     {
@@ -172,15 +147,14 @@ public class QuestionManager : MonoBehaviour
             answerSelected = option1;
             questionCount += 1;
             WriteOutput();
-            //changeQuestion = true;
             //Get a coin if answered 3 questions correctly
             if (questionCount >= 3)
             {
                 coinRewardUI.SetActive(true);
                 audioSource.PlayOneShot(audioCoins);
                 questionCount = 0;
-                InitScriptName.InitScript.Gems += 1;
-                questionUI.GetComponent<AnimationManager>().CloseMenu();
+                GameSpecificChanges.setCoins = true;
+                questionUI.SetActive(false);
                 Invoke("ResetOnCorrect", 2.5f);
             }
             else
@@ -214,7 +188,6 @@ public class QuestionManager : MonoBehaviour
                     break;
             }
             WriteOutput();
-            //changeQuestion = true;
             Invoke("ResetOnWrong", 1.5f);
         }
     }
@@ -236,15 +209,14 @@ public class QuestionManager : MonoBehaviour
             answerSelected = option2;
             questionCount += 1;
             WriteOutput();
-            //changeQuestion = true;
             //Get a coin if answered 3 questions correctly
             if (questionCount >= 3)
             {
                 coinRewardUI.SetActive(true);
                 audioSource.PlayOneShot(audioCoins);
                 questionCount = 0;
-                InitScriptName.InitScript.Gems += 1;
-                questionUI.GetComponent<AnimationManager>().CloseMenu();
+                GameSpecificChanges.setCoins = true;
+                questionUI.SetActive(false);
                 Invoke("ResetOnCorrect", 2.5f);
             }
             else
@@ -278,7 +250,6 @@ public class QuestionManager : MonoBehaviour
                     break;
             }
             WriteOutput();
-            //changeQuestion = true;
             Invoke("ResetOnWrong", 1.5f);
         }
     }
@@ -300,15 +271,14 @@ public class QuestionManager : MonoBehaviour
             answerSelected = option3;
             questionCount += 1;
             WriteOutput();
-            //changeQuestion = true;
             //Get a coin if answered 3 questions correctly
             if (questionCount >= 3)
             {
                 coinRewardUI.SetActive(true);
                 audioSource.PlayOneShot(audioCoins);
                 questionCount = 0;
-                InitScriptName.InitScript.Gems += 1;
-                questionUI.GetComponent<AnimationManager>().CloseMenu();
+                GameSpecificChanges.setCoins = true;
+                questionUI.SetActive(false);
                 Invoke("ResetOnCorrect", 2.5f);
             }
             else
@@ -342,7 +312,6 @@ public class QuestionManager : MonoBehaviour
                     break;
             }
             WriteOutput();
-            //changeQuestion = true;
             Invoke("ResetOnWrong", 1.5f);
         }
     }
@@ -364,15 +333,14 @@ public class QuestionManager : MonoBehaviour
             answerSelected = option4;
             questionCount += 1;
             WriteOutput();
-            //changeQuestion = true;
             //Get a coin if answered 3 questions correctly
             if (questionCount >= 3)
             {
                 coinRewardUI.SetActive(true);
                 audioSource.PlayOneShot(audioCoins);
                 questionCount = 0;
-                InitScriptName.InitScript.Gems += 1;
-                questionUI.GetComponent<AnimationManager>().CloseMenu();
+                GameSpecificChanges.setCoins = true;
+                questionUI.SetActive(false);
                 Invoke("ResetOnCorrect", 2.5f);
             }
             else
@@ -406,12 +374,12 @@ public class QuestionManager : MonoBehaviour
                     break;
             }
             WriteOutput();
-            //changeQuestion = true;
             Invoke("ResetOnWrong", 1.5f);
         }
     }
-#endregion
+    #endregion
 
+    #region Reset Question Menu Functions
     public void ResetOnCorrect()
     {
         button1.gameObject.SetActive(true);
@@ -419,7 +387,8 @@ public class QuestionManager : MonoBehaviour
         button3.gameObject.SetActive(true);
         button4.gameObject.SetActive(true);
         coinRewardUI.SetActive(false);
-        questionUI.GetComponent<AnimationManager>().CloseMenu();
+        GameSpecificChanges.getCoins = true;
+        questionUI.SetActive(false);
         SyncTables.syncOutputNow = true;
         changeQuestion = true;
         SetQuestion();
@@ -440,11 +409,13 @@ public class QuestionManager : MonoBehaviour
         button2.gameObject.SetActive(true);
         button3.gameObject.SetActive(true);
         button4.gameObject.SetActive(true);
-        questionUI.GetComponent<AnimationManager>().CloseMenu();
+        GameSpecificChanges.getCoins = true;
+        questionUI.SetActive(false);
         SyncTables.syncOutputNow = true;
         changeQuestion = true;
         SetQuestion();
-        GameEvent.ShowQuestion();
+        questionUI.SetActive(true);
+        askTime = DateTime.Now;
         optionImage1.sprite = defaultButton;
         optionImage2.sprite = defaultButton;
         optionImage3.sprite = defaultButton;
@@ -454,54 +425,12 @@ public class QuestionManager : MonoBehaviour
         button3.interactable = true;
         button4.interactable = true;
     }
+    #endregion
 
-    #region Read/Write Functions
-    void ReadInput()
-    {
-        //Debug.Log("ReadInput called");
-        //StartCoroutine("CheckInternetPing");
-        internet = CheckInternetPing();
-        if (internet)
-        {
-            inputQuestionNo = 0;
-        }
-        else
-        {
-            inputQuestionNo++;
-        }
-        var reader = new StreamReader(inputPath);
-        for (int i = 0; i <= inputQuestionNo; i++)
-        {
-            var line = reader.ReadLine();
-            var values = line.Split(',');
-            questionID = values[0];
-            question = values[1];
-            correctAns = values[2];
-            wrong1 = values[3];
-            wrong2 = values[4];
-            wrong3 = values[5];
-            questionSet = values[6];
-            //uQID = values[7];
-        }
-        reader.Close();
-        shuffleTemp.Clear();
-        shuffleTemp.Add(correctAns);
-        shuffleTemp.Add(wrong1);
-        shuffleTemp.Add(wrong2);
-        shuffleTemp.Add(wrong3);
-        Shuffle(shuffleTemp);
-        option1 = shuffleTemp[0];
-        option2 = shuffleTemp[1];
-        option3 = shuffleTemp[2];
-        option4 = shuffleTemp[3];
-        //Debug.Log(question);
-    }
-
+    #region Input
     void ReadInputSQL()
     {
-        //StartCoroutine("CheckInternetPing");
         internet = CheckInternetPing();
-        //Debug.Log("CHECKING INTERNET: " + internet);
         if (internet)
         {
             inputQID.Clear();
@@ -522,7 +451,6 @@ public class QuestionManager : MonoBehaviour
             };
             string json = JsonUtility.ToJson(readInputJSON);
             //Debug.Log(json);
-            //Debug.Log("Get Next Questions");
             StartCoroutine(WaitForUnityWebRequestReadInput(request, json));
         }
     }
@@ -583,6 +511,59 @@ public class QuestionManager : MonoBehaviour
         }
     }
 
+    public void SetQuestion()
+    {
+        ReadInput();
+        questionText.text = question;
+        optionText1.text = option1;
+        optionText2.text = option2;
+        optionText3.text = option3;
+        optionText4.text = option4;
+    }
+
+    void ReadInput()
+    {
+        //Debug.Log("ReadInput called");
+        //StartCoroutine("CheckInternetPing");
+        internet = CheckInternetPing();
+        if (internet)
+        {
+            inputQuestionNo = 0;
+        }
+        else
+        {
+            inputQuestionNo++;
+        }
+        var reader = new StreamReader(inputPath);
+        for (int i = 0; i <= inputQuestionNo; i++)
+        {
+            var line = reader.ReadLine();
+            var values = line.Split(',');
+            questionID = values[0];
+            question = values[1];
+            correctAns = values[2];
+            wrong1 = values[3];
+            wrong2 = values[4];
+            wrong3 = values[5];
+            questionSet = values[6];
+            //uQID = values[7];
+        }
+        reader.Close();
+        shuffleTemp.Clear();
+        shuffleTemp.Add(correctAns);
+        shuffleTemp.Add(wrong1);
+        shuffleTemp.Add(wrong2);
+        shuffleTemp.Add(wrong3);
+        Shuffle(shuffleTemp);
+        option1 = shuffleTemp[0];
+        option2 = shuffleTemp[1];
+        option3 = shuffleTemp[2];
+        option4 = shuffleTemp[3];
+        //Debug.Log(question);
+    }
+    #endregion
+
+    #region Output
     void WriteOutput()
     {
         var writer = new StreamWriter(outputPath, true);
@@ -607,6 +588,19 @@ public class QuestionManager : MonoBehaviour
     }
     #endregion
 
+    #region Other Functions
+    public int CorrectAnsIndex()
+    {
+        if (optionText1.text == correctAns)
+            return 0;
+        else if (optionText2.text == correctAns)
+            return 1;
+        else if (optionText3.text == correctAns)
+            return 2;
+        else
+            return 3;
+    }
+
     void Shuffle(List<string> list)
     {
         for (int i = 0; i < list.Count; i++)
@@ -617,7 +611,9 @@ public class QuestionManager : MonoBehaviour
             list[random] = temp;
         }
     }
+    #endregion
 
+    #region Internet Check
     bool CheckInternetPing()
     {
         string checkInternetURL = "https://edplus.net/checkServerAlive";
@@ -654,4 +650,5 @@ public class QuestionManager : MonoBehaviour
             internet = false;
         }
     }
+    #endregion
 }

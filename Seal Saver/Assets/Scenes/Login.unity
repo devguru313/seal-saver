@@ -1771,7 +1771,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 15c75a27c14914e44acd0c791fc40e07, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 51bfc220a09a4f0408303717371b1c15, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2796,7 +2796,6 @@ GameObject:
   - component: {fileID: 736543213}
   - component: {fileID: 736543212}
   - component: {fileID: 736543211}
-  - component: {fileID: 736543209}
   m_Layer: 5
   m_Name: LoginPro
   m_TagString: Untagged
@@ -2804,18 +2803,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &736543209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114000012136118688, guid: dba0dbf44d02c0143af4279315b5348c,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 736543208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7aa545d3bebf9b44a86fe30ade141a7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &736543211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5790,6 +5777,7 @@ GameObject:
   - component: {fileID: 1590752151}
   - component: {fileID: 1590752145}
   - component: {fileID: 1590752146}
+  - component: {fileID: 1590752148}
   m_Layer: 5
   m_Name: MenuCanvas
   m_TagString: Untagged
@@ -5903,6 +5891,17 @@ MonoBehaviour:
   signUpError: {fileID: 1547045675}
   forgotText: {fileID: 1926597048}
   forgotPasswordMenu: {fileID: 832265461}
+--- !u!114 &1590752148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1590752141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e737e8050962827498ece3da64bf9ac7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1590752149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5927,6 +5926,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   internetMenu: {fileID: 519365178}
+  loadingScreen: {fileID: 1148774985}
   answerText: 
 --- !u!114 &1590752153
 MonoBehaviour:
@@ -5973,6 +5973,7 @@ MonoBehaviour:
   loadingScreen: {fileID: 1148774985}
   firstLoginMenu: {fileID: 1464258484}
   termsAndConditions: {fileID: 218047358}
+  advertID: 
 --- !u!1 &1604651774
 GameObject:
   m_ObjectHideFlags: 0

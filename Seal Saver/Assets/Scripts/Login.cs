@@ -42,7 +42,6 @@ public class Login : MonoBehaviour {
         }
 
         #region Advertising Check
-
         bool adIDCheck;
         adIDCheck = Application.RequestAdvertisingIdentifierAsync(
         (string advertisingId, bool trackingEnabled, string error) =>
@@ -52,11 +51,9 @@ public class Login : MonoBehaviour {
         {
             GetAdvertisingID("Error");
         }
-
         #endregion
 
         #region Auto-Login
-
         if (PlayerPrefs.HasKey("Username") && PlayerPrefs.HasKey("Password"))
         {
             loadingScreen.SetActive(true);
@@ -64,7 +61,6 @@ public class Login : MonoBehaviour {
             Password.text = PlayerPrefs.GetString("Password");
             Launch();
         }
-
         #endregion
     }
 
@@ -76,7 +72,6 @@ public class Login : MonoBehaviour {
     private void Update()
     {
         #region Auto-Login after Register
-
         if (Register.registered == true && loggedIn == false)
         {
             //Deactivate flag first
@@ -90,12 +85,10 @@ public class Login : MonoBehaviour {
                 Launch();
             }
         }
-
         #endregion
     }
 
     #region Main Login and GetUID
-
     public void Launch()
     {
         loadingScreen.SetActive(true);
@@ -219,11 +212,9 @@ public class Login : MonoBehaviour {
             SceneManager.LoadScene("Hub");
         }
     }
-
     #endregion
 
     #region Login API for Amazon Devices
-
     IEnumerator SendDetails()
     {
         //Debug.Log("SEND DETAILS");
@@ -277,11 +268,9 @@ public class Login : MonoBehaviour {
             StartCoroutine(GetUID("Email"));
         }
     }
-
     #endregion
 
-    #region FACEBOOK
-
+    #region Facebook Login
     public void FacebookLogin()
     {
         loadingScreen.SetActive(true);
@@ -345,11 +334,9 @@ public class Login : MonoBehaviour {
             return;
         }
     }
-
     #endregion
 
     #region Other Functions
-
     public void LoadPlayerPrefs()
     {
         // Prefill fields with saved datas
@@ -377,6 +364,5 @@ public class Login : MonoBehaviour {
     {
         advertID = adID;
     }
-
     #endregion
 }

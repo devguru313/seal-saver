@@ -134,4 +134,9 @@ public class PlayerManager : MonoBehaviour {
     {
         newNameMenu.SetActive(true);
     }
+
+    public void ShowLoading()
+    {
+        loadingScreen.SetActive(true);
+    }
 }

@@ -13,6 +13,7 @@ public class SyncTables : MonoBehaviour {
     private TextAsset tempTable;
     private string tempText;
     public GameObject internetMenu;
+    public GameObject loadingScreen;
     public static bool syncUploadNow = false;
     public static bool syncOutputNow = false;
     public static bool checkTables = false;
@@ -45,7 +46,7 @@ public class SyncTables : MonoBehaviour {
 
     private void Start()
     {
-        gameName = "Seal Saver";
+        gameName = GameSpecificChanges.gameName;
         internetMenu.SetActive(false);
         if (/*SceneManager.GetActiveScene().name == "menu" || */SceneManager.GetActiveScene().name == "Login")
         {
@@ -67,7 +68,7 @@ public class SyncTables : MonoBehaviour {
                 PlayerPrefs.DeleteAll();
             }
         }
-        if (SceneManager.GetActiveScene().name == "map" && isLoggingIn)
+        if (SceneManager.GetActiveScene().buildIndex == 3 && isLoggingIn)
         {
             isLoggingIn = false;
             checkTables = true;
@@ -91,7 +92,6 @@ public class SyncTables : MonoBehaviour {
         //Debug.Log("CURRENT USER INDEX: " + userID);
 
         #region Flags
-
         if (syncUploadNow)
         {
             syncUploadNow = false;
@@ -134,7 +134,6 @@ public class SyncTables : MonoBehaviour {
             setLevels = false;
             SetPlayerLevel(PlayerDataManager.levelCount);
         }
-
         #endregion
     }
 
@@ -181,6 +180,171 @@ public class SyncTables : MonoBehaviour {
         writer.Close();
     }
     #endregion
+
+    #region Output
+    void ReadOutput()
+    {
+        answerText = "";
+        var reader = new StreamReader(outputTablePath);
+        while (!reader.EndOfStream)
+        {
+            var line = reader.ReadLine();
+            var values = line.Split(',');
+            outputUserID = values[0];
+            outputQID = values[1];
+            outputQuestion = values[2];
+            outputResult = values[3];
+            outputOptionSelected = values[4];
+            outputTimeAsked = values[5];
+            outputTimeTaken = values[6];
+            outputQuestionSet = values[7];
+            answerText = answerText + values[1] + "," + values[7] + "," + values[5] + "," + values[6] + "," + values[3] + "," + values[4] + "&";
+            //outputUQID = values[8];
+        }
+        reader.Close();
+    }
+
+    void WriteOutputSQL()
+    {
+        string insertOutputURL = "https://edplus.net/insertOutput";
+        var request = new UnityWebRequest(insertOutputURL, "POST");
+        InsertOutputJSON insertOutputJSON = new InsertOutputJSON()
+        {
+            UserID = userID,
+            Level = knowledgeLevel,
+            App = gameName,
+            DeviceModel = SystemInfo.deviceModel,
+            DeviceOS = SystemInfo.operatingSystem,
+            Company = Application.companyName,
+            UpdateCT = 1,
+            Answers = answerText
+            /*,
+            UQID = outputUQID*/
+        };
+        string json = JsonUtility.ToJson(insertOutputJSON);
+        internet = CheckInternetPing(false);
+        if (internet)
+        {
+            StartCoroutine(WaitForUnityWebRequest(request, json));
+        }
+    }
+
+    IEnumerator WaitForUnityWebRequest(UnityWebRequest request, string json)
+    {
+        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+        while (!request.isDone)
+        {
+            yield return null;
+        }
+        internet = CheckInternetPing(true);
+        //Debug.Log("Response: " + request.downloadHandler.text);
+    }
+    #endregion
+
+    #region Knowledge Level
+    void ReadLevelSQL()
+    {
+        string getPlayerLevelURL = "https://edplus.net/getPlayerLevel";
+        var varGetPlayerLevelRequest = new UnityWebRequest(getPlayerLevelURL, "POST");
+        GetPlayerLevelJSON getPlayerLevelJSON = new GetPlayerLevelJSON()
+        {
+            UserID = Login.userID,
+            PlayerID = currentPlayerIndex
+        };
+        string jsonGetPlayerLevel = JsonUtility.ToJson(getPlayerLevelJSON);
+        internet = CheckInternetPing(false);
+        if (internet)
+        {
+            StartCoroutine(WaitForUnityWebRequestLevel(varGetPlayerLevelRequest, jsonGetPlayerLevel));
+        }
+    }
+
+    IEnumerator WaitForUnityWebRequestLevel(UnityWebRequest request, string json)
+    {
+        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+        while (!request.isDone)
+        {
+            yield return null;
+        }
+        //Debug.Log("Response: " + request.downloadHandler.text);
+        GetPlayerLevelJSONResponse getPlayerLevelJSONResponse = JsonUtility.FromJson<GetPlayerLevelJSONResponse>(request.downloadHandler.text);
+        if (getPlayerLevelJSONResponse.status != "success")
+        {
+            Debug.Log(getPlayerLevelJSONResponse.data);
+        }
+        else
+        {
+            knowledgeLevel = getPlayerLevelJSONResponse.data;
+            ShowKnowledgeLevel.level = knowledgeLevel;
+            //Debug.Log("KNOWLEDGE: " + knowledgeLevel);
+        }
+    }
+    #endregion
+
+    #region Stars, Level and Coins
+    void ReadStarsSQL()
+    {
+        string getPlayerStarsURL = "https://edplus.net/getPlayerStars";
+        var varGetPlayerStarsRequest = new UnityWebRequest(getPlayerStarsURL, "POST");
+        GetPlayerStarsJSON getPlayerStarsJSON = new GetPlayerStarsJSON()
+        {
+            UserID = Login.userID,
+            Game = gameName
+        };
+        string jsonGetPlayerStars = JsonUtility.ToJson(getPlayerStarsJSON);
+        internet = CheckInternetPing(false);
+        if (internet)
+        {
+            StartCoroutine(WaitForUnityWebRequestPlayerStars(varGetPlayerStarsRequest, jsonGetPlayerStars));
+        }
+    }
+
+    IEnumerator WaitForUnityWebRequestPlayerStars(UnityWebRequest request, string json)
+    {
+        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+        while (!request.isDone)
+        {
+            yield return null;
+        }
+        //Debug.Log("Response: " + request.downloadHandler.text);
+        GetPlayerStarsJSONResponse getPlayerStarsJSONResponse = JsonUtility.FromJson<GetPlayerStarsJSONResponse>(request.downloadHandler.text);
+        if (getPlayerStarsJSONResponse.status != "success")
+        {
+            Debug.Log(getPlayerStarsJSONResponse.data);
+        }
+        else
+        {
+            playerData.Clear();
+            playerCoins.Clear();
+            string text;
+            text = getPlayerStarsJSONResponse.data;
+            var rows = text.Split('&');
+            //rows.Length - 1 to account for blank row
+            for(int i = 0; i < rows.Length - 1; i++)
+            {
+                //Split to separate coins
+                var col = rows[i].Split('@');
+                playerData.Add(col[0]);
+                playerCoins.Add(rows[i]);
+                //Debug.Log(rows[i]);
+            }
+        }
+    }
 
     public void SetStars(int stars, int level)
     {
@@ -271,70 +435,6 @@ public class SyncTables : MonoBehaviour {
         }
     }
 
-    void ReadOutput()
-    {
-        answerText = "";
-        var reader = new StreamReader(outputTablePath);
-        while (!reader.EndOfStream)
-        {
-            var line = reader.ReadLine();
-            var values = line.Split(',');
-            outputUserID = values[0];
-            outputQID = values[1];
-            outputQuestion = values[2];
-            outputResult = values[3];
-            outputOptionSelected = values[4];
-            outputTimeAsked = values[5];
-            outputTimeTaken = values[6];
-            outputQuestionSet = values[7];
-            answerText = answerText + values[1] + "," + values[7] + "," + values[5] + "," + values[6] + "," + values[3] + "," + values[4] + "&";
-            //outputUQID = values[8];
-        }
-        reader.Close();
-    }
-
-    void WriteOutputSQL()
-    {
-        string insertOutputURL = "https://edplus.net/insertOutput";
-        var request = new UnityWebRequest(insertOutputURL, "POST");
-        InsertOutputJSON insertOutputJSON = new InsertOutputJSON()
-        {
-            UserID = userID,
-            Level = knowledgeLevel,
-            App = gameName,
-            DeviceModel = SystemInfo.deviceModel,
-            DeviceOS = SystemInfo.operatingSystem,
-            Company = Application.companyName,
-            UpdateCT = 1,
-            Answers = answerText
-            /*,
-            UQID = outputUQID*/
-        };
-        string json = JsonUtility.ToJson(insertOutputJSON);
-        internet = CheckInternetPing(false);
-        //Debug.Log("Insert Output");
-        if (internet)
-        {
-            StartCoroutine(WaitForUnityWebRequest(request, json));
-        }
-    }
-
-    IEnumerator WaitForUnityWebRequest(UnityWebRequest request, string json)
-    {
-        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-
-        yield return request.SendWebRequest();
-        while (!request.isDone)
-        {
-            yield return null;
-        }
-        internet = CheckInternetPing(true);
-        //Debug.Log("Response: " + request.downloadHandler.text);
-    }
-
     void WriteCoinsSQL()
     {
         string setCoinsURL = "https://edplus.net/setCoins";
@@ -343,7 +443,7 @@ public class SyncTables : MonoBehaviour {
         {
             UserID = Login.userID,
             PlayerID = currentPlayerIndex,
-            Coins = InitScriptName.InitScript.Gems.ToString(),
+            Coins = GameSpecificChanges.coins,
             Game = gameName
         };
         string jsonSetCoins = JsonUtility.ToJson(setCoinsJSON);
@@ -353,103 +453,7 @@ public class SyncTables : MonoBehaviour {
             StartCoroutine(WaitForUnityWebRequest(varSetCoinsRequest, jsonSetCoins));
         }
     }
-
-    void ReadLevelSQL()
-    {
-        string getPlayerLevelURL = "https://edplus.net/getPlayerLevel";
-        var varGetPlayerLevelRequest = new UnityWebRequest(getPlayerLevelURL, "POST");
-        GetPlayerLevelJSON getPlayerLevelJSON = new GetPlayerLevelJSON()
-        {
-            UserID = Login.userID,
-            PlayerID = currentPlayerIndex
-        };
-        string jsonGetPlayerLevel = JsonUtility.ToJson(getPlayerLevelJSON);
-        internet = CheckInternetPing(false);
-        if (internet)
-        {
-            StartCoroutine(WaitForUnityWebRequestLevel(varGetPlayerLevelRequest, jsonGetPlayerLevel));
-        }
-    }
-
-    IEnumerator WaitForUnityWebRequestLevel(UnityWebRequest request, string json)
-    {
-        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-
-        yield return request.SendWebRequest();
-        while (!request.isDone)
-        {
-            yield return null;
-        }
-        //Debug.Log("Response: " + request.downloadHandler.text);
-        GetPlayerLevelJSONResponse getPlayerLevelJSONResponse = JsonUtility.FromJson<GetPlayerLevelJSONResponse>(request.downloadHandler.text);
-        if (getPlayerLevelJSONResponse.status != "success")
-        {
-            Debug.Log(getPlayerLevelJSONResponse.data);
-        }
-        else
-        {
-            knowledgeLevel = getPlayerLevelJSONResponse.data;
-            ShowKnowledgeLevel.level = knowledgeLevel;
-            //Debug.Log("KNOWLEDGE: " + knowledgeLevel);
-        }
-    }
-
-    void ReadStarsSQL()
-    {
-        string getPlayerStarsURL = "https://edplus.net/getPlayerStars";
-        var varGetPlayerStarsRequest = new UnityWebRequest(getPlayerStarsURL, "POST");
-        GetPlayerStarsJSON getPlayerStarsJSON = new GetPlayerStarsJSON()
-        {
-            UserID = Login.userID,
-            Game = gameName
-        };
-        string jsonGetPlayerStars = JsonUtility.ToJson(getPlayerStarsJSON);
-        internet = CheckInternetPing(false);
-        if (internet)
-        {
-            StartCoroutine(WaitForUnityWebRequestPlayerStars(varGetPlayerStarsRequest, jsonGetPlayerStars));
-        }
-    }
-
-    IEnumerator WaitForUnityWebRequestPlayerStars(UnityWebRequest request, string json)
-    {
-        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-
-        yield return request.SendWebRequest();
-        while (!request.isDone)
-        {
-            yield return null;
-        }
-        //Debug.Log("Response: " + request.downloadHandler.text);
-        GetPlayerStarsJSONResponse getPlayerStarsJSONResponse = JsonUtility.FromJson<GetPlayerStarsJSONResponse>(request.downloadHandler.text);
-        if (getPlayerStarsJSONResponse.status != "success")
-        {
-            Debug.Log(getPlayerStarsJSONResponse.data);
-        }
-        else
-        {
-            playerData.Clear();
-            playerCoins.Clear();
-            string text;
-            text = getPlayerStarsJSONResponse.data;
-            var rows = text.Split('&');
-            //rows.Length - 1 to account for blank row
-            for(int i = 0; i < rows.Length - 1; i++)
-            {
-                //Split to separate coins
-                var col = rows[i].Split('@');
-                playerData.Add(col[0]);
-                playerCoins.Add(rows[i]);
-                //Debug.Log(rows[i]);
-            }
-        }
-    }
+    #endregion
 
     #region Internet
     public void CheckInternet()
@@ -542,4 +546,10 @@ public class SyncTables : MonoBehaviour {
     }
     #endregion
 
+    #region Other Functions
+    public void ShowLoading()
+    {
+        loadingScreen.SetActive(true);
+    }
+    #endregion
 }

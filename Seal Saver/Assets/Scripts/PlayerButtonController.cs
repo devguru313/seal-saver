@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -20,7 +18,6 @@ public class PlayerButtonController : MonoBehaviour
     {
         //Debug.Log(playerIndex);
         SyncTables.currentPlayerIndex = playerIndex;
-        //Debug.Log(SyncTables.playerCoins[playerIndex - 1]);
         var cols = SyncTables.playerCoins[playerIndex - 1].Split('@');
         int gems;
         int.TryParse(cols[1], out gems);
@@ -29,6 +26,6 @@ public class PlayerButtonController : MonoBehaviour
         PlayerPrefs.Save();
         SyncTables.isLoggingIn = true;
         //SyncTables.syncDownloadNow = true;
-        SceneManager.LoadScene("map");
+        SceneManager.LoadScene(3);
     }
 }
