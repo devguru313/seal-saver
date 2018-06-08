@@ -23,8 +23,6 @@ public class MenuManager : MonoBehaviour
 	public GameObject MenuTutorial;
 	public GameObject Loading;
     public GameObject MenuQuestionS;            //Reference to Question UI
-    public GameObject MenuFeedback;
-    public GameObject MenuOtherGames;
 
 	public GameObject CongratulationsMenu;
 
@@ -118,15 +116,5 @@ public class MenuManager : MonoBehaviour
     public void ShowQuestion()                  //Sets Question UI Active
     {
         MenuQuestionS.SetActive(true);
-    }
-
-    public void ShowFeedbackForm()
-    {
-        MenuFeedback.SetActive(true);           //Shows feedback form
-    }
-
-    public void ShowOtherGames()
-    {
-        MenuOtherGames.SetActive(true);         //Shows list of other games by Edtopia
     }
 }

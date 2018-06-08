@@ -2,17 +2,17 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class ShowUserInSettings : MonoBehaviour {
+public class SettingsMenu : MonoBehaviour {
 
-    public Text welcomeText;
-    private string tempText;
+    public Text userText;
+    public GameObject MenuFeedback;
+    public GameObject MenuOtherGames;
 
     private void Update()
     {
         if (Login.loggedIn)
         {
-            tempText = "Welcome " + PlayerPrefs.GetString("CurrentPlayerName");
-            welcomeText.text = tempText;
+            userText.text = "You are logged in as: " +  PlayerPrefs.GetString("CurrentPlayerName");
         }
     }
 
@@ -39,5 +39,15 @@ public class ShowUserInSettings : MonoBehaviour {
             PlayerPrefs.DeleteAll();
         }
         SceneManager.LoadScene("Hub");
+    }
+
+    public void ShowFeedbackForm()
+    {
+        MenuFeedback.SetActive(true);
+    }
+
+    public void ShowOtherGames()
+    {
+        MenuOtherGames.SetActive(true);
     }
 }
