@@ -1688,22 +1688,28 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11460640, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
+      propertyPath: Loading
+      value: 
+      objectReference: {fileID: 517789878}
+    - target: {fileID: 22328746, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 382868945}
     - target: {fileID: 114243706929207554, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 382868951}
-    - target: {fileID: 22328746, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 382868945}
-    - target: {fileID: 11460640, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
-      propertyPath: Loading
-      value: 
-      objectReference: {fileID: 517789878}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &71912659 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114761190876603428, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
+    type: 2}
+  m_PrefabInternal: {fileID: 71912658}
+  m_Script: {fileID: 11500000, guid: 82817519a05fe424dab06d7469b56e58, type: 3}
 --- !u!1001 &72955624
 Prefab:
   m_ObjectHideFlags: 0
@@ -11827,12 +11833,6 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 936557898}
   m_Script: {fileID: 11500000, guid: 3b6a9bbe0be36eb4bb8283ff30b0961f, type: 3}
---- !u!114 &944680639 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 11460640, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
-    type: 2}
-  m_PrefabInternal: {fileID: 71912658}
-  m_Script: {fileID: 11500000, guid: 65cd93c0bb25a43ab99eecb8d2cfd03e, type: 3}
 --- !u!1001 &946271188
 Prefab:
   m_ObjectHideFlags: 0
@@ -15918,7 +15918,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 944680639}
+      - m_Target: {fileID: 71912659}
         m_MethodName: ShowFeedbackForm
         m_Mode: 1
         m_Arguments:

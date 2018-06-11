@@ -641,12 +641,20 @@ public class QuestionManager : MonoBehaviour
         }
         //Debug.Log("CHECK INTERNET Response: " + request.downloadHandler.text);
         ServerJSONResponse serverJSONResponse = JsonUtility.FromJson<ServerJSONResponse>(request.downloadHandler.text);
-        if (serverJSONResponse.status == "success")
+        if (request.downloadHandler.text != "")
         {
-            internet = true;
+            if (serverJSONResponse.status == "success")
+            {
+                internet = true;
+            }
+            else
+            {
+                internet = false;
+            }
         }
         else
         {
+            Debug.Log("Offline");
             internet = false;
         }
     }

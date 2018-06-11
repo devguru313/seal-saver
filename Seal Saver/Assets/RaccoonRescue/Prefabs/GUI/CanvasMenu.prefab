@@ -285,6 +285,7 @@ GameObject:
   - component: {fileID: 11480254}
   - component: {fileID: 11420672}
   - component: {fileID: 11460640}
+  - component: {fileID: 114761190876603428}
   m_Layer: 0
   m_Name: CanvasMenu
   m_TagString: Untagged
@@ -11006,7 +11007,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114969614823726564}
+      - m_Target: {fileID: 114761190876603428}
         m_MethodName: ShowFeedbackForm
         m_Mode: 1
         m_Arguments:
@@ -11930,7 +11931,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114969614823726564}
+      - m_Target: {fileID: 114761190876603428}
         m_MethodName: ShowOtherGames
         m_Mode: 1
         m_Arguments:
@@ -14692,7 +14693,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114761190876603428}
         m_MethodName: GoToHub
         m_Mode: 1
         m_Arguments:
@@ -17726,6 +17727,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114761190876603428
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 120670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82817519a05fe424dab06d7469b56e58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  userText: {fileID: 114892810408214970}
+  MenuFeedback: {fileID: 1068014053488932}
+  MenuOtherGames: {fileID: 1539327420302662}
 --- !u!114 &114766912513728316
 MonoBehaviour:
   m_ObjectHideFlags: 1
