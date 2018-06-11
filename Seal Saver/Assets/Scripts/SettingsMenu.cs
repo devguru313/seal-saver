@@ -12,7 +12,7 @@ public class SettingsMenu : MonoBehaviour {
     {
         if (Login.loggedIn)
         {
-            userText.text = "You are logged in as: " +  PlayerPrefs.GetString("CurrentPlayerName");
+            userText.text = "Hello " +  PlayerPrefs.GetString("CurrentPlayerName");
         }
     }
 
