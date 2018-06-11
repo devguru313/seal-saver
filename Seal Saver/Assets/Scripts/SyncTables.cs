@@ -485,7 +485,7 @@ public class SyncTables : MonoBehaviour {
         string checkInternetURL = "https://edplus.net/checkServerAlive";
         var varCheckInternetRequest = new UnityWebRequest(checkInternetURL, "POST");
         StartCoroutine(WaitForServer(varCheckInternetRequest));
-        System.Threading.Thread.Sleep(100);
+        System.Threading.Thread.Sleep(50);
         if (!internet)
         {
             Debug.Log("Not Connected to Internet");

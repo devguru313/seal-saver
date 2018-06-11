@@ -15,6 +15,7 @@ public class PlayerManager : MonoBehaviour {
     public Text currentUserText;
     public GameObject loadingScreen;
     public Text errorTextCreateUser;
+    public Dropdown yearDropdown;
 
     private void Start()
     {
@@ -82,7 +83,7 @@ public class PlayerManager : MonoBehaviour {
 
     public void CreateUser()
     {
-        if(nameField.text == "" || yearField.text == "")
+        if(nameField.text == "")
         {
             errorTextCreateUser.text = "Please complete all fields before continuing";
             return;
@@ -96,7 +97,7 @@ public class PlayerManager : MonoBehaviour {
         playerList += nameField.text + " ";
         SyncTables.playerCoins.Add(numPlayers + "@20");
         //Debug.Log(playerList + numPlayers);
-        WritePlayerDataSQL(nameField.text, yearField.text);
+        WritePlayerDataSQL(nameField.text, yearDropdown.captionText.text);
     }
 
     public void WritePlayerDataSQL(string playerName, string year)
@@ -111,7 +112,7 @@ public class PlayerManager : MonoBehaviour {
             BirthYear = year
         };
         string jsonChangePlayerData = JsonUtility.ToJson(changePlayerDataJSON);
-        Debug.Log(jsonChangePlayerData);
+        //Debug.Log(jsonChangePlayerData);
         StartCoroutine(WaitForUnityWebRequest(varChangePlayerDataRequest, jsonChangePlayerData));
     }
 
@@ -126,7 +127,7 @@ public class PlayerManager : MonoBehaviour {
         {
             yield return null;
         }
-        Debug.Log("Response: " + request.downloadHandler.text);
+        //Debug.Log("Response: " + request.downloadHandler.text);
         GetPlayerDataJSONResponse getPlayerDataJSONResponse = JsonUtility.FromJson<GetPlayerDataJSONResponse>(request.downloadHandler.text);
     }
 
