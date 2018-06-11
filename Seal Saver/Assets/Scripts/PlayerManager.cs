@@ -10,7 +10,6 @@ public class PlayerManager : MonoBehaviour {
     public int numPlayers;
     public int playerIndex;
     public InputField nameField;
-    public InputField yearField;
     public string playerList;
     public Text currentUserText;
     public GameObject loadingScreen;
