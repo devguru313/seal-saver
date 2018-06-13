@@ -96,7 +96,7 @@ public class PlayerManager : MonoBehaviour {
         playerList += nameField.text + " ";
         SyncTables.playerCoins.Add(numPlayers + "@20");
         //Debug.Log(playerList + numPlayers);
-        WritePlayerDataSQL(nameField.text, yearDropdown.captionText.text);
+        WritePlayerDataSQL(nameField.text, SetTextFromIndex.year);
     }
 
     public void WritePlayerDataSQL(string playerName, string year)
