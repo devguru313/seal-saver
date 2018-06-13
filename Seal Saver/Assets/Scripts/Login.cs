@@ -255,6 +255,7 @@ public class Login : MonoBehaviour {
                 errorTextSignIn.text = "PLease try again";
                 yield return null;
             }
+            loadingScreen.SetActive(false);
         }
         else
         {

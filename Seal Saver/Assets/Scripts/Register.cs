@@ -242,11 +242,13 @@ public class Register : MonoBehaviour {
             {
                 errorTextSignUp.text = "Email already exists";
                 registered = false;
+                loadingScreen.SetActive(false);
                 yield return null;
             }
             else
             {
                 errorTextSignUp.text = "Please try again";
+                loadingScreen.SetActive(false);
                 yield return null;
             }
         }
