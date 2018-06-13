@@ -540,7 +540,7 @@ public class SyncTables : MonoBehaviour {
 
     public void OpenURL(string url)
     {
-        Application.OpenURL(url);
+        Application.OpenURL("http://edplus.io/privacy/");
     }
     #endregion
 
