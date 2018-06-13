@@ -537,6 +537,11 @@ public class SyncTables : MonoBehaviour {
     {
         CheckInternet();
     }
+
+    public void OpenURL(string url)
+    {
+        Application.OpenURL(url);
+    }
     #endregion
 
     #region Get Path Functions

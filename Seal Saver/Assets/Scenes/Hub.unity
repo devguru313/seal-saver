@@ -3447,8 +3447,8 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: Picker.MassivePickerScrollRect+ItemSelectEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  initialPosition: 0
-  initialPositionItemIndex: 0
+  initialPosition: 3
+  initialPositionItemIndex: 3
 --- !u!1 &1328405949
 GameObject:
   m_ObjectHideFlags: 0
@@ -3829,7 +3829,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.75}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5529412}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
