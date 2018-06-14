@@ -443,6 +443,7 @@ public class QuestionManager : MonoBehaviour
         internet = CheckInternetPing();
         if (internet)
         {
+            Debug.Log("ReadInputSQL with Internet");
             inputQID.Clear();
             inputQuestion.Clear();
             inputCorrectAns.Clear();
@@ -460,16 +461,23 @@ public class QuestionManager : MonoBehaviour
                 previousFailures = 0
             };
             string json = JsonUtility.ToJson(readInputJSON);
-            //Debug.Log(json);
+            Debug.Log(json);
             StartCoroutine(WaitForUnityWebRequestReadInput(request, json));
+        }
+        else
+        {
+            Debug.Log("ReadInputSQL without Internet");
+            System.Threading.Thread.Sleep(1800);
+            questionUI.SetActive(false);
+            SetQuestion();
         }
     }
 
     IEnumerator WaitForUnityWebRequestReadInput(UnityWebRequest request, string json)
     {
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
         yield return request.SendWebRequest();
@@ -477,11 +485,14 @@ public class QuestionManager : MonoBehaviour
         {
             yield return null;
         }
-        //Debug.Log("Response: " + request.downloadHandler.text);
+        Debug.Log("Response: " + request.downloadHandler.text);
         ReadInputJSONResponse readInputJSONResponse = JsonUtility.FromJson<ReadInputJSONResponse>(request.downloadHandler.text);
-        if (readInputJSONResponse.status != "success")
+        if (request.downloadHandler.text == "")
         {
-            Debug.Log(readInputJSONResponse.data);
+            System.Threading.Thread.Sleep(1800);
+            questionUI.SetActive(false);
+            SetQuestion();
+            yield return null;
         }
         else
         {
@@ -501,8 +512,8 @@ public class QuestionManager : MonoBehaviour
                 inputQuestionSet.Add(values[6]);
                 //centralUQID.Add(values[7]);              //SEND AS STRING INSTEAD OF INT
             }
+            WriteInput(inputPath);
         }
-        WriteInput(inputPath);
     }
 
     void WriteInput(string path)
@@ -514,19 +525,14 @@ public class QuestionManager : MonoBehaviour
         }
         writer.Flush();
         writer.Close();
-        //If time taken to get next question is greater than 1.5s, then skip sleep time
-        if(timer < 1.5f)
+        //If time taken to get next question is greater than 1.8s, then skip sleep time
+        if(timer < 1.8f)
         {
             Debug.Log(timer);
-            System.Threading.Thread.Sleep(1500 - (int)(timer * 1000));
+            System.Threading.Thread.Sleep(1800 - (int)(timer * 1000));
         }
         questionUI.SetActive(false);
         SetQuestion();
-        /*if (isStart)
-        {
-            //isStart = false;
-            SetQuestion();
-        }*/
     }
 
     public void SetQuestion()

@@ -227,6 +227,10 @@ public class SyncTables : MonoBehaviour {
         {
             StartCoroutine(WaitForUnityWebRequest(request, json));
         }
+        else
+        {
+            QuestionManager.changeQuestion = true;
+        }
     }
 
     IEnumerator WaitForUnityWebRequest(UnityWebRequest request, string json)
