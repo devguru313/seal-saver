@@ -243,6 +243,7 @@ public class SyncTables : MonoBehaviour {
         }
         internet = CheckInternetPing(true);
         //Debug.Log("Response: " + request.downloadHandler.text);
+        QuestionManager.changeQuestion = true;
     }
     #endregion
 
@@ -505,8 +506,8 @@ public class SyncTables : MonoBehaviour {
     IEnumerator WaitForServer(UnityWebRequest request)
     {
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes("{}");
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         yield return request.SendWebRequest();
         while (!request.isDone)
@@ -540,12 +541,13 @@ public class SyncTables : MonoBehaviour {
 
     public void OpenTermsAndConditionsURL()
     {
-        Application.OpenURL("http://edplus.io/privacy/");
+        string temp = "privacy/";
+        Application.OpenURL("https://edplus.io/" + temp);
     }
 
     public void OpenParentsDashboardURL()
     {
-        Application.OpenURL("http://edbit.app/");
+        Application.OpenURL("https://edbit.app/");
     }
     #endregion
 

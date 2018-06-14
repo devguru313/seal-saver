@@ -71,6 +71,7 @@ public class QuestionManager : MonoBehaviour
     private int inputQuestionNo;
     private string downloadedInputText;
     private bool internet = true;
+    private bool isWrong;
     private List<string> inputQID = new List<string>();
     private List<string> inputQuestion = new List<string>();
     private List<string> inputCorrectAns = new List<string>();
@@ -155,12 +156,12 @@ public class QuestionManager : MonoBehaviour
                 questionCount = 0;
                 GameSpecificChanges.setCoins = true;
                 questionUI.SetActive(false);
-                Invoke("ResetOnCorrect", 2.5f);
+                //Invoke("ResetOnCorrect", 2.5f);
             }
             else
             {
                 audioSource.PlayOneShot(audioCorrect);
-                Invoke("ResetOnCorrect", 1);
+                //Invoke("ResetOnCorrect", 1);
             }
         }
         else
@@ -187,8 +188,9 @@ public class QuestionManager : MonoBehaviour
                     button3.gameObject.SetActive(false);
                     break;
             }
+            isWrong = true;
             WriteOutput();
-            Invoke("ResetOnWrong", 1.5f);
+            //Invoke("ResetOnWrong", 1.5f);
         }
     }
 
@@ -217,12 +219,12 @@ public class QuestionManager : MonoBehaviour
                 questionCount = 0;
                 GameSpecificChanges.setCoins = true;
                 questionUI.SetActive(false);
-                Invoke("ResetOnCorrect", 2.5f);
+                //Invoke("ResetOnCorrect", 2.5f);
             }
             else
             {
                 audioSource.PlayOneShot(audioCorrect);
-                Invoke("ResetOnCorrect", 1);
+                //Invoke("ResetOnCorrect", 1);
             }
         }
         else
@@ -249,8 +251,9 @@ public class QuestionManager : MonoBehaviour
                     button3.gameObject.SetActive(false);
                     break;
             }
+            isWrong = true;
             WriteOutput();
-            Invoke("ResetOnWrong", 1.5f);
+            //Invoke("ResetOnWrong", 1.5f);
         }
     }
 
@@ -279,12 +282,12 @@ public class QuestionManager : MonoBehaviour
                 questionCount = 0;
                 GameSpecificChanges.setCoins = true;
                 questionUI.SetActive(false);
-                Invoke("ResetOnCorrect", 2.5f);
+                //Invoke("ResetOnCorrect", 2.5f);
             }
             else
             {
                 audioSource.PlayOneShot(audioCorrect);
-                Invoke("ResetOnCorrect", 1);
+                //Invoke("ResetOnCorrect", 1);
             }
         }
         else
@@ -311,8 +314,9 @@ public class QuestionManager : MonoBehaviour
                     button2.gameObject.SetActive(false);
                     break;
             }
+            isWrong = true;
             WriteOutput();
-            Invoke("ResetOnWrong", 1.5f);
+            //Invoke("ResetOnWrong", 1.5f);
         }
     }
 
@@ -341,12 +345,12 @@ public class QuestionManager : MonoBehaviour
                 questionCount = 0;
                 GameSpecificChanges.setCoins = true;
                 questionUI.SetActive(false);
-                Invoke("ResetOnCorrect", 2.5f);
+                //Invoke("ResetOnCorrect", 2.5f);
             }
             else
             {
                 audioSource.PlayOneShot(audioCorrect);
-                Invoke("ResetOnCorrect", 1);
+                //Invoke("ResetOnCorrect", 1);
             }
         }
         else
@@ -373,13 +377,17 @@ public class QuestionManager : MonoBehaviour
                     button2.gameObject.SetActive(false);
                     break;
             }
+            isWrong = true;
             WriteOutput();
-            Invoke("ResetOnWrong", 1.5f);
+            //Invoke("ResetOnWrong", 1.5f);
         }
     }
     #endregion
 
     #region Reset Question Menu Functions
+
+
+
     public void ResetOnCorrect()
     {
         button1.gameObject.SetActive(true);
@@ -388,10 +396,10 @@ public class QuestionManager : MonoBehaviour
         button4.gameObject.SetActive(true);
         coinRewardUI.SetActive(false);
         GameSpecificChanges.getCoins = true;
-        questionUI.SetActive(false);
-        SyncTables.syncOutputNow = true;
-        changeQuestion = true;
-        SetQuestion();
+        //questionUI.SetActive(false);
+        //SyncTables.syncOutputNow = true;
+        //changeQuestion = true;
+        //SetQuestion();
         optionImage1.sprite = defaultButton;
         optionImage2.sprite = defaultButton;
         optionImage3.sprite = defaultButton;
@@ -410,10 +418,10 @@ public class QuestionManager : MonoBehaviour
         button3.gameObject.SetActive(true);
         button4.gameObject.SetActive(true);
         GameSpecificChanges.getCoins = true;
-        questionUI.SetActive(false);
-        SyncTables.syncOutputNow = true;
-        changeQuestion = true;
-        SetQuestion();
+        //questionUI.SetActive(false);
+        //SyncTables.syncOutputNow = true;
+        //changeQuestion = true;
+        //SetQuestion();
         questionUI.SetActive(true);
         askTime = DateTime.Now;
         optionImage1.sprite = defaultButton;
@@ -504,11 +512,14 @@ public class QuestionManager : MonoBehaviour
         }
         writer.Flush();
         writer.Close();
-        if (isStart)
+        System.Threading.Thread.Sleep(500);
+        questionUI.SetActive(false);
+        SetQuestion();
+        /*if (isStart)
         {
-            isStart = false;
+            //isStart = false;
             SetQuestion();
-        }
+        }*/
     }
 
     public void SetQuestion()
@@ -519,6 +530,19 @@ public class QuestionManager : MonoBehaviour
         optionText2.text = option2;
         optionText3.text = option3;
         optionText4.text = option4;
+        if (isStart)
+        {
+            isStart = false;
+        }
+        else if (isWrong)
+        {
+            isWrong = false;
+            ResetOnWrong();
+        }
+        else if(!isWrong)
+        {
+            ResetOnCorrect();
+        }
     }
 
     void ReadInput()
@@ -570,6 +594,7 @@ public class QuestionManager : MonoBehaviour
         writer.WriteLine(userID + "," + questionID + "," + question + "," + result + "," + answerSelected + "," + timeAsked + "," + timeTaken + "," + questionSet/* + "," + uQID*/);
         writer.Flush();
         writer.Close();
+        SyncTables.syncOutputNow = true;
     }
     #endregion
 
