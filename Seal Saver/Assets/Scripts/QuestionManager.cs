@@ -420,10 +420,6 @@ public class QuestionManager : MonoBehaviour
         button3.gameObject.SetActive(true);
         button4.gameObject.SetActive(true);
         GameSpecificChanges.getCoins = true;
-        //questionUI.SetActive(false);
-        //SyncTables.syncOutputNow = true;
-        //changeQuestion = true;
-        //SetQuestion();
         questionUI.SetActive(true);
         askTime = DateTime.Now;
         optionImage1.sprite = defaultButton;
@@ -443,7 +439,6 @@ public class QuestionManager : MonoBehaviour
         internet = CheckInternetPing();
         if (internet)
         {
-            Debug.Log("ReadInputSQL with Internet");
             inputQID.Clear();
             inputQuestion.Clear();
             inputCorrectAns.Clear();
@@ -461,12 +456,11 @@ public class QuestionManager : MonoBehaviour
                 previousFailures = 0
             };
             string json = JsonUtility.ToJson(readInputJSON);
-            Debug.Log(json);
+            //Debug.Log(json);
             StartCoroutine(WaitForUnityWebRequestReadInput(request, json));
         }
         else
         {
-            Debug.Log("ReadInputSQL without Internet");
             System.Threading.Thread.Sleep(1800);
             questionUI.SetActive(false);
             SetQuestion();
@@ -485,7 +479,7 @@ public class QuestionManager : MonoBehaviour
         {
             yield return null;
         }
-        Debug.Log("Response: " + request.downloadHandler.text);
+        //Debug.Log("Response: " + request.downloadHandler.text);
         ReadInputJSONResponse readInputJSONResponse = JsonUtility.FromJson<ReadInputJSONResponse>(request.downloadHandler.text);
         if (request.downloadHandler.text == "")
         {
@@ -560,7 +554,6 @@ public class QuestionManager : MonoBehaviour
 
     void ReadInput()
     {
-        //Debug.Log("ReadInput called");
         //StartCoroutine("CheckInternetPing");
         internet = CheckInternetPing();
         if (internet)
@@ -574,7 +567,19 @@ public class QuestionManager : MonoBehaviour
         var reader = new StreamReader(inputPath);
         for (int i = 0; i <= inputQuestionNo; i++)
         {
+            Debug.Log(i);
             var line = reader.ReadLine();
+            if(i == 0)
+            {
+                Debug.Log("Line = " + line);
+            }
+            if(line == "" || line == null)
+            {
+                Debug.Log("If line is null");
+                inputQuestionNo = -1;
+                reader.Close();
+                ReadInput();
+            }
             var values = line.Split(',');
             questionID = values[0];
             question = values[1];
@@ -661,7 +666,7 @@ public class QuestionManager : MonoBehaviour
         System.Threading.Thread.Sleep(100);
         if (!internet)
         {
-            Debug.Log("Not Connected to Internet");
+            //Debug.Log("Not Connected to Internet");
         }
         //Debug.Log(internet);
         return internet;
@@ -693,7 +698,7 @@ public class QuestionManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Offline");
+            //Debug.Log("Offline");
             internet = false;
         }
     }
