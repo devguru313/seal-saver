@@ -72,6 +72,8 @@ public class QuestionManager : MonoBehaviour
     private string downloadedInputText;
     private bool internet = true;
     private bool isWrong;
+    public float timer;
+
     private List<string> inputQID = new List<string>();
     private List<string> inputQuestion = new List<string>();
     private List<string> inputCorrectAns = new List<string>();
@@ -108,6 +110,7 @@ public class QuestionManager : MonoBehaviour
         outputPath = GetApplicationPath() + userID + "_OutputTable.csv";
         inputQuestionNo = 0;
         changeQuestion = true;
+        timer = 0;
     }
 
     void Update()
@@ -128,6 +131,8 @@ public class QuestionManager : MonoBehaviour
             changeQuestion = false;
             ReadInputSQL();
         }
+
+        timer += Time.deltaTime;
     }
 
     #region On Option Select Functions
@@ -385,9 +390,6 @@ public class QuestionManager : MonoBehaviour
     #endregion
 
     #region Reset Question Menu Functions
-
-
-
     public void ResetOnCorrect()
     {
         button1.gameObject.SetActive(true);
@@ -512,7 +514,12 @@ public class QuestionManager : MonoBehaviour
         }
         writer.Flush();
         writer.Close();
-        System.Threading.Thread.Sleep(500);
+        //If time taken to get next question is greater than 1.5s, then skip sleep time
+        if(timer < 1.5f)
+        {
+            Debug.Log(timer);
+            System.Threading.Thread.Sleep(1500 - (int)(timer * 1000));
+        }
         questionUI.SetActive(false);
         SetQuestion();
         /*if (isStart)
@@ -594,6 +601,7 @@ public class QuestionManager : MonoBehaviour
         writer.WriteLine(userID + "," + questionID + "," + question + "," + result + "," + answerSelected + "," + timeAsked + "," + timeTaken + "," + questionSet/* + "," + uQID*/);
         writer.Flush();
         writer.Close();
+        timer = 0;
         SyncTables.syncOutputNow = true;
     }
     #endregion

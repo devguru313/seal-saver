@@ -541,13 +541,12 @@ public class SyncTables : MonoBehaviour {
 
     public void OpenTermsAndConditionsURL()
     {
-        string temp = "privacy/";
-        Application.OpenURL("https://edplus.io/" + temp);
+        Application.OpenURL("https://edplus.io/privacy/");
     }
 
     public void OpenParentsDashboardURL()
     {
-        Application.OpenURL("https://edbit.app/");
+        Application.OpenURL("https://edbit.app/?email=" + Login.user);
     }
     #endregion
 
