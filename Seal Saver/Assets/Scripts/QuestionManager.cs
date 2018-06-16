@@ -22,7 +22,7 @@ public class QuestionManager : MonoBehaviour
     public DateTime answerTime;                                     //Time when answer button is pressed
     public TimeSpan timeDuration;                                   //Time taken to answer question
     public string userID;
-    
+
     private Image optionImage1;
     private Image optionImage2;
     private Image optionImage3;
@@ -46,7 +46,7 @@ public class QuestionManager : MonoBehaviour
     public string timeAsked;
     public string timeTaken;
     public string uQID;
-    
+
     public static bool changeQuestion = false;
     public bool isStart = true;
 
@@ -71,9 +71,6 @@ public class QuestionManager : MonoBehaviour
     private int inputQuestionNo;
     private string downloadedInputText;
     private bool internet = true;
-    private bool isWrong;
-    public float timer;
-
     private List<string> inputQID = new List<string>();
     private List<string> inputQuestion = new List<string>();
     private List<string> inputCorrectAns = new List<string>();
@@ -83,7 +80,7 @@ public class QuestionManager : MonoBehaviour
     private List<string> inputQuestionSet = new List<string>();
     private List<string> shuffleTemp = new List<string>();
 
-    void Start ()
+    void Start()
     {
         optionImage1 = optionSprite1.GetComponent<Image>();
         optionImage2 = optionSprite2.GetComponent<Image>();
@@ -110,7 +107,6 @@ public class QuestionManager : MonoBehaviour
         outputPath = GetApplicationPath() + userID + "_OutputTable.csv";
         inputQuestionNo = 0;
         changeQuestion = true;
-        timer = 0;
     }
 
     void Update()
@@ -131,8 +127,6 @@ public class QuestionManager : MonoBehaviour
             changeQuestion = false;
             ReadInputSQL();
         }
-
-        timer += Time.deltaTime;
     }
 
     #region On Option Select Functions
@@ -152,7 +146,7 @@ public class QuestionManager : MonoBehaviour
             result = "1";
             answerSelected = option1;
             questionCount += 1;
-            WriteOutput();
+            WriteOutputSQL();
             //Get a coin if answered 3 questions correctly
             if (questionCount >= 3)
             {
@@ -161,12 +155,12 @@ public class QuestionManager : MonoBehaviour
                 questionCount = 0;
                 GameSpecificChanges.setCoins = true;
                 questionUI.SetActive(false);
-                //Invoke("ResetOnCorrect", 2.5f);
+                Invoke("ResetOnCorrect", 2.5f);
             }
             else
             {
                 audioSource.PlayOneShot(audioCorrect);
-                //Invoke("ResetOnCorrect", 1);
+                Invoke("ResetOnCorrect", 1);
             }
         }
         else
@@ -193,9 +187,8 @@ public class QuestionManager : MonoBehaviour
                     button3.gameObject.SetActive(false);
                     break;
             }
-            isWrong = true;
-            WriteOutput();
-            //Invoke("ResetOnWrong", 1.5f);
+            WriteOutputSQL();
+            Invoke("ResetOnWrong", 1.5f);
         }
     }
 
@@ -215,7 +208,7 @@ public class QuestionManager : MonoBehaviour
             result = "1";
             answerSelected = option2;
             questionCount += 1;
-            WriteOutput();
+            WriteOutputSQL();
             //Get a coin if answered 3 questions correctly
             if (questionCount >= 3)
             {
@@ -224,12 +217,12 @@ public class QuestionManager : MonoBehaviour
                 questionCount = 0;
                 GameSpecificChanges.setCoins = true;
                 questionUI.SetActive(false);
-                //Invoke("ResetOnCorrect", 2.5f);
+                Invoke("ResetOnCorrect", 2.5f);
             }
             else
             {
                 audioSource.PlayOneShot(audioCorrect);
-                //Invoke("ResetOnCorrect", 1);
+                Invoke("ResetOnCorrect", 1);
             }
         }
         else
@@ -256,9 +249,8 @@ public class QuestionManager : MonoBehaviour
                     button3.gameObject.SetActive(false);
                     break;
             }
-            isWrong = true;
-            WriteOutput();
-            //Invoke("ResetOnWrong", 1.5f);
+            WriteOutputSQL();
+            Invoke("ResetOnWrong", 1.5f);
         }
     }
 
@@ -278,7 +270,7 @@ public class QuestionManager : MonoBehaviour
             result = "1";
             answerSelected = option3;
             questionCount += 1;
-            WriteOutput();
+            WriteOutputSQL();
             //Get a coin if answered 3 questions correctly
             if (questionCount >= 3)
             {
@@ -287,12 +279,12 @@ public class QuestionManager : MonoBehaviour
                 questionCount = 0;
                 GameSpecificChanges.setCoins = true;
                 questionUI.SetActive(false);
-                //Invoke("ResetOnCorrect", 2.5f);
+                Invoke("ResetOnCorrect", 2.5f);
             }
             else
             {
                 audioSource.PlayOneShot(audioCorrect);
-                //Invoke("ResetOnCorrect", 1);
+                Invoke("ResetOnCorrect", 1);
             }
         }
         else
@@ -319,9 +311,8 @@ public class QuestionManager : MonoBehaviour
                     button2.gameObject.SetActive(false);
                     break;
             }
-            isWrong = true;
-            WriteOutput();
-            //Invoke("ResetOnWrong", 1.5f);
+            WriteOutputSQL();
+            Invoke("ResetOnWrong", 1.5f);
         }
     }
 
@@ -341,7 +332,7 @@ public class QuestionManager : MonoBehaviour
             result = "1";
             answerSelected = option4;
             questionCount += 1;
-            WriteOutput();
+            WriteOutputSQL();
             //Get a coin if answered 3 questions correctly
             if (questionCount >= 3)
             {
@@ -350,12 +341,12 @@ public class QuestionManager : MonoBehaviour
                 questionCount = 0;
                 GameSpecificChanges.setCoins = true;
                 questionUI.SetActive(false);
-                //Invoke("ResetOnCorrect", 2.5f);
+                Invoke("ResetOnCorrect", 2.5f);
             }
             else
             {
                 audioSource.PlayOneShot(audioCorrect);
-                //Invoke("ResetOnCorrect", 1);
+                Invoke("ResetOnCorrect", 1);
             }
         }
         else
@@ -382,9 +373,8 @@ public class QuestionManager : MonoBehaviour
                     button2.gameObject.SetActive(false);
                     break;
             }
-            isWrong = true;
-            WriteOutput();
-            //Invoke("ResetOnWrong", 1.5f);
+            WriteOutputSQL();
+            Invoke("ResetOnWrong", 1.5f);
         }
     }
     #endregion
@@ -398,9 +388,9 @@ public class QuestionManager : MonoBehaviour
         button4.gameObject.SetActive(true);
         coinRewardUI.SetActive(false);
         GameSpecificChanges.getCoins = true;
-        //questionUI.SetActive(false);
+        questionUI.SetActive(false);
         //SyncTables.syncOutputNow = true;
-        //changeQuestion = true;
+        changeQuestion = true;
         //SetQuestion();
         optionImage1.sprite = defaultButton;
         optionImage2.sprite = defaultButton;
@@ -420,6 +410,10 @@ public class QuestionManager : MonoBehaviour
         button3.gameObject.SetActive(true);
         button4.gameObject.SetActive(true);
         GameSpecificChanges.getCoins = true;
+        questionUI.SetActive(false);
+        //SyncTables.syncOutputNow = true;
+        changeQuestion = true;
+        //SetQuestion();
         questionUI.SetActive(true);
         askTime = DateTime.Now;
         optionImage1.sprite = defaultButton;
@@ -436,6 +430,7 @@ public class QuestionManager : MonoBehaviour
     #region Input
     void ReadInputSQL()
     {
+        Debug.Log("GetNextQuestions");
         internet = CheckInternetPing();
         if (internet)
         {
@@ -459,19 +454,13 @@ public class QuestionManager : MonoBehaviour
             //Debug.Log(json);
             StartCoroutine(WaitForUnityWebRequestReadInput(request, json));
         }
-        else
-        {
-            System.Threading.Thread.Sleep(1800);
-            questionUI.SetActive(false);
-            SetQuestion();
-        }
     }
 
     IEnumerator WaitForUnityWebRequestReadInput(UnityWebRequest request, string json)
     {
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = new DownloadHandlerBuffer();
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
         yield return request.SendWebRequest();
@@ -481,19 +470,25 @@ public class QuestionManager : MonoBehaviour
         }
         //Debug.Log("Response: " + request.downloadHandler.text);
         ReadInputJSONResponse readInputJSONResponse = JsonUtility.FromJson<ReadInputJSONResponse>(request.downloadHandler.text);
-        if (request.downloadHandler.text == "")
+        if (readInputJSONResponse.status != "success")
         {
-            System.Threading.Thread.Sleep(1800);
-            questionUI.SetActive(false);
-            SetQuestion();
-            yield return null;
+            Debug.Log(readInputJSONResponse.data);
         }
         else
         {
             //Debug.Log(downloadCentralJSONResponse.data);
             downloadedInputText = readInputJSONResponse.data;
             var lines = downloadedInputText.Split('&');
-            for (int i = 0; i < lines.Length - 1; i++)
+            var cols = lines[0].Split(',');
+            questionID = cols[0];
+            question = cols[1];
+            correctAns = cols[2];
+            wrong1 = cols[3];
+            wrong2 = cols[4];
+            wrong3 = cols[5];
+            questionSet = cols[6];
+            SetQuestion();
+            /*for (int i = 0; i < lines.Length - 1; i++)
             {
                 //Debug.Log(lines[i]);
                 var values = lines[i].Split(',');
@@ -505,9 +500,9 @@ public class QuestionManager : MonoBehaviour
                 inputWrong3.Add(values[5]);
                 inputQuestionSet.Add(values[6]);
                 //centralUQID.Add(values[7]);              //SEND AS STRING INSTEAD OF INT
-            }
-            WriteInput(inputPath);
+            }*/
         }
+        //WriteInput(inputPath);
     }
 
     void WriteInput(string path)
@@ -519,41 +514,36 @@ public class QuestionManager : MonoBehaviour
         }
         writer.Flush();
         writer.Close();
-        //If time taken to get next question is greater than 1.8s, then skip sleep time
-        if(timer < 1.8f)
+        if (isStart)
         {
-            Debug.Log(timer);
-            System.Threading.Thread.Sleep(1800 - (int)(timer * 1000));
+            isStart = false;
+            SetQuestion();
         }
-        questionUI.SetActive(false);
-        SetQuestion();
     }
 
     public void SetQuestion()
     {
-        ReadInput();
+        //ReadInput();
+        shuffleTemp.Clear();
+        shuffleTemp.Add(correctAns);
+        shuffleTemp.Add(wrong1);
+        shuffleTemp.Add(wrong2);
+        shuffleTemp.Add(wrong3);
+        Shuffle(shuffleTemp);
+        option1 = shuffleTemp[0];
+        option2 = shuffleTemp[1];
+        option3 = shuffleTemp[2];
+        option4 = shuffleTemp[3];
         questionText.text = question;
         optionText1.text = option1;
         optionText2.text = option2;
         optionText3.text = option3;
         optionText4.text = option4;
-        if (isStart)
-        {
-            isStart = false;
-        }
-        else if (isWrong)
-        {
-            isWrong = false;
-            ResetOnWrong();
-        }
-        else if(!isWrong)
-        {
-            ResetOnCorrect();
-        }
     }
 
     void ReadInput()
     {
+        //Debug.Log("ReadInput called");
         //StartCoroutine("CheckInternetPing");
         internet = CheckInternetPing();
         if (internet)
@@ -567,19 +557,7 @@ public class QuestionManager : MonoBehaviour
         var reader = new StreamReader(inputPath);
         for (int i = 0; i <= inputQuestionNo; i++)
         {
-            Debug.Log(i);
             var line = reader.ReadLine();
-            if(i == 0)
-            {
-                Debug.Log("Line = " + line);
-            }
-            if(line == "" || line == null)
-            {
-                Debug.Log("If line is null");
-                inputQuestionNo = -1;
-                reader.Close();
-                ReadInput();
-            }
             var values = line.Split(',');
             questionID = values[0];
             question = values[1];
@@ -612,8 +590,49 @@ public class QuestionManager : MonoBehaviour
         writer.WriteLine(userID + "," + questionID + "," + question + "," + result + "," + answerSelected + "," + timeAsked + "," + timeTaken + "," + questionSet/* + "," + uQID*/);
         writer.Flush();
         writer.Close();
-        timer = 0;
-        SyncTables.syncOutputNow = true;
+    }
+
+    void WriteOutputSQL()
+    {
+        Debug.Log("InsertOutput");
+        string insertOutputURL = "https://edplus.net/insertOutput";
+        var request = new UnityWebRequest(insertOutputURL, "POST");
+        string answerText = questionID + "," + questionSet + "," + timeAsked + "," + timeTaken + "," + result + "," + answerSelected + "&";
+        InsertOutputJSON insertOutputJSON = new InsertOutputJSON()
+        {
+            UserID = userID,
+            Level = SyncTables.knowledgeLevel,
+            App = SyncTables.gameName,
+            DeviceModel = SystemInfo.deviceModel,
+            DeviceOS = SystemInfo.operatingSystem,
+            Company = Application.companyName,
+            UpdateCT = 1,
+            Answers = answerText
+            /*,
+            UQID = outputUQID*/
+        };
+        string json = JsonUtility.ToJson(insertOutputJSON);
+        internet = CheckInternetPing();
+        if (internet)
+        {
+            StartCoroutine(WaitForUnityWebRequest(request, json));
+        }
+    }
+
+    IEnumerator WaitForUnityWebRequest(UnityWebRequest request, string json)
+    {
+        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+        while (!request.isDone)
+        {
+            yield return null;
+        }
+        //internet = CheckInternetPing(true);
+        //Debug.Log("Response: " + request.downloadHandler.text);
     }
     #endregion
 
@@ -666,7 +685,7 @@ public class QuestionManager : MonoBehaviour
         System.Threading.Thread.Sleep(100);
         if (!internet)
         {
-            //Debug.Log("Not Connected to Internet");
+            Debug.Log("Not Connected to Internet");
         }
         //Debug.Log(internet);
         return internet;
@@ -698,7 +717,7 @@ public class QuestionManager : MonoBehaviour
         }
         else
         {
-            //Debug.Log("Offline");
+            Debug.Log("Offline");
             internet = false;
         }
     }

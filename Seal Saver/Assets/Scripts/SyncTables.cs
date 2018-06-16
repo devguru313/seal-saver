@@ -5,8 +5,9 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-public class SyncTables : MonoBehaviour {
-        
+public class SyncTables : MonoBehaviour
+{
+
     private string outputTablePath;
     private string inputTablePath;
     private string userID;
@@ -30,7 +31,7 @@ public class SyncTables : MonoBehaviour {
     private string outputQuestionSet;
     private string outputUQID;
     public string answerText;
-    
+
     public static bool getLevel = false;
     public static bool getStarsAndLevels = false;
     public static bool setStars = false;
@@ -227,10 +228,6 @@ public class SyncTables : MonoBehaviour {
         {
             StartCoroutine(WaitForUnityWebRequest(request, json));
         }
-        else
-        {
-            QuestionManager.changeQuestion = true;
-        }
     }
 
     IEnumerator WaitForUnityWebRequest(UnityWebRequest request, string json)
@@ -247,7 +244,6 @@ public class SyncTables : MonoBehaviour {
         }
         internet = CheckInternetPing(true);
         //Debug.Log("Response: " + request.downloadHandler.text);
-        QuestionManager.changeQuestion = true;
     }
     #endregion
 
@@ -340,7 +336,7 @@ public class SyncTables : MonoBehaviour {
             text = getPlayerStarsJSONResponse.data;
             var rows = text.Split('&');
             //rows.Length - 1 to account for blank row
-            for(int i = 0; i < rows.Length - 1; i++)
+            for (int i = 0; i < rows.Length - 1; i++)
             {
                 //Split to separate coins
                 var col = rows[i].Split('@');
@@ -510,8 +506,8 @@ public class SyncTables : MonoBehaviour {
     IEnumerator WaitForServer(UnityWebRequest request)
     {
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes("{}");
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = new DownloadHandlerBuffer();
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         yield return request.SendWebRequest();
         while (!request.isDone)
@@ -545,12 +541,12 @@ public class SyncTables : MonoBehaviour {
 
     public void OpenTermsAndConditionsURL()
     {
-        Application.OpenURL("https://edplus.io/privacy/");
+        Application.OpenURL("http://edplus.io/privacy/");
     }
 
     public void OpenParentsDashboardURL()
     {
-        Application.OpenURL("https://edbit.app/?email=" + Login.user);
+        Application.OpenURL("http://edbit.app/");
     }
     #endregion
 
