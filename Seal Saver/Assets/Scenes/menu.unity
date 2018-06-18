@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b722a734fdff29747a9e99056c435363, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadingScreen: {fileID: 1406158771}
 --- !u!114 &27907938
 MonoBehaviour:
   m_ObjectHideFlags: 0

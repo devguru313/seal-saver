@@ -46,6 +46,7 @@ public class QuestionManager : MonoBehaviour
     public string timeAsked;
     public string timeTaken;
     public string uQID;
+    public string answerText;
 
     public static bool changeQuestion = false;
     public bool isStart = true;
@@ -430,7 +431,6 @@ public class QuestionManager : MonoBehaviour
     #region Input
     void ReadInputSQL()
     {
-        Debug.Log("GetNextQuestions");
         internet = CheckInternetPing();
         if (internet)
         {
@@ -454,13 +454,18 @@ public class QuestionManager : MonoBehaviour
             //Debug.Log(json);
             StartCoroutine(WaitForUnityWebRequestReadInput(request, json));
         }
+        else
+        {
+            ReadInput();
+            SetQuestion();
+        }
     }
 
     IEnumerator WaitForUnityWebRequestReadInput(UnityWebRequest request, string json)
     {
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
         yield return request.SendWebRequest();
@@ -488,7 +493,7 @@ public class QuestionManager : MonoBehaviour
             wrong3 = cols[5];
             questionSet = cols[6];
             SetQuestion();
-            /*for (int i = 0; i < lines.Length - 1; i++)
+            for (int i = 0; i < lines.Length - 1; i++)
             {
                 //Debug.Log(lines[i]);
                 var values = lines[i].Split(',');
@@ -499,10 +504,10 @@ public class QuestionManager : MonoBehaviour
                 inputWrong2.Add(values[4]);
                 inputWrong3.Add(values[5]);
                 inputQuestionSet.Add(values[6]);
-                //centralUQID.Add(values[7]);              //SEND AS STRING INSTEAD OF INT
-            }*/
+                //centralUQID.Add(values[7]);
+            }
         }
-        //WriteInput(inputPath);
+        WriteInput(inputPath);
     }
 
     void WriteInput(string path)
@@ -514,11 +519,6 @@ public class QuestionManager : MonoBehaviour
         }
         writer.Flush();
         writer.Close();
-        if (isStart)
-        {
-            isStart = false;
-            SetQuestion();
-        }
     }
 
     public void SetQuestion()
@@ -592,12 +592,25 @@ public class QuestionManager : MonoBehaviour
         writer.Close();
     }
 
+    void ReadOutput()
+    {
+        answerText = "";
+        var reader = new StreamReader(outputPath);
+        while (!reader.EndOfStream)
+        {
+            var line = reader.ReadLine();
+            var values = line.Split(',');
+            answerText = answerText + values[1] + "," + values[7] + "," + values[5] + "," + values[6] + "," + values[3] + "," + values[4] + "&";
+            //outputUQID = values[8];
+        }
+        reader.Close();
+    }
+
     void WriteOutputSQL()
     {
-        Debug.Log("InsertOutput");
         string insertOutputURL = "https://edplus.net/insertOutput";
         var request = new UnityWebRequest(insertOutputURL, "POST");
-        string answerText = questionID + "," + questionSet + "," + timeAsked + "," + timeTaken + "," + result + "," + answerSelected + "&";
+        answerText = questionID + "," + questionSet + "," + timeAsked + "," + timeTaken + "," + result + "," + answerSelected + "&";
         InsertOutputJSON insertOutputJSON = new InsertOutputJSON()
         {
             UserID = userID,
@@ -615,15 +628,31 @@ public class QuestionManager : MonoBehaviour
         internet = CheckInternetPing();
         if (internet)
         {
-            StartCoroutine(WaitForUnityWebRequest(request, json));
+            string fileContents = File.ReadAllText(outputPath);
+            if(fileContents == "" || fileContents == null)
+            {
+                StartCoroutine(WaitForUnityWebRequest(request, json));
+            }
+            else
+            {
+                ReadOutput();
+                insertOutputJSON.Answers = answerText + insertOutputJSON.Answers;
+                json = JsonUtility.ToJson(insertOutputJSON);
+                File.WriteAllText(outputPath, string.Empty);
+                StartCoroutine(WaitForUnityWebRequest(request, json));
+            }
+        }
+        else
+        {
+            WriteOutput();
         }
     }
 
     IEnumerator WaitForUnityWebRequest(UnityWebRequest request, string json)
     {
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
         yield return request.SendWebRequest();
@@ -631,8 +660,11 @@ public class QuestionManager : MonoBehaviour
         {
             yield return null;
         }
-        //internet = CheckInternetPing(true);
-        //Debug.Log("Response: " + request.downloadHandler.text);
+        if(request.downloadHandler.text == "" || request.downloadHandler.text == null)
+        {
+            WriteOutput();
+        }
+        Debug.Log("Response: " + request.downloadHandler.text);
     }
     #endregion
 

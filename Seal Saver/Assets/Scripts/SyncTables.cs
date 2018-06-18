@@ -99,12 +99,12 @@ public class SyncTables : MonoBehaviour
             WriteCoinsSQL();
         }
 
-        if (syncOutputNow)
+        /*if (syncOutputNow)
         {
             syncOutputNow = false;
             ReadOutput();
             WriteOutputSQL();
-        }
+        }*/
 
         if (checkTables)
         {
@@ -183,7 +183,7 @@ public class SyncTables : MonoBehaviour
     #endregion
 
     #region Output
-    void ReadOutput()
+    /*void ReadOutput()
     {
         answerText = "";
         var reader = new StreamReader(outputTablePath);
@@ -220,21 +220,21 @@ public class SyncTables : MonoBehaviour
             UpdateCT = 1,
             Answers = answerText
             /*,
-            UQID = outputUQID*/
+            UQID = outputUQID
         };
         string json = JsonUtility.ToJson(insertOutputJSON);
-        internet = CheckInternetPing(false);
+        internet = CheckInternetPing();
         if (internet)
         {
             StartCoroutine(WaitForUnityWebRequest(request, json));
         }
-    }
+    }*/
 
     IEnumerator WaitForUnityWebRequest(UnityWebRequest request, string json)
     {
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
         yield return request.SendWebRequest();
@@ -242,7 +242,7 @@ public class SyncTables : MonoBehaviour
         {
             yield return null;
         }
-        internet = CheckInternetPing(true);
+        internet = CheckInternetPing();
         //Debug.Log("Response: " + request.downloadHandler.text);
     }
     #endregion
@@ -258,7 +258,7 @@ public class SyncTables : MonoBehaviour
             PlayerID = currentPlayerIndex
         };
         string jsonGetPlayerLevel = JsonUtility.ToJson(getPlayerLevelJSON);
-        internet = CheckInternetPing(false);
+        internet = CheckInternetPing();
         if (internet)
         {
             StartCoroutine(WaitForUnityWebRequestLevel(varGetPlayerLevelRequest, jsonGetPlayerLevel));
@@ -268,8 +268,8 @@ public class SyncTables : MonoBehaviour
     IEnumerator WaitForUnityWebRequestLevel(UnityWebRequest request, string json)
     {
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
         yield return request.SendWebRequest();
@@ -303,7 +303,7 @@ public class SyncTables : MonoBehaviour
             Game = gameName
         };
         string jsonGetPlayerStars = JsonUtility.ToJson(getPlayerStarsJSON);
-        internet = CheckInternetPing(false);
+        internet = CheckInternetPing();
         if (internet)
         {
             StartCoroutine(WaitForUnityWebRequestPlayerStars(varGetPlayerStarsRequest, jsonGetPlayerStars));
@@ -313,8 +313,8 @@ public class SyncTables : MonoBehaviour
     IEnumerator WaitForUnityWebRequestPlayerStars(UnityWebRequest request, string json)
     {
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
         yield return request.SendWebRequest();
@@ -364,7 +364,7 @@ public class SyncTables : MonoBehaviour
             };
             string jsonSetPlayerStars = JsonUtility.ToJson(setPlayerStarsJSON);
             //Debug.Log("SET STARS");
-            internet = CheckInternetPing(false);
+            internet = CheckInternetPing();
             if (internet)
             {
                 StartCoroutine(WaitForUnityWebRequestSetPlayerStars(varSetPlayerStarsRequest, jsonSetPlayerStars));
@@ -376,8 +376,8 @@ public class SyncTables : MonoBehaviour
     {
         //Debug.Log("SET STARS REQUEST");
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         yield return request.SendWebRequest();
         while (!request.isDone)
@@ -408,7 +408,7 @@ public class SyncTables : MonoBehaviour
             };
             string jsonSetGameLevel = JsonUtility.ToJson(setGameLevelJSON);
             //Debug.Log("SET LEVEL");
-            internet = CheckInternetPing(false);
+            internet = CheckInternetPing();
             if (internet)
             {
                 StartCoroutine(WaitForUnityWebRequestSetGameLevel(varSetGameLevelRequest, jsonSetGameLevel));
@@ -419,8 +419,8 @@ public class SyncTables : MonoBehaviour
     IEnumerator WaitForUnityWebRequestSetGameLevel(UnityWebRequest request, string json)
     {
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         //Debug.Log("SET LEVEL REQUEST");
         yield return request.SendWebRequest();
@@ -448,7 +448,7 @@ public class SyncTables : MonoBehaviour
             Game = gameName
         };
         string jsonSetCoins = JsonUtility.ToJson(setCoinsJSON);
-        internet = CheckInternetPing(false);
+        internet = CheckInternetPing();
         if (internet)
         {
             StartCoroutine(WaitForUnityWebRequest(varSetCoinsRequest, jsonSetCoins));
@@ -481,7 +481,7 @@ public class SyncTables : MonoBehaviour
         }
     }
 
-    bool CheckInternetPing(bool insertOutput)
+    bool CheckInternetPing()
     {
         string checkInternetURL = "https://edplus.net/checkServerAlive";
         var varCheckInternetRequest = new UnityWebRequest(checkInternetURL, "POST");
@@ -490,15 +490,6 @@ public class SyncTables : MonoBehaviour
         if (!internet)
         {
             Debug.Log("Not Connected to Internet");
-        }
-        else
-        {
-            //Clear Output Table after sending data
-            if (insertOutput)
-            {
-                insertOutput = false;
-                File.WriteAllText(outputTablePath, string.Empty);
-            }
         }
         return internet;
     }
@@ -541,12 +532,12 @@ public class SyncTables : MonoBehaviour
 
     public void OpenTermsAndConditionsURL()
     {
-        Application.OpenURL("http://edplus.io/privacy/");
+        Application.OpenURL("https://edplus.io/privacy/");
     }
 
     public void OpenParentsDashboardURL()
     {
-        Application.OpenURL("http://edbit.app/");
+        Application.OpenURL("https://edbit.app/");
     }
     #endregion
 
