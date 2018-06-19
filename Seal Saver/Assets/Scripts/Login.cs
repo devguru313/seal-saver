@@ -67,6 +67,19 @@ public class Login : MonoBehaviour {
     void InitializeFirebase()
     {
         auth = FirebaseAuth.DefaultInstance;
+        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
+            var dependencyStatus = task.Result;
+            if (dependencyStatus == Firebase.DependencyStatus.Available)
+            {
+                Debug.Log("Firebase Analytics Init");
+            }
+            else
+            {
+                UnityEngine.Debug.LogError(System.String.Format(
+                  "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+                // Firebase Unity SDK is not safe to use here.
+            }
+        });
     }
 
     private void Update()
@@ -131,13 +144,15 @@ public class Login : MonoBehaviour {
                     return;
                 }
                 FirebaseUser newUser = task.Result;
-                //Debug.LogFormat("User signed in successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
+                Debug.LogFormat("User signed in successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
                 SyncTables.firebaseUID = newUser.UserId;
                 user = email;
                 PlayerPrefs.SetString("Username", email);
                 PlayerPrefs.SetString("Password", password);
                 loggedIn = true;
                 loggedInEmail = true;
+                Firebase.Analytics.FirebaseAnalytics.LogEvent(Firebase.Analytics.FirebaseAnalytics.EventLogin);
+                Firebase.Analytics.FirebaseAnalytics.LogEvent("progress", "percent", 0.4f);
                 StartCoroutine(GetUID("Email"));
             });
         }
