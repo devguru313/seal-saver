@@ -727,8 +727,8 @@ public class QuestionManager : MonoBehaviour
     IEnumerator WaitForServer(UnityWebRequest request)
     {
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes("{}");
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         yield return request.SendWebRequest();
         while (!request.isDone)
@@ -737,20 +737,16 @@ public class QuestionManager : MonoBehaviour
         }
         //Debug.Log("CHECK INTERNET Response: " + request.downloadHandler.text);
         ServerJSONResponse serverJSONResponse = JsonUtility.FromJson<ServerJSONResponse>(request.downloadHandler.text);
-        if (request.downloadHandler.text != "")
+        if(request.downloadHandler.text == "" || request.downloadHandler.text == null)
         {
-            if (serverJSONResponse.status == "success")
-            {
-                internet = true;
-            }
-            else
-            {
-                internet = false;
-            }
+            internet = false;
+        }
+        else if (serverJSONResponse.status == "success")
+        {
+            internet = true;
         }
         else
         {
-            Debug.Log("Offline");
             internet = false;
         }
     }

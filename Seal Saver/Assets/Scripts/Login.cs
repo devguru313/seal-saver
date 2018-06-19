@@ -175,9 +175,9 @@ public class Login : MonoBehaviour {
         //Debug.Log("Response: " + request.downloadHandler.text);
         FindUIDJSONResponse findUIDJSONResponse = JsonUtility.FromJson<FindUIDJSONResponse>(request.downloadHandler.text);
         //Debug.Log(findUIDJSONResponse.data);
-        if (findUIDJSONResponse.status == "" || findUIDJSONResponse.status == null)
+        if (request.downloadHandler.text == "" || request.downloadHandler.text == null)
         {
-            yield return null;
+            loadingScreen.SetActive(false);
         }
         else
         {
@@ -237,9 +237,9 @@ public class Login : MonoBehaviour {
         }
         //Debug.Log("Response: " + request.downloadHandler.text);
         SendAuthDetailsJSONResponse sendAuthDetailsJSONResponse = JsonUtility.FromJson<SendAuthDetailsJSONResponse>(request.downloadHandler.text);
-        if (sendAuthDetailsJSONResponse.status == "" || sendAuthDetailsJSONResponse.status == null)
+        if (request.downloadHandler.text == "" || request.downloadHandler.text == null)
         {
-            yield return null;
+            loadingScreen.SetActive(false);
         }
         if (sendAuthDetailsJSONResponse.status != "success")
         {

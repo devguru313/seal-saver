@@ -45,7 +45,7 @@ public class SyncTables : MonoBehaviour
     public static string gameName;
     public static string firebaseUID;
     public static string facebookUID;
-    public bool internetButton;
+    public bool internetLoginFlag;
 
 
     private void Start()
@@ -55,6 +55,7 @@ public class SyncTables : MonoBehaviour
         deviceModel = SystemInfo.deviceModel.ToLower();
         if (/*SceneManager.GetActiveScene().name == "menu" || */SceneManager.GetActiveScene().name == "Login")
         {
+            internetLoginFlag = true;
             CheckInternet();
         }
         if (SceneManager.GetActiveScene().name == "menu")
@@ -98,7 +99,7 @@ public class SyncTables : MonoBehaviour
 
         if (deviceModel.Contains("amazon"))
         {
-            CheckInternet();
+            CheckInternetPing();
         }
 
         #region Flags
@@ -281,6 +282,11 @@ public class SyncTables : MonoBehaviour
         }
         //Debug.Log("Response: " + request.downloadHandler.text);
         GetPlayerLevelJSONResponse getPlayerLevelJSONResponse = JsonUtility.FromJson<GetPlayerLevelJSONResponse>(request.downloadHandler.text);
+        if (request.downloadHandler.text == "" || request.downloadHandler.text == null)
+        {
+            knowledgeLevel = "1";
+            ShowKnowledgeLevel.level = knowledgeLevel;
+        }
         if (getPlayerLevelJSONResponse.status != "success")
         {
             Debug.Log(getPlayerLevelJSONResponse.data);
@@ -326,6 +332,13 @@ public class SyncTables : MonoBehaviour
         }
         //Debug.Log("Response: " + request.downloadHandler.text);
         GetPlayerStarsJSONResponse getPlayerStarsJSONResponse = JsonUtility.FromJson<GetPlayerStarsJSONResponse>(request.downloadHandler.text);
+        if (request.downloadHandler.text == "" || request.downloadHandler.text == null)
+        {
+            playerCoins.Clear();
+            playerData.Clear();
+            playerCoins.Add("1 @ 0");
+            playerData.Add("1 ");
+        }
         if (getPlayerStarsJSONResponse.status != "success")
         {
             Debug.Log(getPlayerStarsJSONResponse.data);
@@ -343,6 +356,7 @@ public class SyncTables : MonoBehaviour
                 //Split to separate coins
                 var col = rows[i].Split('@');
                 playerData.Add(col[0]);
+                //Debug.Log(col[0]);
                 playerCoins.Add(rows[i]);
                 //Debug.Log(rows[i]);
             }
@@ -388,7 +402,7 @@ public class SyncTables : MonoBehaviour
         }
         //Debug.Log("SET STARS Response: " + request.downloadHandler.text);
         SetPlayerStarsJSONResponse setPlayerStarsJSONResponse = JsonUtility.FromJson<SetPlayerStarsJSONResponse>(request.downloadHandler.text);
-        if (setPlayerStarsJSONResponse.status != "success")
+        if (request.downloadHandler.text == "" || request.downloadHandler.text == null)
         {
             Debug.Log("Connection Error");
         }
@@ -432,7 +446,7 @@ public class SyncTables : MonoBehaviour
         }
         //Debug.Log("Response SET LEVEL: " + request.downloadHandler.text);
         SetGameLevelJSONResponse setGameLevelJSONResponse = JsonUtility.FromJson<SetGameLevelJSONResponse>(request.downloadHandler.text);
-        if (setGameLevelJSONResponse.status != "success")
+        if (request.downloadHandler.text == "" || request.downloadHandler.text == null)
         {
             Debug.Log("Connection Error");
         }
@@ -461,10 +475,10 @@ public class SyncTables : MonoBehaviour
     #region Internet
     public void CheckInternet()
     {
-        StartCoroutine(CheckInternetPingShowMenu());
+        internet = CheckInternetPing();
     }
 
-    IEnumerator CheckInternetPingShowMenu()
+    /*IEnumerator CheckInternetPingShowMenu()
     {
         //Edtopia website taken as URL link to check connectivity
         WWW wwwInternet = new WWW("https://www.google.com");
@@ -472,17 +486,24 @@ public class SyncTables : MonoBehaviour
         if (wwwInternet.bytesDownloaded == 0)
         {
             Debug.Log("Not Connected to Internet");
+            internet = false;
             internetMenu.SetActive(true);
             internetLogin = false;
         }
         else if(internetButton)
         {
             internetButton = false;
+            internet = true;
             //Debug.Log("Connected to Internet");
             internetMenu.SetActive(false);
             internetLogin = true;
         }
-    }
+        else
+        {
+            internet = true;
+            internetLogin = true;
+        }
+    }*/
 
     bool CheckInternetPing()
     {
@@ -510,29 +531,39 @@ public class SyncTables : MonoBehaviour
         }
         //Debug.Log("CHECK INTERNET Response: " + request.downloadHandler.text);
         ServerJSONResponse serverJSONResponse = JsonUtility.FromJson<ServerJSONResponse>(request.downloadHandler.text);
-        if (request.downloadHandler.text != "")
+        if (request.downloadHandler.text == "" || request.downloadHandler.text == null)
         {
-            if (serverJSONResponse.status == "success")
+            internet = false;
+            if (deviceModel.Contains("amazon") || internetLoginFlag)
             {
-                internet = true;
+                internetLoginFlag = false;
+                internetMenu.SetActive(true);
             }
-            else
+        }
+        else if (serverJSONResponse.status == "success")
+        {
+            internet = true;
+            internetMenu.SetActive(false);
+            if (deviceModel.Contains("amazon") || internetLoginFlag)
             {
-                internet = false;
+                internetLoginFlag = false;
             }
         }
         else
         {
-            Debug.Log("Offline");
             internet = false;
+            if (deviceModel.Contains("amazon") || internetLoginFlag)
+            {
+                internetLoginFlag = false;
+                internetMenu.SetActive(true);
+            }
         }
     }
 
-    public void CloseInternetMenu()
+    /*public void CloseInternetMenu()
     {
-        internetButton = true;
         CheckInternet();
-    }
+    }*/
 
     public void OpenTermsAndConditionsURL()
     {

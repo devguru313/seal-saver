@@ -2055,6 +2055,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   internetMenu: {fileID: 1132571368}
   loadingScreen: {fileID: 1486490391}
+  internetButton: 0
 --- !u!114 &540455482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3206,7 +3207,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 540455481}
-        m_MethodName: CloseInternetMenu
+        m_MethodName: CheckInternet
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
