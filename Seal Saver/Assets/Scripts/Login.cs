@@ -175,9 +175,9 @@ public class Login : MonoBehaviour {
         //Debug.Log("Response: " + request.downloadHandler.text);
         FindUIDJSONResponse findUIDJSONResponse = JsonUtility.FromJson<FindUIDJSONResponse>(request.downloadHandler.text);
         //Debug.Log(findUIDJSONResponse.data);
-        if (findUIDJSONResponse.status != "success")
+        if (findUIDJSONResponse.status == "" || findUIDJSONResponse.status == null)
         {
-            Debug.Log(findUIDJSONResponse.data);
+            yield return null;
         }
         else
         {
@@ -227,8 +227,8 @@ public class Login : MonoBehaviour {
         };
         string json = JsonUtility.ToJson(sendAuthDetailsJSON);
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         yield return request.SendWebRequest();
         while (!request.isDone)
@@ -237,6 +237,10 @@ public class Login : MonoBehaviour {
         }
         //Debug.Log("Response: " + request.downloadHandler.text);
         SendAuthDetailsJSONResponse sendAuthDetailsJSONResponse = JsonUtility.FromJson<SendAuthDetailsJSONResponse>(request.downloadHandler.text);
+        if (sendAuthDetailsJSONResponse.status == "" || sendAuthDetailsJSONResponse.status == null)
+        {
+            yield return null;
+        }
         if (sendAuthDetailsJSONResponse.status != "success")
         {
             //Debug.Log(sendAuthDetailsJSONResponse.data);

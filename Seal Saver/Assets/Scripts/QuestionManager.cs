@@ -475,9 +475,10 @@ public class QuestionManager : MonoBehaviour
         }
         //Debug.Log("Response: " + request.downloadHandler.text);
         ReadInputJSONResponse readInputJSONResponse = JsonUtility.FromJson<ReadInputJSONResponse>(request.downloadHandler.text);
-        if (readInputJSONResponse.status != "success")
+        if (request.downloadHandler.text == "" || request.downloadHandler.text == null)
         {
-            Debug.Log(readInputJSONResponse.data);
+            ReadInput();
+            SetQuestion();
         }
         else
         {
@@ -506,8 +507,8 @@ public class QuestionManager : MonoBehaviour
                 inputQuestionSet.Add(values[6]);
                 //centralUQID.Add(values[7]);
             }
+            WriteInput(inputPath);
         }
-        WriteInput(inputPath);
     }
 
     void WriteInput(string path)
