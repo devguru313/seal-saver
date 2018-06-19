@@ -2354,7 +2354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.15686275}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -5927,7 +5927,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   internetMenu: {fileID: 519365178}
   loadingScreen: {fileID: 1148774985}
-  answerText: 
+  internetButton: 0
 --- !u!114 &1590752153
 MonoBehaviour:
   m_ObjectHideFlags: 0

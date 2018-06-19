@@ -11,6 +11,7 @@ public class SyncTables : MonoBehaviour
     private string outputTablePath;
     private string inputTablePath;
     private string userID;
+    private string deviceModel;
     private TextAsset tempTable;
     private string tempText;
     public GameObject internetMenu;
@@ -21,7 +22,7 @@ public class SyncTables : MonoBehaviour
     public static bool internetLogin = true;
     public static bool internet = true;
 
-    private string outputQID;
+    /*private string outputQID;
     private string outputQuestion;
     private string outputResult;
     private string outputOptionSelected;
@@ -30,7 +31,7 @@ public class SyncTables : MonoBehaviour
     private string outputUserID;
     private string outputQuestionSet;
     private string outputUQID;
-    public string answerText;
+    public string answerText;*/
 
     public static bool getLevel = false;
     public static bool getStarsAndLevels = false;
@@ -44,11 +45,14 @@ public class SyncTables : MonoBehaviour
     public static string gameName;
     public static string firebaseUID;
     public static string facebookUID;
+    public bool internetButton;
+
 
     private void Start()
     {
         gameName = GameSpecificChanges.gameName;
         internetMenu.SetActive(false);
+        deviceModel = SystemInfo.deviceModel.ToLower();
         if (/*SceneManager.GetActiveScene().name == "menu" || */SceneManager.GetActiveScene().name == "Login")
         {
             CheckInternet();
@@ -92,19 +96,17 @@ public class SyncTables : MonoBehaviour
         inputTablePath = GetApplicationPath() + userID + "_InputTable.csv";
         //Debug.Log("CURRENT USER INDEX: " + userID);
 
+        if (deviceModel.Contains("amazon"))
+        {
+            CheckInternet();
+        }
+
         #region Flags
         if (syncUploadNow)
         {
             syncUploadNow = false;
             WriteCoinsSQL();
         }
-
-        /*if (syncOutputNow)
-        {
-            syncOutputNow = false;
-            ReadOutput();
-            WriteOutputSQL();
-        }*/
 
         if (checkTables)
         {
@@ -473,8 +475,9 @@ public class SyncTables : MonoBehaviour
             internetMenu.SetActive(true);
             internetLogin = false;
         }
-        else
+        else if(internetButton)
         {
+            internetButton = false;
             //Debug.Log("Connected to Internet");
             internetMenu.SetActive(false);
             internetLogin = true;
@@ -497,8 +500,8 @@ public class SyncTables : MonoBehaviour
     IEnumerator WaitForServer(UnityWebRequest request)
     {
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes("{}");
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         yield return request.SendWebRequest();
         while (!request.isDone)
@@ -527,6 +530,7 @@ public class SyncTables : MonoBehaviour
 
     public void CloseInternetMenu()
     {
+        internetButton = true;
         CheckInternet();
     }
 
