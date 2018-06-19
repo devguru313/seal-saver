@@ -336,8 +336,6 @@ public class SyncTables : MonoBehaviour
         {
             playerCoins.Clear();
             playerData.Clear();
-            playerCoins.Add("1 @ 0");
-            playerData.Add("1 ");
         }
         if (getPlayerStarsJSONResponse.status != "success")
         {
