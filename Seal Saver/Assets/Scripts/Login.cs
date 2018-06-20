@@ -17,6 +17,7 @@ public class Login : MonoBehaviour {
     public static bool loggedIn;
     public static bool loggedInEmail;
     public static bool loggedInFacebook;
+    public static bool firstLoginAnalytics;
     public static string user;
     public static string userID;
     public static string email;
@@ -75,7 +76,7 @@ public class Login : MonoBehaviour {
             }
             else
             {
-                UnityEngine.Debug.LogError(System.String.Format(
+                Debug.LogError(System.String.Format(
                   "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
                 // Firebase Unity SDK is not safe to use here.
             }
@@ -144,15 +145,14 @@ public class Login : MonoBehaviour {
                     return;
                 }
                 FirebaseUser newUser = task.Result;
-                Debug.LogFormat("User signed in successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
+                //Debug.LogFormat("User signed in successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
                 SyncTables.firebaseUID = newUser.UserId;
                 user = email;
                 PlayerPrefs.SetString("Username", email);
                 PlayerPrefs.SetString("Password", password);
                 loggedIn = true;
                 loggedInEmail = true;
-                Firebase.Analytics.FirebaseAnalytics.LogEvent(Firebase.Analytics.FirebaseAnalytics.EventLogin);
-                Firebase.Analytics.FirebaseAnalytics.LogEvent("progress", "percent", 0.4f);
+                firstLoginAnalytics = true;
                 StartCoroutine(GetUID("Email"));
             });
         }
@@ -217,6 +217,12 @@ public class Login : MonoBehaviour {
         {
             SyncTables.getStarsAndLevels = true;
         }
+
+        #region Login Analytics
+        Firebase.Analytics.Parameter[] LoginParameters = {new Firebase.Analytics.Parameter("EmailID", email), new Firebase.Analytics.Parameter("UserID", userID)};
+        Firebase.Analytics.FirebaseAnalytics.LogEvent(Firebase.Analytics.FirebaseAnalytics.EventLogin, LoginParameters);
+        #endregion
+
         loadingScreen.SetActive(false);
         if (findUIDJSONResponse.firstTimeLogin == 1)
         {

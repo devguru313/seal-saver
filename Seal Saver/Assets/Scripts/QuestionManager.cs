@@ -49,7 +49,7 @@ public class QuestionManager : MonoBehaviour
     public string answerText;
 
     public static bool changeQuestion = false;
-    public bool isStart = true;
+    public static bool isStart;
 
     public Text questionText;
     public Text optionText1;
@@ -83,6 +83,7 @@ public class QuestionManager : MonoBehaviour
 
     void Start()
     {
+        isStart = true;
         optionImage1 = optionSprite1.GetComponent<Image>();
         optionImage2 = optionSprite2.GetComponent<Image>();
         optionImage3 = optionSprite3.GetComponent<Image>();

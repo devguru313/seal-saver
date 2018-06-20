@@ -53,7 +53,13 @@ public class SyncTables : MonoBehaviour
         gameName = GameSpecificChanges.gameName;
         internetMenu.SetActive(false);
         deviceModel = SystemInfo.deviceModel.ToLower();
-        if (/*SceneManager.GetActiveScene().name == "menu" || */SceneManager.GetActiveScene().name == "Login")
+        //Amazon Device check
+        if (!deviceModel.Contains("amazon"))
+        {
+            //Debug.Log("NOT AMAZON");
+            InitializeFirebase();
+        }
+        if (SceneManager.GetActiveScene().name == "Login")
         {
             internetLoginFlag = true;
             CheckInternet();
@@ -80,6 +86,48 @@ public class SyncTables : MonoBehaviour
             checkTables = true;
             getLevel = true;
         }
+
+        #region Progress Analytics
+        if(SceneManager.GetActiveScene().buildIndex == 0 && !deviceModel.Contains("amazon"))
+        {
+            Firebase.Analytics.FirebaseAnalytics.LogEvent("GameProgress", "Percent", "0%");
+        }
+        if (SceneManager.GetActiveScene().buildIndex == 1 && !deviceModel.Contains("amazon"))
+        {
+            Firebase.Analytics.FirebaseAnalytics.LogEvent("GameProgress", "Percent", "10%");
+        }
+        if (SceneManager.GetActiveScene().buildIndex == 2 && !deviceModel.Contains("amazon"))
+        {
+            Firebase.Analytics.FirebaseAnalytics.LogEvent("GameProgress", "Percent", "20%");
+        }
+        if (SceneManager.GetActiveScene().buildIndex == 3 && !deviceModel.Contains("amazon"))
+        {
+            Firebase.Analytics.FirebaseAnalytics.LogEvent("GameProgress", "Percent", "30%");
+        }
+        if(Login.firstLoginAnalytics && QuestionManager.isStart && !deviceModel.Contains("amazon"))
+        {
+            QuestionManager.isStart = false;
+            Login.firstLoginAnalytics = false;
+            Firebase.Analytics.FirebaseAnalytics.LogEvent("GameProgress", "Percent", "40%");
+        }
+        #endregion
+    }
+
+    void InitializeFirebase()
+    {
+        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
+            var dependencyStatus = task.Result;
+            if (dependencyStatus == Firebase.DependencyStatus.Available)
+            {
+                Debug.Log("Firebase Analytics Init");
+            }
+            else
+            {
+                Debug.LogError(System.String.Format(
+                  "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+                // Firebase Unity SDK is not safe to use here.
+            }
+        });
     }
 
     private void Update()
