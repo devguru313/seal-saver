@@ -213,6 +213,8 @@ public class Login : MonoBehaviour {
             newUser = false;
             SyncTables.playerData.Clear();
             SyncTables.playerCoins.Clear();
+            SyncTables.playerData.Add("1 ");
+            SyncTables.playerCoins.Add("10");
         }
         else
         {
@@ -334,7 +336,7 @@ public class Login : MonoBehaviour {
                     return;
                 }
                 FirebaseUser newUser = task.Result;
-                Debug.LogFormat("User signed in successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
+                //Debug.LogFormat("User signed in successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
             });
             //Debug.Log("User ID: " + SyncTables.facebookUID);
             FB.API("/me?fields=name,email", HttpMethod.GET, FetchProfileCallback, new Dictionary<string, string>() { });

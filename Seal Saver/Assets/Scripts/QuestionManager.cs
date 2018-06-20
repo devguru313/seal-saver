@@ -666,7 +666,7 @@ public class QuestionManager : MonoBehaviour
         {
             WriteOutput();
         }
-        Debug.Log("Response: " + request.downloadHandler.text);
+        //Debug.Log("Response: " + request.downloadHandler.text);
     }
     #endregion
 

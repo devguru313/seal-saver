@@ -395,16 +395,19 @@ public class SyncTables : MonoBehaviour
             playerCoins.Clear();
             string text;
             text = getPlayerStarsJSONResponse.data;
-            var rows = text.Split('&');
-            //rows.Length - 1 to account for blank row
-            for (int i = 0; i < rows.Length - 1; i++)
+            if(text != "&")
             {
-                //Split to separate coins
-                var col = rows[i].Split('@');
-                playerData.Add(col[0]);
-                //Debug.Log(col[0]);
-                playerCoins.Add(rows[i]);
-                //Debug.Log(rows[i]);
+                var rows = text.Split('&');
+                //rows.Length - 1 to account for blank row
+                for (int i = 0; i < rows.Length - 1; i++)
+                {
+                    //Split to separate coins
+                    var col = rows[i].Split('@');
+                    playerData.Add(col[0]);
+                    //Debug.Log(col[0]);
+                    playerCoins.Add(col[1]);
+                    //Debug.Log(rows[i]);
+                }
             }
         }
     }
