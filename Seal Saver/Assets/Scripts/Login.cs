@@ -175,7 +175,9 @@ public class Login : MonoBehaviour {
             FirebaseUID = SyncTables.firebaseUID,
             FacebookUID = SyncTables.facebookUID,
             Method = loginMethod,
-            ADID = advertID
+            ADID = advertID,
+            DeviceModel = SystemInfo.deviceModel,
+            DeviceOS = SystemInfo.operatingSystem
         };
         string json = JsonUtility.ToJson(findUIDJSON);
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
