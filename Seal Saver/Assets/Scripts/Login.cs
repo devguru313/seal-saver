@@ -68,7 +68,7 @@ public class Login : MonoBehaviour {
     void InitializeFirebase()
     {
         auth = FirebaseAuth.DefaultInstance;
-        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
+        /*Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
             var dependencyStatus = task.Result;
             if (dependencyStatus == Firebase.DependencyStatus.Available)
             {
@@ -80,7 +80,7 @@ public class Login : MonoBehaviour {
                   "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
                 // Firebase Unity SDK is not safe to use here.
             }
-        });
+        });*/
     }
 
     private void Update()
@@ -219,7 +219,7 @@ public class Login : MonoBehaviour {
         }
 
         #region Login Analytics
-        Firebase.Analytics.Parameter[] LoginParameters = {new Firebase.Analytics.Parameter("EmailID", email), new Firebase.Analytics.Parameter("UserID", userID)};
+        Firebase.Analytics.Parameter[] LoginParameters = {new Firebase.Analytics.Parameter("EmailID", user), new Firebase.Analytics.Parameter("UserID", userID)};
         Firebase.Analytics.FirebaseAnalytics.LogEvent(Firebase.Analytics.FirebaseAnalytics.EventLogin, LoginParameters);
         #endregion
 
@@ -319,12 +319,14 @@ public class Login : MonoBehaviour {
                 if (task.IsCanceled)
                 {
                     Debug.LogError("SignInWithCredentialAsync was canceled.");
+                    loadingScreen.SetActive(false);
                     return;
                 }
                 if (task.IsFaulted)
                 {
                     Debug.LogError("SignInWithCredentialAsync encountered an error: " + task.Exception);
                     errorTextSignIn.text = "You have to accept all permissions on Facebook to login using Facebook";
+                    loadingScreen.SetActive(false);
                     return;
                 }
                 FirebaseUser newUser = task.Result;

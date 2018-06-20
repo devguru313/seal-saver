@@ -54,11 +54,11 @@ public class SyncTables : MonoBehaviour
         internetMenu.SetActive(false);
         deviceModel = SystemInfo.deviceModel.ToLower();
         //Amazon Device check
-        if (!deviceModel.Contains("amazon"))
+        /*if (!deviceModel.Contains("amazon"))
         {
             //Debug.Log("NOT AMAZON");
-            InitializeFirebase();
-        }
+            //InitializeFirebase();
+        }*/
         if (SceneManager.GetActiveScene().name == "Login")
         {
             internetLoginFlag = true;
@@ -113,7 +113,7 @@ public class SyncTables : MonoBehaviour
         #endregion
     }
 
-    void InitializeFirebase()
+    /*void InitializeFirebase()
     {
         Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
             var dependencyStatus = task.Result;
@@ -128,7 +128,7 @@ public class SyncTables : MonoBehaviour
                 // Firebase Unity SDK is not safe to use here.
             }
         });
-    }
+    }*/
 
     private void Update()
     {
