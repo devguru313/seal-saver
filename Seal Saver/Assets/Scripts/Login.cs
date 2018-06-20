@@ -29,11 +29,12 @@ public class Login : MonoBehaviour {
     public static bool newUser;
     public FirebaseAuth auth;
     public string advertID;
+    public string deviceModel;
 
     void Start()
     {
         firstLoginMenu.SetActive(false);
-        string deviceModel = SystemInfo.deviceModel.ToLower();
+        deviceModel = SystemInfo.deviceModel.ToLower();
 
         //Amazon Device check
         if (!deviceModel.Contains("amazon"))
@@ -219,8 +220,11 @@ public class Login : MonoBehaviour {
         }
 
         #region Login Analytics
-        Firebase.Analytics.Parameter[] LoginParameters = {new Firebase.Analytics.Parameter("EmailID", user), new Firebase.Analytics.Parameter("UserID", userID)};
-        Firebase.Analytics.FirebaseAnalytics.LogEvent(Firebase.Analytics.FirebaseAnalytics.EventLogin, LoginParameters);
+        if (!deviceModel.Contains("amazon"))
+        {
+            Firebase.Analytics.Parameter[] LoginParameters = { new Firebase.Analytics.Parameter("EmailID", user), new Firebase.Analytics.Parameter("UserID", userID) };
+            Firebase.Analytics.FirebaseAnalytics.LogEvent(Firebase.Analytics.FirebaseAnalytics.EventLogin, LoginParameters);
+        }
         #endregion
 
         loadingScreen.SetActive(false);
