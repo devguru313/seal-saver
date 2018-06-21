@@ -64,7 +64,7 @@ public class SyncTables : MonoBehaviour
             internetLoginFlag = true;
             CheckInternet();
         }
-        if (SceneManager.GetActiveScene().name == "menu")
+        if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1)
         {
             //To clear star data of all players before setting it up
             if (PlayerPrefs.HasKey("Username") && PlayerPrefs.HasKey("Password"))
@@ -395,16 +395,23 @@ public class SyncTables : MonoBehaviour
             playerCoins.Clear();
             string text;
             text = getPlayerStarsJSONResponse.data;
-            var rows = text.Split('&');
-            //rows.Length - 1 to account for blank row
-            for (int i = 0; i < rows.Length - 1; i++)
+            if(text == "&")
             {
-                //Split to separate coins
-                var col = rows[i].Split('@');
-                playerData.Add(col[0]);
-                //Debug.Log(col[0]);
-                playerCoins.Add(rows[i]);
-                //Debug.Log(rows[i]);
+                playerCoins.Add("@10");
+            }
+            else
+            {
+                var rows = text.Split('&');
+                //rows.Length - 1 to account for blank row
+                for (int i = 0; i < rows.Length - 1; i++)
+                {
+                    //Split to separate coins
+                    var col = rows[i].Split('@');
+                    playerData.Add(col[0]);
+                    //Debug.Log(col[0]);
+                    playerCoins.Add(rows[i]);
+                    //Debug.Log(rows[i]);
+                }
             }
         }
     }

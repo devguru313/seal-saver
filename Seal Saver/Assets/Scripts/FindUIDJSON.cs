@@ -6,4 +6,6 @@
     //Current methods: Email or Facebook
     public string Method;
     public string ADID;
+    public string DeviceModel;
+    public string DeviceOS;
 }
