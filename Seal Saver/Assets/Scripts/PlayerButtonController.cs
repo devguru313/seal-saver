@@ -18,10 +18,9 @@ public class PlayerButtonController : MonoBehaviour
     {
         //Debug.Log(playerIndex);
         SyncTables.currentPlayerIndex = playerIndex;
-        //Debug.Log(playerIndex);
-        var cols = SyncTables.playerCoins[playerIndex - 1];
+        var cols = SyncTables.playerCoins[playerIndex - 1].Split('@');
         int gems;
-        int.TryParse(cols, out gems);
+        int.TryParse(cols[1], out gems);
         PlayerPrefs.SetString("CurrentPlayerName", buttonText.text);
         PlayerPrefs.SetInt("Gems", gems);
         PlayerPrefs.Save();

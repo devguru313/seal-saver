@@ -43,8 +43,8 @@ public class PlayerManager : MonoBehaviour {
     IEnumerator WaitForUnityWebRequestPlayerData(UnityWebRequest request, string json)
     {
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = new DownloadHandlerBuffer();
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
         yield return request.SendWebRequest();
@@ -94,8 +94,8 @@ public class PlayerManager : MonoBehaviour {
         newButton.transform.SetParent(playerButtonTemplate.transform.parent, false);
         newNameMenu.SetActive(false);
         playerList += nameField.text + " ";
-        SyncTables.playerCoins.Add("10");
-        //Debug.Log(SyncTables.playerCoins.Count);
+        SyncTables.playerCoins.Add(numPlayers + "@20");
+        //Debug.Log(playerList + numPlayers);
         WritePlayerDataSQL(nameField.text, SetTextFromIndex.year);
     }
 
