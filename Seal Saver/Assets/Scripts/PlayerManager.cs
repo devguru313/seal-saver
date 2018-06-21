@@ -52,7 +52,7 @@ public class PlayerManager : MonoBehaviour {
         {
             yield return null;
         }
-        Debug.Log("Response: " + request.downloadHandler.text);
+        //Debug.Log("Response: " + request.downloadHandler.text);
         GetPlayerDataJSONResponse getPlayerDataJSONResponse = JsonUtility.FromJson<GetPlayerDataJSONResponse>(request.downloadHandler.text);
         if (getPlayerDataJSONResponse.status != "success")
         {
@@ -61,7 +61,7 @@ public class PlayerManager : MonoBehaviour {
         else
         {
             string playerText = getPlayerDataJSONResponse.data;
-            Debug.Log(playerText);
+            //Debug.Log(playerText);
             numPlayers = getPlayerDataJSONResponse.numPlayers;
             //Debug.Log(numPlayers);
             var playerNames = playerText.Split(',');

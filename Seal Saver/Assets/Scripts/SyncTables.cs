@@ -421,6 +421,16 @@ public class SyncTables : MonoBehaviour
         //Code to store stars in SQL
         if (Login.subscribed || level < 2)
         {
+            for (int i = 0; i < playerData.Count; i++)
+            {
+                //Debug.Log(playerData[i]);
+                var values = playerData[i].Split(' ');
+                if (values[0] == currentPlayerIndex.ToString())
+                {
+                    playerData[i] += stars + " ";
+                    //Debug.Log(playerData[i]);
+                }
+            }
             string setPlayerStarsURL = "https://edplus.net/setPlayerStars";
             var varSetPlayerStarsRequest = new UnityWebRequest(setPlayerStarsURL, "POST");
             SetPlayerStarsJSON setPlayerStarsJSON = new SetPlayerStarsJSON()

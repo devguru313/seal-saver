@@ -6,7 +6,6 @@ public class PlayerButtonController : MonoBehaviour
 {
     public Text buttonText;
     public int playerIndex;
-    //public static int currentPlayer;
 
     public void SetText(string text, int index)
     {
