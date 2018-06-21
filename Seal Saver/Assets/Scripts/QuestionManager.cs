@@ -50,6 +50,7 @@ public class QuestionManager : MonoBehaviour
 
     public static bool changeQuestion = false;
     public static bool isStart;
+    public bool afterWrong;
 
     public Text questionText;
     public Text optionText1;
@@ -61,6 +62,10 @@ public class QuestionManager : MonoBehaviour
     public Button button2;
     public Button button3;
     public Button button4;
+    public Button closeButton1;
+    public Button closeButton2;
+    public Button closeButton3;
+    public Button closeButton4;
 
     public AudioSource audioSource;
     public AudioClip audioCorrect;
@@ -84,6 +89,7 @@ public class QuestionManager : MonoBehaviour
     void Start()
     {
         isStart = true;
+        ReadInputSQL();
         optionImage1 = optionSprite1.GetComponent<Image>();
         optionImage2 = optionSprite2.GetComponent<Image>();
         optionImage3 = optionSprite3.GetComponent<Image>();
@@ -95,6 +101,10 @@ public class QuestionManager : MonoBehaviour
         optionText2.text = "start";
         optionText3.text = "start";
         optionText4.text = "start";
+        closeButton1.gameObject.SetActive(false);
+        closeButton2.gameObject.SetActive(false);
+        closeButton3.gameObject.SetActive(false);
+        closeButton4.gameObject.SetActive(false);
         questionCount = 0;
         currentPlayerIndex = SyncTables.currentPlayerIndex;
         if (Login.loggedIn)
@@ -108,7 +118,6 @@ public class QuestionManager : MonoBehaviour
         inputPath = GetApplicationPath() + userID + "_InputTable.csv";
         outputPath = GetApplicationPath() + userID + "_OutputTable.csv";
         inputQuestionNo = 0;
-        changeQuestion = true;
     }
 
     void Update()
@@ -134,6 +143,7 @@ public class QuestionManager : MonoBehaviour
     #region On Option Select Functions
     public void OnOptionSelect1()
     {
+        //Debug.Log("Option 1 Selected");
         timeAsked = askTime.ToString();
         answerTime = DateTime.Now;                                                          //Time when button is pressed
         timeDuration = answerTime.Subtract(askTime);                                        //Subtract with time when question was asked
@@ -171,7 +181,8 @@ public class QuestionManager : MonoBehaviour
             answerSelected = option1;
             optionImage1.sprite = redButton;
             audioSource.PlayOneShot(audioWrong);
-            switch (CorrectAnsIndex())
+            int index = CorrectAnsIndex();
+            switch (index)
             {
                 case 1:
                     optionImage2.sprite = greenButton;
@@ -190,12 +201,14 @@ public class QuestionManager : MonoBehaviour
                     break;
             }
             WriteOutputSQL();
-            Invoke("ResetOnWrong", 1.5f);
+            ResetOnWrong(index);
+            //Invoke("ResetOnWrong", 1.5f);
         }
     }
 
     public void OnOptionSelect2()
     {
+        //Debug.Log("Option 2 Selected");
         timeAsked = askTime.ToString();
         answerTime = DateTime.Now;
         timeDuration = answerTime.Subtract(askTime);
@@ -233,7 +246,8 @@ public class QuestionManager : MonoBehaviour
             answerSelected = option2;
             optionImage2.sprite = redButton;
             audioSource.PlayOneShot(audioWrong);
-            switch (CorrectAnsIndex())
+            int index = CorrectAnsIndex();
+            switch (index)
             {
                 case 0:
                     optionImage1.sprite = greenButton;
@@ -252,12 +266,14 @@ public class QuestionManager : MonoBehaviour
                     break;
             }
             WriteOutputSQL();
-            Invoke("ResetOnWrong", 1.5f);
+            ResetOnWrong(index);
+            //Invoke("ResetOnWrong", 1.5f);
         }
     }
 
     public void OnOptionSelect3()
     {
+        //Debug.Log("Option 3 Selected");
         timeAsked = askTime.ToString();
         answerTime = DateTime.Now;
         timeDuration = answerTime.Subtract(askTime);
@@ -295,7 +311,8 @@ public class QuestionManager : MonoBehaviour
             answerSelected = option3;
             optionImage3.sprite = redButton;
             audioSource.PlayOneShot(audioWrong);
-            switch (CorrectAnsIndex())
+            int index = CorrectAnsIndex();
+            switch (index)
             {
                 case 0:
                     optionImage1.sprite = greenButton;
@@ -314,12 +331,14 @@ public class QuestionManager : MonoBehaviour
                     break;
             }
             WriteOutputSQL();
-            Invoke("ResetOnWrong", 1.5f);
+            ResetOnWrong(index);
+            //Invoke("ResetOnWrong", 1.5f);
         }
     }
 
     public void OnOptionSelect4()
     {
+        //Debug.Log("Option 4 Selected");
         timeAsked = askTime.ToString();
         answerTime = DateTime.Now;
         timeDuration = answerTime.Subtract(askTime);
@@ -357,7 +376,8 @@ public class QuestionManager : MonoBehaviour
             answerSelected = option4;
             optionImage4.sprite = redButton;
             audioSource.PlayOneShot(audioWrong);
-            switch (CorrectAnsIndex())
+            int index = CorrectAnsIndex();
+            switch (index)
             {
                 case 0:
                     optionImage1.sprite = greenButton;
@@ -376,7 +396,8 @@ public class QuestionManager : MonoBehaviour
                     break;
             }
             WriteOutputSQL();
-            Invoke("ResetOnWrong", 1.5f);
+            ResetOnWrong(index);
+            //Invoke("ResetOnWrong", 1.5f);
         }
     }
     #endregion
@@ -391,8 +412,7 @@ public class QuestionManager : MonoBehaviour
         coinRewardUI.SetActive(false);
         GameSpecificChanges.getCoins = true;
         questionUI.SetActive(false);
-        //SyncTables.syncOutputNow = true;
-        changeQuestion = true;
+        ReadInputSQL();
         //SetQuestion();
         optionImage1.sprite = defaultButton;
         optionImage2.sprite = defaultButton;
@@ -404,28 +424,57 @@ public class QuestionManager : MonoBehaviour
         button4.interactable = true;
     }
 
-    public void ResetOnWrong()
+    public void ResetOnWrong(int correctIndex)
     {
         questionCount = 0;
-        button1.gameObject.SetActive(true);
-        button2.gameObject.SetActive(true);
-        button3.gameObject.SetActive(true);
-        button4.gameObject.SetActive(true);
         GameSpecificChanges.getCoins = true;
-        questionUI.SetActive(false);
-        //SyncTables.syncOutputNow = true;
-        changeQuestion = true;
         //SetQuestion();
-        questionUI.SetActive(true);
-        askTime = DateTime.Now;
+        afterWrong = true;
+        //Debug.Log("Wrong flag on");
+        switch (correctIndex)
+        {
+            case 0:
+                closeButton1.gameObject.SetActive(true);
+                break;
+            case 1:
+                closeButton2.gameObject.SetActive(true);
+                break;
+            case 2:
+                closeButton3.gameObject.SetActive(true);
+                break;
+            case 3:
+                closeButton4.gameObject.SetActive(true);
+                break;
+        }
+        ReadInputSQL();
+    }
+
+    public void ResetOnWrongClick()
+    {
+        //Debug.Log("Menu OFF");
+        questionUI.SetActive(false);
         optionImage1.sprite = defaultButton;
         optionImage2.sprite = defaultButton;
         optionImage3.sprite = defaultButton;
         optionImage4.sprite = defaultButton;
+        button1.gameObject.SetActive(true);
+        button2.gameObject.SetActive(true);
+        button3.gameObject.SetActive(true);
+        button4.gameObject.SetActive(true);
+        closeButton1.gameObject.SetActive(false);
+        closeButton2.gameObject.SetActive(false);
+        closeButton3.gameObject.SetActive(false);
+        closeButton4.gameObject.SetActive(false);
         button1.interactable = true;
         button2.interactable = true;
         button3.interactable = true;
         button4.interactable = true;
+        SetQuestion();
+        //Debug.Log("Wrong flag off");
+        afterWrong = false;
+        askTime = DateTime.Now;
+        //Debug.Log("Menu ON");
+        questionUI.SetActive(true);
     }
     #endregion
 
@@ -452,13 +501,16 @@ public class QuestionManager : MonoBehaviour
                 previousFailures = 0
             };
             string json = JsonUtility.ToJson(readInputJSON);
-            //Debug.Log(json);
+            //Debug.Log("getNextQuestion");
             StartCoroutine(WaitForUnityWebRequestReadInput(request, json));
         }
         else
         {
             ReadInput();
-            SetQuestion();
+            if (!afterWrong)
+            {
+                SetQuestion();
+            }
         }
     }
 
@@ -479,11 +531,21 @@ public class QuestionManager : MonoBehaviour
         if (request.downloadHandler.text == "" || request.downloadHandler.text == null)
         {
             ReadInput();
-            SetQuestion();
+            if (!afterWrong)
+            {
+                SetQuestion();
+            }
+        }
+        else if (readInputJSONResponse.status != "success")
+        {
+            ReadInput();
+            if (!afterWrong)
+            {
+                SetQuestion();
+            }
         }
         else
         {
-            //Debug.Log(downloadCentralJSONResponse.data);
             downloadedInputText = readInputJSONResponse.data;
             var lines = downloadedInputText.Split('&');
             var cols = lines[0].Split(',');
@@ -494,7 +556,10 @@ public class QuestionManager : MonoBehaviour
             wrong2 = cols[4];
             wrong3 = cols[5];
             questionSet = cols[6];
-            SetQuestion();
+            if (!afterWrong)
+            {
+                SetQuestion();
+            }
             for (int i = 0; i < lines.Length - 1; i++)
             {
                 //Debug.Log(lines[i]);
@@ -541,6 +606,7 @@ public class QuestionManager : MonoBehaviour
         optionText2.text = option2;
         optionText3.text = option3;
         optionText4.text = option4;
+        //Debug.Log("Set Question");
     }
 
     void ReadInput()
