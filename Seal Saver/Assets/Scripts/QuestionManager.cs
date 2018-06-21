@@ -546,20 +546,25 @@ public class QuestionManager : MonoBehaviour
     void ReadInput()
     {
         //Debug.Log("ReadInput called");
-        //StartCoroutine("CheckInternetPing");
-        internet = CheckInternetPing();
-        if (internet)
+        int lineCount = 0;
+        var countReader = new StreamReader(inputPath);
+        while (!countReader.EndOfStream)
+        {
+            var line = countReader.ReadLine();
+            lineCount++;
+        }
+        countReader.Close();
+        //Debug.Log(lineCount);
+        inputQuestionNo++;
+        if(inputQuestionNo >= lineCount)
         {
             inputQuestionNo = 0;
-        }
-        else
-        {
-            inputQuestionNo++;
         }
         var reader = new StreamReader(inputPath);
         for (int i = 0; i <= inputQuestionNo; i++)
         {
             var line = reader.ReadLine();
+            //Debug.Log(line);
             var values = line.Split(',');
             questionID = values[0];
             question = values[1];
@@ -571,17 +576,6 @@ public class QuestionManager : MonoBehaviour
             //uQID = values[7];
         }
         reader.Close();
-        shuffleTemp.Clear();
-        shuffleTemp.Add(correctAns);
-        shuffleTemp.Add(wrong1);
-        shuffleTemp.Add(wrong2);
-        shuffleTemp.Add(wrong3);
-        Shuffle(shuffleTemp);
-        option1 = shuffleTemp[0];
-        option2 = shuffleTemp[1];
-        option3 = shuffleTemp[2];
-        option4 = shuffleTemp[3];
-        //Debug.Log(question);
     }
     #endregion
 
@@ -666,7 +660,7 @@ public class QuestionManager : MonoBehaviour
         {
             WriteOutput();
         }
-        Debug.Log("Response: " + request.downloadHandler.text);
+        //Debug.Log("Response: " + request.downloadHandler.text);
     }
     #endregion
 

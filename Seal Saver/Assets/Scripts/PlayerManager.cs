@@ -43,8 +43,8 @@ public class PlayerManager : MonoBehaviour {
     IEnumerator WaitForUnityWebRequestPlayerData(UnityWebRequest request, string json)
     {
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
         yield return request.SendWebRequest();
@@ -52,7 +52,7 @@ public class PlayerManager : MonoBehaviour {
         {
             yield return null;
         }
-        //Debug.Log("Response: " + request.downloadHandler.text);
+        Debug.Log("Response: " + request.downloadHandler.text);
         GetPlayerDataJSONResponse getPlayerDataJSONResponse = JsonUtility.FromJson<GetPlayerDataJSONResponse>(request.downloadHandler.text);
         if (getPlayerDataJSONResponse.status != "success")
         {
@@ -61,9 +61,10 @@ public class PlayerManager : MonoBehaviour {
         else
         {
             string playerText = getPlayerDataJSONResponse.data;
+            Debug.Log(playerText);
             numPlayers = getPlayerDataJSONResponse.numPlayers;
             //Debug.Log(numPlayers);
-            var playerNames = playerText.Split(' ');
+            var playerNames = playerText.Split(',');
             for (int i = 0; i < numPlayers; i++)
             {
                 playerList += playerNames[i] + " ";
