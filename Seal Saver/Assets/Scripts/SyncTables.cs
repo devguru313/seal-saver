@@ -414,6 +414,11 @@ public class SyncTables : MonoBehaviour
                 }
             }
         }
+        if (PlayerButtonController.fromPBController)
+        {
+            PlayerButtonController.fromPBController = false;
+            SceneManager.LoadScene(3);
+        }
     }
 
     public void SetStars(int stars, int level)

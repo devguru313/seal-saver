@@ -6,6 +6,7 @@ public class PlayerButtonController : MonoBehaviour
 {
     public Text buttonText;
     public int playerIndex;
+    public static bool fromPBController;
 
     public void SetText(string text, int index)
     {
@@ -25,6 +26,8 @@ public class PlayerButtonController : MonoBehaviour
         PlayerPrefs.Save();
         SyncTables.isLoggingIn = true;
         //SyncTables.syncDownloadNow = true;
-        SceneManager.LoadScene(3);
+        fromPBController = true;
+        SyncTables.getStarsAndLevels = true;
+        //SceneManager.LoadScene(3);
     }
 }
