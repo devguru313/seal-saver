@@ -62,10 +62,6 @@ public class QuestionManager : MonoBehaviour
     public Button button2;
     public Button button3;
     public Button button4;
-    public Button closeButton1;
-    public Button closeButton2;
-    public Button closeButton3;
-    public Button closeButton4;
 
     public AudioSource audioSource;
     public AudioClip audioCorrect;
@@ -101,10 +97,6 @@ public class QuestionManager : MonoBehaviour
         optionText2.text = "start";
         optionText3.text = "start";
         optionText4.text = "start";
-        closeButton1.gameObject.SetActive(false);
-        closeButton2.gameObject.SetActive(false);
-        closeButton3.gameObject.SetActive(false);
-        closeButton4.gameObject.SetActive(false);
         questionCount = 0;
         currentPlayerIndex = SyncTables.currentPlayerIndex;
         if (Login.loggedIn)
@@ -178,11 +170,11 @@ public class QuestionManager : MonoBehaviour
         else
         {
             result = "0";
+            afterWrong = true;
             answerSelected = option1;
             optionImage1.sprite = redButton;
             audioSource.PlayOneShot(audioWrong);
-            int index = CorrectAnsIndex();
-            switch (index)
+            switch (CorrectAnsIndex())
             {
                 case 1:
                     optionImage2.sprite = greenButton;
@@ -201,8 +193,7 @@ public class QuestionManager : MonoBehaviour
                     break;
             }
             WriteOutputSQL();
-            ResetOnWrong(index);
-            //Invoke("ResetOnWrong", 1.5f);
+            Invoke("ResetOnWrong", 2.5f);
         }
     }
 
@@ -243,11 +234,11 @@ public class QuestionManager : MonoBehaviour
         else
         {
             result = "0";
+            afterWrong = true;
             answerSelected = option2;
             optionImage2.sprite = redButton;
             audioSource.PlayOneShot(audioWrong);
-            int index = CorrectAnsIndex();
-            switch (index)
+            switch (CorrectAnsIndex())
             {
                 case 0:
                     optionImage1.sprite = greenButton;
@@ -266,8 +257,7 @@ public class QuestionManager : MonoBehaviour
                     break;
             }
             WriteOutputSQL();
-            ResetOnWrong(index);
-            //Invoke("ResetOnWrong", 1.5f);
+            Invoke("ResetOnWrong", 2.5f);
         }
     }
 
@@ -308,11 +298,11 @@ public class QuestionManager : MonoBehaviour
         else
         {
             result = "0";
+            afterWrong = true;
             answerSelected = option3;
             optionImage3.sprite = redButton;
             audioSource.PlayOneShot(audioWrong);
-            int index = CorrectAnsIndex();
-            switch (index)
+            switch (CorrectAnsIndex())
             {
                 case 0:
                     optionImage1.sprite = greenButton;
@@ -331,8 +321,7 @@ public class QuestionManager : MonoBehaviour
                     break;
             }
             WriteOutputSQL();
-            ResetOnWrong(index);
-            //Invoke("ResetOnWrong", 1.5f);
+            Invoke("ResetOnWrong", 2.5f);
         }
     }
 
@@ -373,11 +362,11 @@ public class QuestionManager : MonoBehaviour
         else
         {
             result = "0";
+            afterWrong = true;
             answerSelected = option4;
             optionImage4.sprite = redButton;
             audioSource.PlayOneShot(audioWrong);
-            int index = CorrectAnsIndex();
-            switch (index)
+            switch (CorrectAnsIndex())
             {
                 case 0:
                     optionImage1.sprite = greenButton;
@@ -396,8 +385,7 @@ public class QuestionManager : MonoBehaviour
                     break;
             }
             WriteOutputSQL();
-            ResetOnWrong(index);
-            //Invoke("ResetOnWrong", 1.5f);
+            Invoke("ResetOnWrong", 2.5f);
         }
     }
     #endregion
@@ -412,7 +400,7 @@ public class QuestionManager : MonoBehaviour
         coinRewardUI.SetActive(false);
         GameSpecificChanges.getCoins = true;
         questionUI.SetActive(false);
-        ReadInputSQL();
+        //ReadInputSQL();
         //SetQuestion();
         optionImage1.sprite = defaultButton;
         optionImage2.sprite = defaultButton;
@@ -424,33 +412,11 @@ public class QuestionManager : MonoBehaviour
         button4.interactable = true;
     }
 
-    public void ResetOnWrong(int correctIndex)
+    public void ResetOnWrong()
     {
         questionCount = 0;
         GameSpecificChanges.getCoins = true;
-        //SetQuestion();
-        afterWrong = true;
-        //Debug.Log("Wrong flag on");
-        switch (correctIndex)
-        {
-            case 0:
-                closeButton1.gameObject.SetActive(true);
-                break;
-            case 1:
-                closeButton2.gameObject.SetActive(true);
-                break;
-            case 2:
-                closeButton3.gameObject.SetActive(true);
-                break;
-            case 3:
-                closeButton4.gameObject.SetActive(true);
-                break;
-        }
-        ReadInputSQL();
-    }
-
-    public void ResetOnWrongClick()
-    {
+        //ReadInputSQL();
         //Debug.Log("Menu OFF");
         questionUI.SetActive(false);
         optionImage1.sprite = defaultButton;
@@ -461,10 +427,6 @@ public class QuestionManager : MonoBehaviour
         button2.gameObject.SetActive(true);
         button3.gameObject.SetActive(true);
         button4.gameObject.SetActive(true);
-        closeButton1.gameObject.SetActive(false);
-        closeButton2.gameObject.SetActive(false);
-        closeButton3.gameObject.SetActive(false);
-        closeButton4.gameObject.SetActive(false);
         button1.interactable = true;
         button2.interactable = true;
         button3.interactable = true;
@@ -652,6 +614,7 @@ public class QuestionManager : MonoBehaviour
         writer.WriteLine(userID + "," + questionID + "," + question + "," + result + "," + answerSelected + "," + timeAsked + "," + timeTaken + "," + questionSet/* + "," + uQID*/);
         writer.Flush();
         writer.Close();
+        ReadInputSQL();
     }
 
     void ReadOutput()
@@ -725,6 +688,10 @@ public class QuestionManager : MonoBehaviour
         if(request.downloadHandler.text == "" || request.downloadHandler.text == null)
         {
             WriteOutput();
+        }
+        else
+        {
+            ReadInputSQL();
         }
         //Debug.Log("Response: " + request.downloadHandler.text);
     }
