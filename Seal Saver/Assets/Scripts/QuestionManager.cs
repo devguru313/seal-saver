@@ -47,8 +47,7 @@ public class QuestionManager : MonoBehaviour
     public string timeTaken;
     public string uQID;
     public string answerText;
-
-    public static bool changeQuestion = false;
+    
     public static bool isStart;
     public bool afterWrong;
 
@@ -122,18 +121,13 @@ public class QuestionManager : MonoBehaviour
         }
         outputPath = GetApplicationPath() + userID + "_OutputTable.csv";
         inputPath = GetApplicationPath() + userID + "_InputTable.csv";
-
-        if (changeQuestion)
-        {
-            changeQuestion = false;
-            ReadInputSQL();
-        }
     }
 
     #region On Option Select Functions
     public void OnOptionSelect1()
     {
         //Debug.Log("Option 1 Selected");
+        afterWrong = true;
         timeAsked = askTime.ToString();
         answerTime = DateTime.Now;                                                          //Time when button is pressed
         timeDuration = answerTime.Subtract(askTime);                                        //Subtract with time when question was asked
@@ -168,8 +162,8 @@ public class QuestionManager : MonoBehaviour
         else
         {
             result = "0";
-            afterWrong = true;
             answerSelected = option1;
+            WriteOutputSQL();
             optionImage1.sprite = redButton;
             audioSource.PlayOneShot(audioWrong);
             switch (CorrectAnsIndex())
@@ -190,7 +184,6 @@ public class QuestionManager : MonoBehaviour
                     button3.gameObject.SetActive(false);
                     break;
             }
-            WriteOutputSQL();
             Invoke("ResetOnWrong", 2.5f);
         }
     }
@@ -198,6 +191,7 @@ public class QuestionManager : MonoBehaviour
     public void OnOptionSelect2()
     {
         //Debug.Log("Option 2 Selected");
+        afterWrong = true;
         timeAsked = askTime.ToString();
         answerTime = DateTime.Now;
         timeDuration = answerTime.Subtract(askTime);
@@ -232,8 +226,8 @@ public class QuestionManager : MonoBehaviour
         else
         {
             result = "0";
-            afterWrong = true;
             answerSelected = option2;
+            WriteOutputSQL();
             optionImage2.sprite = redButton;
             audioSource.PlayOneShot(audioWrong);
             switch (CorrectAnsIndex())
@@ -254,7 +248,6 @@ public class QuestionManager : MonoBehaviour
                     button3.gameObject.SetActive(false);
                     break;
             }
-            WriteOutputSQL();
             Invoke("ResetOnWrong", 2.5f);
         }
     }
@@ -262,6 +255,7 @@ public class QuestionManager : MonoBehaviour
     public void OnOptionSelect3()
     {
         //Debug.Log("Option 3 Selected");
+        afterWrong = true;
         timeAsked = askTime.ToString();
         answerTime = DateTime.Now;
         timeDuration = answerTime.Subtract(askTime);
@@ -296,8 +290,8 @@ public class QuestionManager : MonoBehaviour
         else
         {
             result = "0";
-            afterWrong = true;
             answerSelected = option3;
+            WriteOutputSQL();
             optionImage3.sprite = redButton;
             audioSource.PlayOneShot(audioWrong);
             switch (CorrectAnsIndex())
@@ -318,7 +312,6 @@ public class QuestionManager : MonoBehaviour
                     button2.gameObject.SetActive(false);
                     break;
             }
-            WriteOutputSQL();
             Invoke("ResetOnWrong", 2.5f);
         }
     }
@@ -326,6 +319,7 @@ public class QuestionManager : MonoBehaviour
     public void OnOptionSelect4()
     {
         //Debug.Log("Option 4 Selected");
+        afterWrong = true;
         timeAsked = askTime.ToString();
         answerTime = DateTime.Now;
         timeDuration = answerTime.Subtract(askTime);
@@ -360,8 +354,8 @@ public class QuestionManager : MonoBehaviour
         else
         {
             result = "0";
-            afterWrong = true;
             answerSelected = option4;
+            WriteOutputSQL();
             optionImage4.sprite = redButton;
             audioSource.PlayOneShot(audioWrong);
             switch (CorrectAnsIndex())
@@ -382,7 +376,6 @@ public class QuestionManager : MonoBehaviour
                     button2.gameObject.SetActive(false);
                     break;
             }
-            WriteOutputSQL();
             Invoke("ResetOnWrong", 2.5f);
         }
     }
@@ -399,7 +392,6 @@ public class QuestionManager : MonoBehaviour
         GameSpecificChanges.getCoins = true;
         questionUI.SetActive(false);
         //ReadInputSQL();
-        //SetQuestion();
         optionImage1.sprite = defaultButton;
         optionImage2.sprite = defaultButton;
         optionImage3.sprite = defaultButton;
@@ -408,6 +400,8 @@ public class QuestionManager : MonoBehaviour
         button2.interactable = true;
         button3.interactable = true;
         button4.interactable = true;
+        afterWrong = false;
+        SetQuestion();
     }
 
     public void ResetOnWrong()
@@ -415,7 +409,7 @@ public class QuestionManager : MonoBehaviour
         questionCount = 0;
         GameSpecificChanges.getCoins = true;
         //ReadInputSQL();
-        //Debug.Log("Menu OFF");
+        Debug.Log("Menu OFF");
         questionUI.SetActive(false);
         optionImage1.sprite = defaultButton;
         optionImage2.sprite = defaultButton;
@@ -430,10 +424,9 @@ public class QuestionManager : MonoBehaviour
         button3.interactable = true;
         button4.interactable = true;
         SetQuestion();
-        //Debug.Log("Wrong flag off");
         afterWrong = false;
         askTime = DateTime.Now;
-        //Debug.Log("Menu ON");
+        Debug.Log("Menu ON");
         questionUI.SetActive(true);
     }
     #endregion
@@ -454,7 +447,7 @@ public class QuestionManager : MonoBehaviour
             inputQuestionNo = 0;
             string readInputURL = "https://edplus.net/getNextQuestions";
             var request = new UnityWebRequest(readInputURL, "POST");
-            Debug.Log(SyncTables.currentPlayerIndex);
+            //Debug.Log(SyncTables.currentPlayerIndex);
             ReadInputJSON readInputJSON = new ReadInputJSON()
             {
                 UserID = Login.userID,
@@ -462,7 +455,7 @@ public class QuestionManager : MonoBehaviour
                 previousFailures = 0
             };
             string json = JsonUtility.ToJson(readInputJSON);
-            //Debug.Log("getNextQuestion");
+            Debug.Log("getNextQuestion");
             StartCoroutine(WaitForUnityWebRequestReadInput(request, json));
         }
         else
@@ -567,7 +560,7 @@ public class QuestionManager : MonoBehaviour
         optionText2.text = option2;
         optionText3.text = option3;
         optionText4.text = option4;
-        //Debug.Log("Set Question");
+        Debug.Log("Set Question");
     }
 
     void ReadInput()
