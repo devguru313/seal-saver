@@ -67,8 +67,7 @@ public class QuestionManager : MonoBehaviour
     public AudioClip audioCorrect;
     public AudioClip audioWrong;
     public AudioClip audioCoins;
-
-    public int currentPlayerIndex;
+    
     private int questionCount;
     private int inputQuestionNo;
     private string downloadedInputText;
@@ -98,10 +97,9 @@ public class QuestionManager : MonoBehaviour
         optionText3.text = "start";
         optionText4.text = "start";
         questionCount = 0;
-        currentPlayerIndex = SyncTables.currentPlayerIndex;
         if (Login.loggedIn)
         {
-            userID = Login.userID + "_" + currentPlayerIndex.ToString();
+            userID = Login.userID + "_" + SyncTables.currentPlayerIndex.ToString();
         }
         else
         {
@@ -116,7 +114,7 @@ public class QuestionManager : MonoBehaviour
     {
         if (Login.loggedIn)
         {
-            userID = Login.userID + "_" + currentPlayerIndex.ToString();
+            userID = Login.userID + "_" + SyncTables.currentPlayerIndex.ToString();
         }
         else
         {
@@ -164,7 +162,7 @@ public class QuestionManager : MonoBehaviour
             else
             {
                 audioSource.PlayOneShot(audioCorrect);
-                Invoke("ResetOnCorrect", 1);
+                Invoke("ResetOnCorrect", 0.5f);
             }
         }
         else
@@ -228,7 +226,7 @@ public class QuestionManager : MonoBehaviour
             else
             {
                 audioSource.PlayOneShot(audioCorrect);
-                Invoke("ResetOnCorrect", 1);
+                Invoke("ResetOnCorrect", 0.5f);
             }
         }
         else
@@ -292,7 +290,7 @@ public class QuestionManager : MonoBehaviour
             else
             {
                 audioSource.PlayOneShot(audioCorrect);
-                Invoke("ResetOnCorrect", 1);
+                Invoke("ResetOnCorrect", 0.5f);
             }
         }
         else
@@ -356,7 +354,7 @@ public class QuestionManager : MonoBehaviour
             else
             {
                 audioSource.PlayOneShot(audioCorrect);
-                Invoke("ResetOnCorrect", 1);
+                Invoke("ResetOnCorrect", 0.5f);
             }
         }
         else
@@ -456,10 +454,11 @@ public class QuestionManager : MonoBehaviour
             inputQuestionNo = 0;
             string readInputURL = "https://edplus.net/getNextQuestions";
             var request = new UnityWebRequest(readInputURL, "POST");
+            Debug.Log(SyncTables.currentPlayerIndex);
             ReadInputJSON readInputJSON = new ReadInputJSON()
             {
                 UserID = Login.userID,
-                PlayerID = currentPlayerIndex,
+                PlayerID = SyncTables.currentPlayerIndex,
                 previousFailures = 0
             };
             string json = JsonUtility.ToJson(readInputJSON);
