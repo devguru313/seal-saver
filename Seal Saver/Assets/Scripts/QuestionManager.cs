@@ -90,11 +90,11 @@ public class QuestionManager : MonoBehaviour
         optionImage4 = optionSprite4.GetComponent<Image>();
         startTime = DateTime.Now.ToString();
         //Debug.Log("Start Time: " + startTime);
-        questionText.text = "start";
-        optionText1.text = "start";
-        optionText2.text = "start";
-        optionText3.text = "start";
-        optionText4.text = "start";
+        questionText.text = "Please click to continue";
+        optionText1.text = "";
+        optionText2.text = "";
+        optionText3.text = "";
+        optionText4.text = "";
         questionCount = 0;
         if (Login.loggedIn)
         {
