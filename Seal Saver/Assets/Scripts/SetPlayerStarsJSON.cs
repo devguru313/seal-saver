@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class SetPlayerStarsJSON
+﻿public class SetPlayerStarsJSON
 {
     public string UserID;
     public int PlayerID;

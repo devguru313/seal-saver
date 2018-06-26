@@ -22,17 +22,6 @@ public class SyncTables : MonoBehaviour
     public static bool internetLogin = true;
     public static bool internet = true;
 
-    /*private string outputQID;
-    private string outputQuestion;
-    private string outputResult;
-    private string outputOptionSelected;
-    private string outputTimeAsked;
-    private string outputTimeTaken;
-    private string outputUserID;
-    private string outputQuestionSet;
-    private string outputUQID;
-    public string answerText;*/
-
     public static bool getLevel = false;
     public static bool getStarsAndLevels = false;
     public static bool setStars = false;
@@ -53,12 +42,6 @@ public class SyncTables : MonoBehaviour
         gameName = GameSpecificChanges.gameName;
         internetMenu.SetActive(false);
         deviceModel = SystemInfo.deviceModel.ToLower();
-        //Amazon Device check
-        /*if (!deviceModel.Contains("amazon"))
-        {
-            //Debug.Log("NOT AMAZON");
-            //InitializeFirebase();
-        }*/
         if (SceneManager.GetActiveScene().name == "Login")
         {
             internetLoginFlag = true;
@@ -112,23 +95,6 @@ public class SyncTables : MonoBehaviour
         }
         #endregion
     }
-
-    /*void InitializeFirebase()
-    {
-        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
-            var dependencyStatus = task.Result;
-            if (dependencyStatus == Firebase.DependencyStatus.Available)
-            {
-                Debug.Log("Firebase Analytics Init");
-            }
-            else
-            {
-                Debug.LogError(System.String.Format(
-                  "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
-                // Firebase Unity SDK is not safe to use here.
-            }
-        });
-    }*/
 
     private void Update()
     {
@@ -230,71 +196,6 @@ public class SyncTables : MonoBehaviour
         writer.Write(tempText);
         writer.Flush();
         writer.Close();
-    }
-    #endregion
-
-    #region Output
-    /*void ReadOutput()
-    {
-        answerText = "";
-        var reader = new StreamReader(outputTablePath);
-        while (!reader.EndOfStream)
-        {
-            var line = reader.ReadLine();
-            var values = line.Split(',');
-            outputUserID = values[0];
-            outputQID = values[1];
-            outputQuestion = values[2];
-            outputResult = values[3];
-            outputOptionSelected = values[4];
-            outputTimeAsked = values[5];
-            outputTimeTaken = values[6];
-            outputQuestionSet = values[7];
-            answerText = answerText + values[1] + "," + values[7] + "," + values[5] + "," + values[6] + "," + values[3] + "," + values[4] + "&";
-            //outputUQID = values[8];
-        }
-        reader.Close();
-    }
-
-    void WriteOutputSQL()
-    {
-        string insertOutputURL = "https://edplus.net/insertOutput";
-        var request = new UnityWebRequest(insertOutputURL, "POST");
-        InsertOutputJSON insertOutputJSON = new InsertOutputJSON()
-        {
-            UserID = userID,
-            Level = knowledgeLevel,
-            App = gameName,
-            DeviceModel = SystemInfo.deviceModel,
-            DeviceOS = SystemInfo.operatingSystem,
-            Company = Application.companyName,
-            UpdateCT = 1,
-            Answers = answerText
-            /*,
-            UQID = outputUQID
-        };
-        string json = JsonUtility.ToJson(insertOutputJSON);
-        internet = CheckInternetPing();
-        if (internet)
-        {
-            StartCoroutine(WaitForUnityWebRequest(request, json));
-        }
-    }*/
-
-    IEnumerator WaitForUnityWebRequest(UnityWebRequest request, string json)
-    {
-        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-
-        yield return request.SendWebRequest();
-        while (!request.isDone)
-        {
-            yield return null;
-        }
-        internet = CheckInternetPing();
-        //Debug.Log("Response: " + request.downloadHandler.text);
     }
     #endregion
 
@@ -537,6 +438,22 @@ public class SyncTables : MonoBehaviour
             StartCoroutine(WaitForUnityWebRequest(varSetCoinsRequest, jsonSetCoins));
         }
     }
+
+    IEnumerator WaitForUnityWebRequest(UnityWebRequest request, string json)
+    {
+        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+        while (!request.isDone)
+        {
+            yield return null;
+        }
+        internet = CheckInternetPing();
+        //Debug.Log("Response: " + request.downloadHandler.text);
+    }
     #endregion
 
     #region Internet
@@ -544,33 +461,6 @@ public class SyncTables : MonoBehaviour
     {
         internet = CheckInternetPing();
     }
-
-    /*IEnumerator CheckInternetPingShowMenu()
-    {
-        //Edtopia website taken as URL link to check connectivity
-        WWW wwwInternet = new WWW("https://www.google.com");
-        yield return wwwInternet;
-        if (wwwInternet.bytesDownloaded == 0)
-        {
-            Debug.Log("Not Connected to Internet");
-            internet = false;
-            internetMenu.SetActive(true);
-            internetLogin = false;
-        }
-        else if(internetButton)
-        {
-            internetButton = false;
-            internet = true;
-            //Debug.Log("Connected to Internet");
-            internetMenu.SetActive(false);
-            internetLogin = true;
-        }
-        else
-        {
-            internet = true;
-            internetLogin = true;
-        }
-    }*/
 
     bool CheckInternetPing()
     {
@@ -627,11 +517,6 @@ public class SyncTables : MonoBehaviour
         }
     }
 
-    /*public void CloseInternetMenu()
-    {
-        CheckInternet();
-    }*/
-
     public void OpenTermsAndConditionsURL()
     {
         Application.OpenURL("https://edplus.io/privacy/");
@@ -639,7 +524,10 @@ public class SyncTables : MonoBehaviour
 
     public void OpenParentsDashboardURL()
     {
-        Application.OpenURL("https://edbit.app/");
+        string email = Login.user;
+        string game = GameSpecificChanges.gameName;
+        string url = "https://edbit.app/?email=" + email + "&app=" + game;
+        Application.OpenURL(url);
     }
     #endregion
 
