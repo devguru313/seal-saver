@@ -7030,10 +7030,9 @@ MonoBehaviour:
   button3: {fileID: 1617368598}
   button4: {fileID: 1617368597}
   audioSource: {fileID: 1853914246}
-  audioCorrect: {fileID: 8300000, guid: 98e824b7bfd46884ca686544a915b19f, type: 3}
-  audioWrong: {fileID: 8300000, guid: 5e02efb43d7a30c4babe4cea5c2d8d9e, type: 3}
-  audioCoins: {fileID: 8300000, guid: 3dd3baaae647dea4f8b14de0b619b923, type: 3}
-  currentPlayerIndex: 0
+  audioCorrect: {fileID: 8300000, guid: 9d6de88bfbcbd794c94d7e160ee57659, type: 3}
+  audioWrong: {fileID: 8300000, guid: 6c5bc38ab57c2994e8bb91ab558d9776, type: 3}
+  audioCoins: {fileID: 8300000, guid: ba8d45aa701f2ab48b1a8edece7ec9a2, type: 3}
 --- !u!114 &1853914244
 MonoBehaviour:
   m_ObjectHideFlags: 0
