@@ -17020,6 +17020,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   otherGamesMenu: {fileID: 1539327420302662}
+  versionText: {fileID: 114692404272681910}
 --- !u!114 &114685650036430596
 MonoBehaviour:
   m_ObjectHideFlags: 1

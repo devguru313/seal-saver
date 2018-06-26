@@ -8,10 +8,13 @@ public class GameSpecificChanges : MonoBehaviour {
     public static string coins;
     public static bool getCoins;
     public static bool setCoins;
+    //Game version
+    public static string version;
 
     private void Awake()
     {
         gameName = "Seal Saver";
+        version = "v0.88";
     }
 
     private void Update()
