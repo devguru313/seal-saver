@@ -5927,7 +5927,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   internetMenu: {fileID: 519365178}
   loadingScreen: {fileID: 1148774985}
-  internetButton: 0
+  internetLoginFlag: 0
 --- !u!114 &1590752153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5972,8 +5972,10 @@ MonoBehaviour:
   password: 
   loadingScreen: {fileID: 1148774985}
   firstLoginMenu: {fileID: 1464258484}
+  facebookButton: {fileID: 2037939103}
   termsAndConditions: {fileID: 218047358}
   advertID: 
+  deviceModel: 
 --- !u!1 &1604651774
 GameObject:
   m_ObjectHideFlags: 0
@@ -7672,7 +7674,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2037939104
 RectTransform:
   m_ObjectHideFlags: 0

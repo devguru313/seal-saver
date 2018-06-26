@@ -409,7 +409,7 @@ public class QuestionManager : MonoBehaviour
         questionCount = 0;
         GameSpecificChanges.getCoins = true;
         //ReadInputSQL();
-        Debug.Log("Menu OFF");
+        //Debug.Log("Menu OFF");
         questionUI.SetActive(false);
         optionImage1.sprite = defaultButton;
         optionImage2.sprite = defaultButton;
@@ -426,7 +426,7 @@ public class QuestionManager : MonoBehaviour
         SetQuestion();
         afterWrong = false;
         askTime = DateTime.Now;
-        Debug.Log("Menu ON");
+        //Debug.Log("Menu ON");
         questionUI.SetActive(true);
     }
     #endregion
@@ -455,7 +455,7 @@ public class QuestionManager : MonoBehaviour
                 previousFailures = 0
             };
             string json = JsonUtility.ToJson(readInputJSON);
-            Debug.Log("getNextQuestion");
+            //Debug.Log("getNextQuestion");
             StartCoroutine(WaitForUnityWebRequestReadInput(request, json));
         }
         else
@@ -560,7 +560,7 @@ public class QuestionManager : MonoBehaviour
         optionText2.text = option2;
         optionText3.text = option3;
         optionText4.text = option4;
-        Debug.Log("Set Question");
+        //Debug.Log("Set Question");
     }
 
     void ReadInput()

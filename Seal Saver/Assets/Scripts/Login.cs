@@ -24,6 +24,7 @@ public class Login : MonoBehaviour {
     public string password;
     public GameObject loadingScreen;
     public GameObject firstLoginMenu;
+    public GameObject facebookButton;
     public Toggle termsAndConditions;
     public static bool subscribed;
     public static bool newUser;
@@ -34,12 +35,14 @@ public class Login : MonoBehaviour {
     void Start()
     {
         firstLoginMenu.SetActive(false);
+        facebookButton.SetActive(false);
         deviceModel = SystemInfo.deviceModel.ToLower();
 
         //Amazon Device check
         if (!deviceModel.Contains("amazon"))
         {
             //Debug.Log("NOT AMAZON");
+            facebookButton.SetActive(true);
             InitializeFirebase();
         }
 
@@ -69,19 +72,6 @@ public class Login : MonoBehaviour {
     void InitializeFirebase()
     {
         auth = FirebaseAuth.DefaultInstance;
-        /*Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
-            var dependencyStatus = task.Result;
-            if (dependencyStatus == Firebase.DependencyStatus.Available)
-            {
-                Debug.Log("Firebase Analytics Init");
-            }
-            else
-            {
-                Debug.LogError(System.String.Format(
-                  "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
-                // Firebase Unity SDK is not safe to use here.
-            }
-        });*/
     }
 
     private void Update()
