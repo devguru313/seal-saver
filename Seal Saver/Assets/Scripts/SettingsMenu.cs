@@ -7,6 +7,7 @@ public class SettingsMenu : MonoBehaviour {
     public Text userText;
     public GameObject MenuFeedback;
     public GameObject MenuOtherGames;
+    public GameObject MenuSettings;
 
     private void Update()
     {
@@ -49,5 +50,10 @@ public class SettingsMenu : MonoBehaviour {
     public void ShowOtherGames()
     {
         MenuOtherGames.SetActive(true);
+    }
+
+    public void CloseMenu()
+    {
+        MenuSettings.SetActive(false);
     }
 }

@@ -25817,15 +25817,15 @@ Prefab:
       propertyPath: Loading
       value: 
       objectReference: {fileID: 517789878}
+    - target: {fileID: 22328746, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 382868945}
     - target: {fileID: 114569036097609524, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 382868951}
-    - target: {fileID: 22328746, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 382868945}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
   m_IsPrefabParent: 0

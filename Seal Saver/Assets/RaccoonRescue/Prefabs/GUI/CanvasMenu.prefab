@@ -14515,6 +14515,7 @@ MonoBehaviour:
   userText: {fileID: 114072761716497482}
   MenuFeedback: {fileID: 0}
   MenuOtherGames: {fileID: 0}
+  MenuSettings: {fileID: 0}
 --- !u!114 &114429239231479692
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -17844,6 +17845,7 @@ MonoBehaviour:
   userText: {fileID: 114892810408214970}
   MenuFeedback: {fileID: 1068014053488932}
   MenuOtherGames: {fileID: 1539327420302662}
+  MenuSettings: {fileID: 0}
 --- !u!114 &114766912513728316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -19590,6 +19592,7 @@ MonoBehaviour:
   userText: {fileID: 114892810408214970}
   MenuFeedback: {fileID: 1068014053488932}
   MenuOtherGames: {fileID: 1539327420302662}
+  MenuSettings: {fileID: 1167210267120686}
 --- !u!114 &114970370945737666
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -19802,7 +19805,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114265988298217494}
+      - m_Target: {fileID: 114969614823726564}
         m_MethodName: CloseMenu
         m_Mode: 1
         m_Arguments:
