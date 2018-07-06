@@ -207,7 +207,9 @@ public class SyncTables : MonoBehaviour
         GetPlayerLevelJSON getPlayerLevelJSON = new GetPlayerLevelJSON()
         {
             UserID = Login.userID,
-            PlayerID = currentPlayerIndex
+            PlayerID = currentPlayerIndex,
+            Email = Login.user,
+            FirebaseUID = firebaseUID
         };
         string jsonGetPlayerLevel = JsonUtility.ToJson(getPlayerLevelJSON);
         internet = CheckInternetPing();
