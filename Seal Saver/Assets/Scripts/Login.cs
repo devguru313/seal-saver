@@ -327,6 +327,7 @@ public class Login : MonoBehaviour {
                 }
                 FirebaseUser newUser = task.Result;
                 Debug.LogFormat("User signed in successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
+                SyncTables.firebaseUID = newUser.UserId;
             });
             //Debug.Log("User ID: " + SyncTables.facebookUID);
             FB.API("/me?fields=name,email", HttpMethod.GET, FetchProfileCallback, new Dictionary<string, string>() { });
