@@ -527,7 +527,7 @@ public class SyncTables : MonoBehaviour
     public void OpenParentsDashboardURL()
     {
         string email = Login.user;
-        string game = GameSpecificChanges.gameName;
+        string game = WWW.EscapeURL(GameSpecificChanges.gameName);
         string url = "https://edbit.app/?email=" + email + "&app=" + game;
         Application.OpenURL(url);
     }
