@@ -1057,7 +1057,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Try for free
+  m_Text: Create one now...
 --- !u!222 &182505788
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1395,7 +1395,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: 0}
+  m_AnchoredPosition: {x: -150, y: 0}
   m_SizeDelta: {x: 250, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &311136999
@@ -3450,21 +3450,18 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 45
+    m_FontSize: 10
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 0
-    m_MaxSize: 45
+    m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Start 30-day free trial of <b>ed+</b>
-
-
-    <size=35>Every feature, no credit card required</size>'
+  m_Text: The benefits of an <b>ed+</b> account
 --- !u!222 &836243943
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4643,7 +4640,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "-\tYour child will get customised questions\n\tand coaching in all ed+
-    games\n\n-\tAccess your Edbit dashboard to see\n\thow your child is getting on\n
+    games\n\n-\tAccess your ed+ dashboard to see\n\thow your child is getting on\n
     \n-\tYou can control what subject/topics your\n\tchild is learning"
 --- !u!222 &1252308516
 CanvasRenderer:
@@ -5530,8 +5527,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 120, y: 0}
-  m_SizeDelta: {x: 200, y: 45}
+  m_AnchoredPosition: {x: 125, y: 0}
+  m_SizeDelta: {x: 300, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1544296500
 MonoBehaviour:
