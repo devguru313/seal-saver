@@ -48,7 +48,7 @@ public class Login : MonoBehaviour {
 
         #region Advertising Check
         bool adIDCheck;
-        advertID = "NULL";
+        advertID = "iOS";
 #if !UNITY_IOS
         adIDCheck = Application.RequestAdvertisingIdentifierAsync(
         (string advertisingId, bool trackingEnabled, string error) =>
