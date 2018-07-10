@@ -48,6 +48,8 @@ public class Login : MonoBehaviour {
 
         #region Advertising Check
         bool adIDCheck;
+        advertID = "NULL";
+#if !UNITY_IOS
         adIDCheck = Application.RequestAdvertisingIdentifierAsync(
         (string advertisingId, bool trackingEnabled, string error) =>
             GetAdvertisingID(advertisingId)
@@ -56,7 +58,8 @@ public class Login : MonoBehaviour {
         {
             GetAdvertisingID("Error");
         }
-        #endregion
+#endif
+#endregion
 
         #region Auto-Login
         if (PlayerPrefs.HasKey("Username") && PlayerPrefs.HasKey("Password"))
