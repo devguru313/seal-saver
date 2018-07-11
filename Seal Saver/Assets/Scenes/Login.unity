@@ -181,7 +181,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "-\tYour child will get customised questions\n\tand coaching in all ed+
-    games\n\n-\tAccess your Edbit dashboard to see\n\thow your child is getting on\n
+    games\n\n-\tAccess your ed+ dashboard to see\n\thow your child is getting on\n
     \n-\tYou can control what subject/topics your\n\tchild is learning"
 --- !u!222 &5732469
 CanvasRenderer:
@@ -550,8 +550,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1590752147}
-        m_MethodName: OpenSignInMenu
+      - m_Target: {fileID: 1590752151}
+        m_MethodName: OpenTermsAndConditionsURL
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4704,21 +4704,18 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 45
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 0
-    m_MaxSize: 45
+    m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Start 30-day free trial of <b>ed+</b>
-
-
-    <size=35>Every feature, no credit card required</size>'
+  m_Text: The benefits of an ed+ account
 --- !u!222 &1267960542
 CanvasRenderer:
   m_ObjectHideFlags: 0
