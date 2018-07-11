@@ -58,27 +58,7 @@ MonoBehaviour:
   - pack3
   - pack4
   rewardedGems: 5
-  adsEvents:
-  - gameEvent: 1
-    adType: 0
-    callsTreshold: 3
-    calls: 0
-  - gameEvent: 2
-    adType: 0
-    callsTreshold: 3
-    calls: 0
-  - gameEvent: 6
-    adType: 2
-    callsTreshold: 1
-    calls: 0
-  - gameEvent: 11
-    adType: 2
-    callsTreshold: 4
-    calls: 0
-  - gameEvent: 8
-    adType: 0
-    callsTreshold: 3
-    calls: 0
+  adsEvents: []
   admobUIDAndroid: ca-app-pub-9974681578637939/6393464263
   admobUIDIOS: ca-app-pub-9974681578637939/9346930669
   admobRewardedUIDAndroid: ca-app-pub-9974681578637939/4916731066
@@ -86,11 +66,11 @@ MonoBehaviour:
   showPopupScores: 1
   androidSharingPath: 
   iosSharingPath: 
-  CapOfLife: 5
+  CapOfLife: 100
   TotalTimeForRestLifeHours: 0
-  TotalTimeForRestLifeMin: 15
-  TotalTimeForRestLifeSec: 60
-  CostIfRefill: 25
+  TotalTimeForRestLifeMin: 0
+  TotalTimeForRestLifeSec: 1
+  CostIfRefill: 0
   FirstGems: 20
   FailedCost: 12
   ExtraFailedMoves: 5
