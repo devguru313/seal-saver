@@ -5038,9 +5038,9 @@ GameObject:
   - component: {fileID: 222530058540159790}
   - component: {fileID: 114573300986372474}
   - component: {fileID: 114653664651757276}
+  - component: {fileID: 111679577075271694}
   - component: {fileID: 95460085505562364}
   - component: {fileID: 114825273517859090}
-  - component: {fileID: 111679577075271694}
   m_Layer: 5
   m_Name: Solution3
   m_TagString: Untagged
@@ -7469,8 +7469,8 @@ GameObject:
   - component: {fileID: 222613211020487760}
   - component: {fileID: 114143211737122852}
   - component: {fileID: 114586567727794354}
-  - component: {fileID: 95250064197841448}
   - component: {fileID: 111868709375750020}
+  - component: {fileID: 95250064197841448}
   - component: {fileID: 114736952102078220}
   m_Layer: 5
   m_Name: Solution1
@@ -7524,9 +7524,9 @@ GameObject:
   - component: {fileID: 222981447024308542}
   - component: {fileID: 114055328933544338}
   - component: {fileID: 114155274836242474}
+  - component: {fileID: 111335253856600466}
   - component: {fileID: 95132252120316206}
   - component: {fileID: 114735314521871716}
-  - component: {fileID: 111335253856600466}
   m_Layer: 5
   m_Name: Solution2
   m_TagString: Untagged
@@ -8158,9 +8158,9 @@ GameObject:
   - component: {fileID: 222373766378439196}
   - component: {fileID: 114093147035720612}
   - component: {fileID: 114210095802245220}
+  - component: {fileID: 111052912946169052}
   - component: {fileID: 95292990605467086}
   - component: {fileID: 114307266669780698}
-  - component: {fileID: 111052912946169052}
   m_Layer: 5
   m_Name: Solution4
   m_TagString: Untagged
@@ -8871,7 +8871,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: fc509e7076fe2344783eb2cdf6e68551, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -8925,7 +8925,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: fc509e7076fe2344783eb2cdf6e68551, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -8943,7 +8943,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: fc509e7076fe2344783eb2cdf6e68551, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -9015,7 +9015,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: fc509e7076fe2344783eb2cdf6e68551, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -9349,7 +9349,8 @@ Animation:
   m_Enabled: 1
   serializedVersion: 3
   m_Animation: {fileID: 7400000, guid: f57a5a1ce3aa21245b07f01eede71260, type: 2}
-  m_Animations: []
+  m_Animations:
+  - {fileID: 7400000, guid: f57a5a1ce3aa21245b07f01eede71260, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
@@ -9518,7 +9519,8 @@ Animation:
   m_Enabled: 1
   serializedVersion: 3
   m_Animation: {fileID: 7400000, guid: f57a5a1ce3aa21245b07f01eede71260, type: 2}
-  m_Animations: []
+  m_Animations:
+  - {fileID: 7400000, guid: f57a5a1ce3aa21245b07f01eede71260, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
@@ -9734,7 +9736,8 @@ Animation:
   m_Enabled: 1
   serializedVersion: 3
   m_Animation: {fileID: 7400000, guid: f57a5a1ce3aa21245b07f01eede71260, type: 2}
-  m_Animations: []
+  m_Animations:
+  - {fileID: 7400000, guid: f57a5a1ce3aa21245b07f01eede71260, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
@@ -21842,7 +21845,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 275, y: -1625}
+  m_AnchoredPosition: {x: 275, y: -1800}
   m_SizeDelta: {x: 500, y: 420}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &224084139439422164
@@ -21917,7 +21920,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -275, y: -1150}
+  m_AnchoredPosition: {x: -275, y: -1300}
   m_SizeDelta: {x: 500, y: 420}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &224093196138542630
@@ -22713,7 +22716,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -275, y: -1625}
+  m_AnchoredPosition: {x: -275, y: -1800}
   m_SizeDelta: {x: 500, y: 420}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &224254641646780734
@@ -23412,7 +23415,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 275, y: -1150}
+  m_AnchoredPosition: {x: 275, y: -1300}
   m_SizeDelta: {x: 500, y: 420}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &224451906129704226
