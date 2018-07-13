@@ -14,7 +14,7 @@ public class GameSpecificChanges : MonoBehaviour {
     private void Awake()
     {
         gameName = "Seal Saver";
-        version = "v0.99";
+        version = "v0.100";
     }
 
     private void Update()
