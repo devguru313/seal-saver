@@ -119,7 +119,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.2
+  bundleVersion: 0.3
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -158,6 +158,7 @@ PlayerSettings:
     iOS: com.edtopia.aimymaths
     tvOS: com.Company.ProductName
   buildNumber:
+    Standalone: 2
     iOS: 7
   AndroidBundleVersionCode: 7
   AndroidMinSdkVersion: 16
