@@ -531,6 +531,14 @@ public class SyncTables : MonoBehaviour
         string url = "https://edbit.app/?email=" + email + "&app=" + game;
         Application.OpenURL(url);
     }
+
+    public void OpenParentsDashboardChangeTopicURL()
+    {
+        string email = Login.user;
+        string game = WWW.EscapeURL(GameSpecificChanges.gameName);
+        string url = "https://edbit.app/?email=" + email + "&app=" + game + "#topic_section";
+        Application.OpenURL(url);
+    }
     #endregion
 
     #region Get Path Functions

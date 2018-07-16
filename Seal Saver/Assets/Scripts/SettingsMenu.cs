@@ -8,6 +8,7 @@ public class SettingsMenu : MonoBehaviour {
     public GameObject MenuFeedback;
     public GameObject MenuOtherGames;
     public GameObject MenuSettings;
+    public GameObject MenuChangeTopic;
 
     private void Update()
     {
@@ -50,6 +51,11 @@ public class SettingsMenu : MonoBehaviour {
     public void ShowOtherGames()
     {
         MenuOtherGames.SetActive(true);
+    }
+
+    public void ShowChangeTopic()
+    {
+        MenuChangeTopic.SetActive(true);
     }
 
     public void CloseMenu()
