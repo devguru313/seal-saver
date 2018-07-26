@@ -5,8 +5,7 @@ using Firebase.Auth;
 using UnityEngine.Networking;
 
 public class Register : MonoBehaviour {
-
-    //public InputField Username;
+    
     public InputField Mail;
     public InputField Password;
     public Text errorTextSignUp;
@@ -17,11 +16,8 @@ public class Register : MonoBehaviour {
     public GameObject nextButton;
     public GameObject trialText;
     public GameObject bulletPointsText;
-    //public GameObject nameField;
-    //public GameObject infoText;
     public string email;
     public string password;
-    //public string userName;
     public FirebaseAuth auth;
     public GameObject loadingScreen;
     public GameObject termsConditions;
@@ -41,8 +37,6 @@ public class Register : MonoBehaviour {
         registerButton.SetActive(false);
         passwordField.SetActive(false);
         termsConditions.SetActive(false);
-        //nameField.SetActive(false);
-        //infoText.SetActive(false);
         errorTextSignUp.text = "";
         string deviceModel = SystemInfo.deviceModel.ToLower();
         //Amazon Device check
@@ -62,62 +56,7 @@ public class Register : MonoBehaviour {
         nextButton.SetActive(false);
         trialText.SetActive(false);
         bulletPointsText.SetActive(false);
-        //nameField.SetActive(false);
-        //infoText.SetActive(false);
     }
-
-    /*public void GoSignUpPage3()
-    {
-        if (Mail.text == "" || Password.text == "")
-        {
-            errorTextSignUp.text = "Please complete all fields";
-        }
-        else if (Mail.text.Length < 6 || !Mail.text.Contains("@") || Mail.text[0].Equals('@') || Mail.text[0].Equals("."))
-        {
-            errorTextSignUp.text = "Invalid Email";
-        }
-        else if (Password.text.Length < 6)
-        {
-            errorTextSignUp.text = "Password should contain at least 6 characters";
-        }
-        else
-        {
-            email = Mail.text.ToLower();
-            password = Password.text;
-            emailField.SetActive(false);
-            registerButton.SetActive(false);
-            passwordField.SetActive(false);
-            //nextButton2.SetActive(true);
-            //nameField.SetActive(false);
-            //infoText.SetActive(false);
-            backButton.SetActive(true);
-            errorTextSignUp.text = "";
-        }
-    }
-
-    public void GoSignUpPage3()
-    {
-        if (Password.text == "")
-        {
-            errorTextSignUp.text = "Please complete all fields";
-        }
-        else if (Password.text.Length < 6)
-        {
-            errorTextSignUp.text = "Password should contain at least 6 characters";
-        }
-        else
-        {
-            password = Password.text;
-            emailField.SetActive(false);
-            registerButton.SetActive(false);
-            passwordField.SetActive(false);
-            //nextButton2.SetActive(false);
-            //nameField.SetActive(true);
-            //infoText.SetActive(true);
-            backButton.SetActive(true);
-            errorTextSignUp.text = "";
-        }
-    }*/
 
     public void Launch()
     {
@@ -148,7 +87,6 @@ public class Register : MonoBehaviour {
             loadingScreen.SetActive(false);
             return;
         }
-        //userName = Username.text;
         email = Mail.text.ToLower();
         password = Password.text;
         errorTextSignUp.text = "";
@@ -172,7 +110,7 @@ public class Register : MonoBehaviour {
                 }
 
                 //Firebase user has been created.
-                Firebase.Auth.FirebaseUser newUser = task.Result;
+                FirebaseUser newUser = task.Result;
                 //Debug.LogFormat("Firebase user created successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
                 SyncTables.firebaseUID = newUser.UserId;
                 //Save information in playerPrefs
@@ -202,8 +140,8 @@ public class Register : MonoBehaviour {
         string json = JsonUtility.ToJson(sendUIDJSON);
         //Debug.Log(json);
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         yield return request.SendWebRequest();
         while (!request.isDone)
@@ -225,8 +163,8 @@ public class Register : MonoBehaviour {
         };
         string json = JsonUtility.ToJson(sendAuthDetailsJSON);
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         yield return request.SendWebRequest();
         while (!request.isDone)

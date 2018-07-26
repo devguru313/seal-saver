@@ -466,14 +466,16 @@ public class SyncTables : MonoBehaviour
 
     bool CheckInternetPing()
     {
+        //internet = false;
         string checkInternetURL = "https://edplus.net/checkServerAlive";
         var varCheckInternetRequest = new UnityWebRequest(checkInternetURL, "POST");
-        StartCoroutine(WaitForServer(varCheckInternetRequest));
-        System.Threading.Thread.Sleep(50);
+        Coroutine internetCoroutine =  StartCoroutine(WaitForServer(varCheckInternetRequest));
+        StartCoroutine(WaitForTime(1f, internetCoroutine));
+        /*System.Threading.Thread.Sleep(50);
         if (!internet)
         {
             Debug.Log("Not Connected to Internet");
-        }
+        }*/
         return internet;
     }
 
@@ -516,6 +518,17 @@ public class SyncTables : MonoBehaviour
                 internetLoginFlag = false;
                 internetMenu.SetActive(true);
             }
+        }
+    }
+
+    IEnumerator WaitForTime(float time, Coroutine cor)
+    {
+        yield return new WaitForSeconds(time);
+        if (!internet)
+        {
+            Debug.Log("No/Slow Internet");
+            internet = false;
+            StopCoroutine(cor);
         }
     }
 

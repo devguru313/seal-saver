@@ -40,6 +40,10 @@ public class QuestionManager : MonoBehaviour
     public string option2;
     public string option3;
     public string option4;
+    public string opID1;
+    public string opID2;
+    public string opID3;
+    public string opID4;
     public string questionSet;
     public string result;
     public string answerSelected;
@@ -140,7 +144,7 @@ public class QuestionManager : MonoBehaviour
         {
             optionImage1.sprite = greenButton;
             result = "1";
-            answerSelected = option1;
+            answerSelected = opID1;
             questionCount += 1;
             WriteOutputSQL();
             //Get a coin if answered 3 questions correctly
@@ -162,7 +166,7 @@ public class QuestionManager : MonoBehaviour
         else
         {
             result = "0";
-            answerSelected = option1;
+            answerSelected = opID1;
             WriteOutputSQL();
             optionImage1.sprite = redButton;
             audioSource.PlayOneShot(audioWrong);
@@ -204,7 +208,7 @@ public class QuestionManager : MonoBehaviour
         {
             optionImage2.sprite = greenButton;
             result = "1";
-            answerSelected = option2;
+            answerSelected = opID2;
             questionCount += 1;
             WriteOutputSQL();
             //Get a coin if answered 3 questions correctly
@@ -226,7 +230,7 @@ public class QuestionManager : MonoBehaviour
         else
         {
             result = "0";
-            answerSelected = option2;
+            answerSelected = opID2;
             WriteOutputSQL();
             optionImage2.sprite = redButton;
             audioSource.PlayOneShot(audioWrong);
@@ -268,7 +272,7 @@ public class QuestionManager : MonoBehaviour
         {
             optionImage3.sprite = greenButton;
             result = "1";
-            answerSelected = option3;
+            answerSelected = opID3;
             questionCount += 1;
             WriteOutputSQL();
             //Get a coin if answered 3 questions correctly
@@ -290,7 +294,7 @@ public class QuestionManager : MonoBehaviour
         else
         {
             result = "0";
-            answerSelected = option3;
+            answerSelected = opID3;
             WriteOutputSQL();
             optionImage3.sprite = redButton;
             audioSource.PlayOneShot(audioWrong);
@@ -332,7 +336,7 @@ public class QuestionManager : MonoBehaviour
         {
             optionImage4.sprite = greenButton;
             result = "1";
-            answerSelected = option4;
+            answerSelected = opID4;
             questionCount += 1;
             WriteOutputSQL();
             //Get a coin if answered 3 questions correctly
@@ -354,7 +358,7 @@ public class QuestionManager : MonoBehaviour
         else
         {
             result = "0";
-            answerSelected = option4;
+            answerSelected = opID4;
             WriteOutputSQL();
             optionImage4.sprite = redButton;
             audioSource.PlayOneShot(audioWrong);
@@ -556,11 +560,18 @@ public class QuestionManager : MonoBehaviour
         option3 = shuffleTemp[2];
         option4 = shuffleTemp[3];
         questionText.text = question;
-        optionText1.text = option1;
-        optionText2.text = option2;
-        optionText3.text = option3;
-        optionText4.text = option4;
-        //Debug.Log("Set Question");
+        var temp = option1.Split('@');
+        opID1 = temp[0];
+        optionText1.text = temp[1];
+        temp = option2.Split('@');
+        opID2 = temp[0];
+        optionText2.text = temp[1];
+        temp = option3.Split('@');
+        opID3 = temp[0];
+        optionText3.text = temp[1];
+        temp = option4.Split('@');
+        opID4 = temp[0];
+        optionText4.text = temp[1];
     }
 
     void ReadInput()
@@ -707,11 +718,11 @@ public class QuestionManager : MonoBehaviour
     #region Other Functions
     public int CorrectAnsIndex()
     {
-        if (optionText1.text == correctAns)
+        if ("1@" + optionText1.text == correctAns)
             return 0;
-        else if (optionText2.text == correctAns)
+        else if ("1@" + optionText2.text == correctAns)
             return 1;
-        else if (optionText3.text == correctAns)
+        else if ("1@" + optionText3.text == correctAns)
             return 2;
         else
             return 3;
@@ -732,14 +743,16 @@ public class QuestionManager : MonoBehaviour
     #region Internet Check
     bool CheckInternetPing()
     {
+        //internet = false;
         string checkInternetURL = "https://edplus.net/checkServerAlive";
         var varCheckInternetRequest = new UnityWebRequest(checkInternetURL, "POST");
-        StartCoroutine(WaitForServer(varCheckInternetRequest));
-        System.Threading.Thread.Sleep(100);
+        Coroutine internetCoroutine = StartCoroutine(WaitForServer(varCheckInternetRequest));
+        StartCoroutine(WaitForTime(1f, internetCoroutine));
+        /*System.Threading.Thread.Sleep(100);
         if (!internet)
         {
             Debug.Log("Not Connected to Internet");
-        }
+        }*/
         //Debug.Log(internet);
         return internet;
     }
@@ -768,6 +781,17 @@ public class QuestionManager : MonoBehaviour
         else
         {
             internet = false;
+        }
+    }
+
+    IEnumerator WaitForTime(float time, Coroutine cor)
+    {
+        yield return new WaitForSeconds(time);
+        if (!internet)
+        {
+            Debug.Log("No/Slow Internet");
+            internet = false;
+            StopCoroutine(cor);
         }
     }
     #endregion

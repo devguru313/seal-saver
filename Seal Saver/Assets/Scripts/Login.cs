@@ -119,6 +119,7 @@ public class Login : MonoBehaviour {
                 if (task.IsCanceled)
                 {
                     Debug.LogError("SignInWithEmailAndPasswordAsync was canceled.");
+                    loadingScreen.SetActive(false);
                     return;
                 }
                 if (task.IsFaulted)
