@@ -36,6 +36,7 @@ public class SyncTables : MonoBehaviour
     public static string facebookUID;
     public bool internetLoginFlag;
 
+    public float timer;
 
     private void Start()
     {
@@ -69,6 +70,7 @@ public class SyncTables : MonoBehaviour
             checkTables = true;
             getLevel = true;
         }
+        timer = 0.0f;
 
         #region Progress Analytics
         if(SceneManager.GetActiveScene().buildIndex == 0 && !deviceModel.Contains("amazon"))
@@ -111,9 +113,14 @@ public class SyncTables : MonoBehaviour
         inputTablePath = GetApplicationPath() + userID + "_InputTable.csv";
         //Debug.Log("CURRENT USER INDEX: " + userID);
 
-        if (deviceModel.Contains("amazon"))
+        timer += Time.deltaTime;
+        if(timer >= 5f)
         {
-            CheckInternetPing();
+            timer = 0;
+            if (deviceModel.Contains("amazon"))
+            {
+                CheckInternetPing();
+            }
         }
 
         #region Flags
