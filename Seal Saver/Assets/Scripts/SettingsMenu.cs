@@ -43,6 +43,11 @@ public class SettingsMenu : MonoBehaviour {
         SceneManager.LoadScene("Hub");
     }
 
+    public void ShowSettings()
+    {
+        MenuSettings.SetActive(true);
+    }
+
     public void ShowFeedbackForm()
     {
         MenuFeedback.SetActive(true);
