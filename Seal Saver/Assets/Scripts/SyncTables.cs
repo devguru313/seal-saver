@@ -96,7 +96,25 @@ public class SyncTables : MonoBehaviour
             Firebase.Analytics.FirebaseAnalytics.LogEvent("GameProgress", "Percent", "40%");
         }
         #endregion
+
+        #region Branch.io
+        Branch.initSession(CallbackWithBranchUniversalObject);
+        #endregion
     }
+
+    #region Branch.io
+    void CallbackWithBranchUniversalObject(BranchUniversalObject buo, BranchLinkProperties linkProps, string error)
+    {
+        if (error != null)
+        {
+            System.Console.WriteLine("Error : " + error);
+        }
+        else if (linkProps.controlParams.Count > 0)
+        {
+            System.Console.WriteLine("Deeplink params : " + buo.ToJsonString() + linkProps.ToJsonString());
+        }
+    }
+    #endregion
 
     private void Update()
     {

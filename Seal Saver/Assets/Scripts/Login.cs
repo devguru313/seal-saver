@@ -195,6 +195,7 @@ public class Login : MonoBehaviour {
         {
             var cols = findUIDJSONResponse.data.Split('&');
             userID = cols[0];
+            Branch.setIdentity(userID);
             if (cols[1] == "1")
             {
                 subscribed = true;

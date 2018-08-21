@@ -14,7 +14,7 @@ public class OnSceneSave : SaveAssetsProcessor {
 
 	static void SaveCanvasMenuPrefab () {
 		GameObject canvasMenu = GameObject.Find ("CanvasMenu");
-		Object canvasMenuPrefab = PrefabUtility.GetPrefabParent (canvasMenu);
+		Object canvasMenuPrefab = PrefabUtility.GetCorrespondingObjectFromSource (canvasMenu);
 		if (canvasMenu != null && canvasMenuPrefab != null)
 			PrefabUtility.ReplacePrefab (canvasMenu, canvasMenuPrefab, ReplacePrefabOptions.ConnectToPrefab);
 
