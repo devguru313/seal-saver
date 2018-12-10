@@ -65,12 +65,16 @@ public class PlayerManager : MonoBehaviour {
             numPlayers = getPlayerDataJSONResponse.numPlayers;
             //Debug.Log(numPlayers);
             var playerNames = playerText.Split(',');
+            string avatarText = getPlayerDataJSONResponse.playerAvatars;
+            var playerAvatars = avatarText.Split(',');
             for (int i = 0; i < numPlayers; i++)
             {
                 playerList += playerNames[i] + " ";
+                int avatarIndex;
+                int.TryParse(playerAvatars[i], out avatarIndex);
                 GameObject newButton = Instantiate(playerButtonTemplate) as GameObject;
                 newButton.SetActive(true);
-                newButton.GetComponent<PlayerButtonController>().SetText(playerNames[i], i+1);
+                newButton.GetComponent<PlayerButtonController>().SetText(playerNames[i], i+1, avatarIndex);
                 newButton.transform.SetParent(playerButtonTemplate.transform.parent, false);
             }
         }
@@ -91,7 +95,7 @@ public class PlayerManager : MonoBehaviour {
         numPlayers += 1;
         GameObject newButton = Instantiate(playerButtonTemplate) as GameObject;
         newButton.SetActive(true);
-        newButton.GetComponent<PlayerButtonController>().SetText(nameField.text, numPlayers);
+        newButton.GetComponent<PlayerButtonController>().SetText(nameField.text, numPlayers, AvatarSelection.currentAvatar);
         newButton.transform.SetParent(playerButtonTemplate.transform.parent, false);
         newNameMenu.SetActive(false);
         playerList += nameField.text + " ";
@@ -109,7 +113,8 @@ public class PlayerManager : MonoBehaviour {
             LoggedInUserID = Login.userID,
             NumPlayers = numPlayers.ToString(),
             NewPlayer = playerName,
-            BirthYear = year
+            BirthYear = year,
+            PlayerAvatar = AvatarSelection.currentAvatar
         };
         string jsonChangePlayerData = JsonUtility.ToJson(changePlayerDataJSON);
         //Debug.Log(jsonChangePlayerData);

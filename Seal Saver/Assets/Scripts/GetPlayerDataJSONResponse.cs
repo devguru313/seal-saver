@@ -7,4 +7,5 @@
     public int numPlayers;
     public string RESTEndPoint;
     public int firstTimeLogin;
+    public string playerAvatars;
 }

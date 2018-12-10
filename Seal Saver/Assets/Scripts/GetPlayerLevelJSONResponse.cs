@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class GetPlayerLevelJSONResponse
+﻿public class GetPlayerLevelJSONResponse
 {
     public string phpOrREST;
     public string UserID;

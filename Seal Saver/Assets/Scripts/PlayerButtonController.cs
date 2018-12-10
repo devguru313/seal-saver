@@ -6,18 +6,21 @@ public class PlayerButtonController : MonoBehaviour
 {
     public Text buttonText;
     public int playerIndex;
+    public int avatarIndex;
     public static bool fromPBController;
 
-    public void SetText(string text, int index)
+    public void SetText(string text, int index, int avatIndex)
     {
         buttonText.text = text;
         playerIndex = index;
+        avatarIndex = avatIndex;
     }
 
     public void OnClick()
     {
         //Debug.Log(playerIndex);
         SyncTables.currentPlayerIndex = playerIndex;
+        AvatarSelection.currentAvatar = avatarIndex;
         var cols = SyncTables.playerCoins[playerIndex - 1].Split('@');
         int gems;
         int.TryParse(cols[1], out gems);
