@@ -84,6 +84,8 @@ public class QuestionManager : MonoBehaviour
     private List<string> inputQuestionSet = new List<string>();
     private List<string> shuffleTemp = new List<string>();
 
+    public Text topicText;
+
     void Start()
     {
         isStart = true;
@@ -111,6 +113,7 @@ public class QuestionManager : MonoBehaviour
         inputPath = GetApplicationPath() + userID + "_InputTable.csv";
         outputPath = GetApplicationPath() + userID + "_OutputTable.csv";
         inputQuestionNo = 0;
+        topicText.text = SyncTables.knowledgeLevel;
     }
 
     void Update()

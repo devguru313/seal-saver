@@ -7,6 +7,10 @@ public class PlayerManager : MonoBehaviour {
 
     public GameObject playerButtonTemplate;
     public GameObject newNameMenu;
+    public GameObject addUserButton;
+    public GameObject parentZoneBackButton;
+    public GameObject parentZoneButton;
+    public GameObject logoutButton;
     public int numPlayers;
     public int playerIndex;
     public InputField nameField;
@@ -14,7 +18,7 @@ public class PlayerManager : MonoBehaviour {
     public Text currentUserText;
     public GameObject loadingScreen;
     public Text errorTextCreateUser;
-    public Dropdown yearDropdown;
+    public Text yearText;
 
     private void Start()
     {
@@ -101,7 +105,7 @@ public class PlayerManager : MonoBehaviour {
         playerList += nameField.text + " ";
         SyncTables.playerCoins.Add(numPlayers + "@10");
         //Debug.Log(playerList + numPlayers);
-        WritePlayerDataSQL(nameField.text, SetTextFromIndex.year);
+        WritePlayerDataSQL(nameField.text, yearText.text);
     }
 
     public void WritePlayerDataSQL(string playerName, string year)
@@ -139,6 +143,22 @@ public class PlayerManager : MonoBehaviour {
     public void OpenNewNameMenu()
     {
         newNameMenu.SetActive(true);
+    }
+
+    public void OpenParentZone()
+    {
+        logoutButton.SetActive(false);
+        parentZoneButton.SetActive(false);
+        parentZoneBackButton.SetActive(true);
+        addUserButton.SetActive(true);
+    }
+
+    public void CloseParentZone()
+    {
+        parentZoneBackButton.SetActive(false);
+        addUserButton.SetActive(false);
+        logoutButton.SetActive(true);
+        parentZoneButton.SetActive(true);
     }
 
     public void ShowLoading()

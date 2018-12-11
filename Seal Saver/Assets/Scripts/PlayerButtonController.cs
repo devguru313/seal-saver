@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerButtonController : MonoBehaviour
 {
+    public Image avatar;
+    public Sprite[] avatars = new Sprite[50];
     public Text buttonText;
     public int playerIndex;
     public int avatarIndex;
@@ -14,6 +16,7 @@ public class PlayerButtonController : MonoBehaviour
         buttonText.text = text;
         playerIndex = index;
         avatarIndex = avatIndex;
+        avatar.sprite = avatars[avatarIndex];
     }
 
     public void OnClick()

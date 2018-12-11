@@ -6989,6 +6989,7 @@ MonoBehaviour:
   audioCorrect: {fileID: 8300000, guid: 9d6de88bfbcbd794c94d7e160ee57659, type: 3}
   audioWrong: {fileID: 8300000, guid: 6c5bc38ab57c2994e8bb91ab558d9776, type: 3}
   audioCoins: {fileID: 8300000, guid: ba8d45aa701f2ab48b1a8edece7ec9a2, type: 3}
+  topicText: {fileID: 1982672567}
 --- !u!114 &1853914244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8044,15 +8045,15 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 22328746, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 729910741}
     - target: {fileID: 114569036097609524, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1853914244}
-    - target: {fileID: 22328746, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 729910741}
     - target: {fileID: 114585086648495668, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -8076,6 +8077,12 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
   m_IsPrefabAsset: 0
+--- !u!114 &1982672567 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114758575301214310, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1982672566}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1001 &1987079196
 Prefab:
   m_ObjectHideFlags: 0
