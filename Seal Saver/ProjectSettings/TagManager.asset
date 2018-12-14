@@ -19,6 +19,9 @@ TagManager:
   - light
   - black_hole
   - Destroy
+  - PlayerEditButton
+  - PlayerButton
+  - PlayerAvatar
   layers:
   - Default
   - TransparentFX

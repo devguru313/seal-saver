@@ -8,4 +8,6 @@
     public string RESTEndPoint;
     public int firstTimeLogin;
     public string playerAvatars;
+    public string playerLevels;
+    public string playerBirthYears;
 }

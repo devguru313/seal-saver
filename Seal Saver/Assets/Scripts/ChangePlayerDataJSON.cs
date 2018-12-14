@@ -5,4 +5,5 @@
     public string NewPlayer;
     public string BirthYear;
     public int PlayerAvatar;
+    public string Topic;
 }

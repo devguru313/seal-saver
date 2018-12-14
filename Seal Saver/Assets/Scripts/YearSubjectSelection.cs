@@ -8,18 +8,18 @@ public class YearSubjectSelection : MonoBehaviour {
     public Text yearText;
     public Text subjectText;
 
-    public string[] subjects = { "Maths", "English" };
+    string[] subjects = { "Maths", "Science", "Verbal Reasoning", "Latin"};
 
     public const int yearMax = 2019;
     public const int yearMin = 1950;
-    public int currentYear;
-    public int currentSubject;
-    
-    private void Start()
+    public static int currentYear;
+    public static int currentSubject;
+
+    private void Update()
     {
-        currentYear = 2012;
+        //currentYear = 2012;
         yearText.text = currentYear.ToString();
-        currentSubject = 0;
+        //currentSubject = 0;
         subjectText.text = subjects[currentSubject];
     }
 

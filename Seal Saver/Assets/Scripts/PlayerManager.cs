@@ -14,11 +14,19 @@ public class PlayerManager : MonoBehaviour {
     public int numPlayers;
     public int playerIndex;
     public InputField nameField;
+    public InputField nameFieldUpdate;
     public string playerList;
     public Text currentUserText;
     public GameObject loadingScreen;
     public Text errorTextCreateUser;
     public Text yearText;
+    public Text subjectText;
+    public Text yearTextUpdate;
+    public Text subjectTextUpdate;
+    public Text sceneTitle;
+    public static bool parentZoneActive;
+    public static bool openParentZone = false;
+    public Sprite[] avatars = new Sprite[50];
 
     private void Start()
     {
@@ -27,6 +35,7 @@ public class PlayerManager : MonoBehaviour {
         numPlayers = 0;
         playerList = "";
         currentUserText.text = Login.user;
+        parentZoneActive = false;
         ReadPlayerDataSQL();
     }
 
@@ -71,6 +80,10 @@ public class PlayerManager : MonoBehaviour {
             var playerNames = playerText.Split(',');
             string avatarText = getPlayerDataJSONResponse.playerAvatars;
             var playerAvatars = avatarText.Split(',');
+            string birthYearList = getPlayerDataJSONResponse.playerBirthYears;
+            var birthYears = birthYearList.Split(',');
+            string subjectList = getPlayerDataJSONResponse.playerLevels;
+            var subjects = subjectList.Split(',');
             for (int i = 0; i < numPlayers; i++)
             {
                 playerList += playerNames[i] + " ";
@@ -78,13 +91,18 @@ public class PlayerManager : MonoBehaviour {
                 int.TryParse(playerAvatars[i], out avatarIndex);
                 GameObject newButton = Instantiate(playerButtonTemplate) as GameObject;
                 newButton.SetActive(true);
-                newButton.GetComponent<PlayerButtonController>().SetText(playerNames[i], i+1, avatarIndex);
+                newButton.GetComponent<PlayerButtonController>().SetText(playerNames[i], i+1, avatarIndex - 1, birthYears[i], subjects[i]);
                 newButton.transform.SetParent(playerButtonTemplate.transform.parent, false);
             }
         }
         if(numPlayers == 0)
         {
             newNameMenu.SetActive(true);
+        }
+        if (openParentZone)
+        {
+            openParentZone = false;
+            OpenParentZone();
         }
         loadingScreen.SetActive(false);
     }
@@ -99,18 +117,18 @@ public class PlayerManager : MonoBehaviour {
         numPlayers += 1;
         GameObject newButton = Instantiate(playerButtonTemplate) as GameObject;
         newButton.SetActive(true);
-        newButton.GetComponent<PlayerButtonController>().SetText(nameField.text, numPlayers, AvatarSelection.currentAvatar);
+        newButton.GetComponent<PlayerButtonController>().SetText(nameField.text, numPlayers, AvatarSelection.currentAvatar, yearText.text, subjectText.text);
         newButton.transform.SetParent(playerButtonTemplate.transform.parent, false);
         newNameMenu.SetActive(false);
         playerList += nameField.text + " ";
         SyncTables.playerCoins.Add(numPlayers + "@10");
         //Debug.Log(playerList + numPlayers);
-        WritePlayerDataSQL(nameField.text, yearText.text);
+        WritePlayerDataSQL(nameField.text, yearText.text, subjectText.text);
     }
 
-    public void WritePlayerDataSQL(string playerName, string year)
+    public void WritePlayerDataSQL(string playerName, string year, string subject)
     {
-        string changePlayerDataURL = "https://edplus.net/changePlayerData";
+        string changePlayerDataURL = "https://edplus.net/createPlayer";
         var varChangePlayerDataRequest = new UnityWebRequest(changePlayerDataURL, "POST");
         ChangePlayerDataJSON changePlayerDataJSON = new ChangePlayerDataJSON()
         {
@@ -118,7 +136,8 @@ public class PlayerManager : MonoBehaviour {
             NumPlayers = numPlayers.ToString(),
             NewPlayer = playerName,
             BirthYear = year,
-            PlayerAvatar = AvatarSelection.currentAvatar
+            PlayerAvatar = AvatarSelection.currentAvatar,
+            Topic = subject
         };
         string jsonChangePlayerData = JsonUtility.ToJson(changePlayerDataJSON);
         //Debug.Log(jsonChangePlayerData);
@@ -151,6 +170,19 @@ public class PlayerManager : MonoBehaviour {
         parentZoneButton.SetActive(false);
         parentZoneBackButton.SetActive(true);
         addUserButton.SetActive(true);
+        sceneTitle.text = "Parent Zone";
+        parentZoneActive = true;
+        var editButtons = GameObject.FindGameObjectsWithTag("PlayerEditButton");
+        if(editButtons != null)
+        {
+            for(int i = 0; i < editButtons.Length; i++)
+            {
+                Image currentButton = editButtons[i].GetComponent<Image>();
+                var tempColor = currentButton.color;
+                tempColor.a = 1f;
+                currentButton.color = tempColor;
+            }
+        }
     }
 
     public void CloseParentZone()
@@ -159,10 +191,82 @@ public class PlayerManager : MonoBehaviour {
         addUserButton.SetActive(false);
         logoutButton.SetActive(true);
         parentZoneButton.SetActive(true);
+        sceneTitle.text = "Select your name";
+        parentZoneActive = false;
+        var editButtons = GameObject.FindGameObjectsWithTag("PlayerEditButton");
+        if (editButtons != null)
+        {
+            for (int i = 0; i < editButtons.Length; i++)
+            {
+                Image currentButton = editButtons[i].GetComponent<Image>();
+                var tempColor = currentButton.color;
+                tempColor.a = 0f;
+                currentButton.color = tempColor;
+            }
+        }
+    }
+
+    public void UpdatePlayerDetails()
+    {
+        var playerButtons = GameObject.FindGameObjectsWithTag("PlayerButton");
+        var playerAvatars = GameObject.FindGameObjectsWithTag("PlayerAvatar");
+        string newName;
+        if (nameFieldUpdate.text != "" && nameFieldUpdate.text != null)
+        {
+            playerButtons[SyncTables.currentPlayerIndex - 1].GetComponentInChildren<Text>().text = nameFieldUpdate.text;
+            newName = nameFieldUpdate.text;
+        }
+        else
+        {
+            newName = playerButtons[SyncTables.currentPlayerIndex - 1].GetComponentInChildren<Text>().text;
+        }
+        playerAvatars[SyncTables.currentPlayerIndex - 1].GetComponent<Image>().sprite = avatars[AvatarSelection.currentAvatar];
+        //Debug.Log("Get Player Data");
+        string updatePlayerDataURL = "https://edplus.net/updatePlayer";
+        var varUpdatePlayerDataRequest = new UnityWebRequest(updatePlayerDataURL, "POST");
+        UpdatePlayerJSON updatePlayerDataJSON = new UpdatePlayerJSON()
+        {
+            UserID = Login.userID,
+            PlayerID = SyncTables.currentPlayerIndex.ToString(),
+            PlayerName = newName,
+            PlayerAvatar = AvatarSelection.currentAvatar + 1,
+            BirthYear = yearTextUpdate.text,
+            Topic = subjectTextUpdate.text
+        };
+        string jsonUpdatePlayerData = JsonUtility.ToJson(updatePlayerDataJSON);
+        //Debug.Log(jsonUpdatePlayerData);
+        StartCoroutine(WaitForUnityWebRequestUpdatePlayerData(varUpdatePlayerDataRequest, jsonUpdatePlayerData));
+    }
+
+    IEnumerator WaitForUnityWebRequestUpdatePlayerData(UnityWebRequest request, string json)
+    {
+        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+        while (!request.isDone)
+        {
+            yield return null;
+        }
+        //Debug.Log("Response: " + request.downloadHandler.text);
+        UpdatePlayerJSONResponse updatePlayerDataJSONResponse = JsonUtility.FromJson<UpdatePlayerJSONResponse>(request.downloadHandler.text);
+        if (updatePlayerDataJSONResponse.status != "success")
+        {
+            Debug.Log(updatePlayerDataJSONResponse.data);
+        }
+        else
+        {
+            Debug.Log(updatePlayerDataJSONResponse.data);
+        }
     }
 
     public void ShowLoading()
     {
-        loadingScreen.SetActive(true);
+        if (!parentZoneActive)
+        {
+            loadingScreen.SetActive(true);
+        }
     }
 }

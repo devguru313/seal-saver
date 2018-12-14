@@ -43,6 +43,27 @@ public class SettingsMenu : MonoBehaviour {
         SceneManager.LoadScene("Hub");
     }
 
+    public void GoToParentZone()
+    {
+        PlayerManager.openParentZone = true;
+        //Clear player data before getting another player
+        if (PlayerPrefs.HasKey("Username") && PlayerPrefs.HasKey("Password"))
+        {
+            string temp1 = PlayerPrefs.GetString("Username");
+            string temp2 = PlayerPrefs.GetString("Password");
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.SetString("Username", temp1);
+            PlayerPrefs.SetString("Password", temp2);
+            PlayerPrefs.SetInt("Lauched", 1);
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            PlayerPrefs.DeleteAll();
+        }
+        SceneManager.LoadScene("Hub");
+    }
+
     public void ShowSettings()
     {
         MenuSettings.SetActive(true);

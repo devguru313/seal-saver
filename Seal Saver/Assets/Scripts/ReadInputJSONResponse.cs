@@ -10,4 +10,7 @@ public class ReadInputJSONResponse
     public string data;
     public string phpOrREST;
     public string status;
+    //public string hints;
+    //public List<string> hints = new List<string>();
+    //public Dictionary<string, string> hints;
 }

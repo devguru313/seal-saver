@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine.Networking;
+//using Newtonsoft.Json;
 
 public class QuestionManager : MonoBehaviour
 {
@@ -51,6 +52,7 @@ public class QuestionManager : MonoBehaviour
     public string timeTaken;
     public string uQID;
     public string answerText;
+    public string[] hints = new string[10];
     
     public static bool isStart;
     public bool afterWrong;
@@ -487,8 +489,10 @@ public class QuestionManager : MonoBehaviour
         {
             yield return null;
         }
-        //Debug.Log("Response: " + request.downloadHandler.text);
+        Debug.Log("Response: " + request.downloadHandler.text);
         ReadInputJSONResponse readInputJSONResponse = JsonUtility.FromJson<ReadInputJSONResponse>(request.downloadHandler.text);
+        //var tempvals = JsonConvert.DeserializeObject<Dictionary<string, string>>(request.downloadHandler.text);
+        //Debug.Log(tempvals);
         if (request.downloadHandler.text == "" || request.downloadHandler.text == null)
         {
             ReadInput();
@@ -517,6 +521,12 @@ public class QuestionManager : MonoBehaviour
             wrong2 = cols[4];
             wrong3 = cols[5];
             questionSet = cols[6];
+            //Debug.Log(readInputJSONResponse.hints.Keys);
+            /*for (int i = 0; i < readInputJSONResponse.hints.Length; i++)
+            {
+                //hints[i] = readInputJSONResponse.hints[i];
+                Debug.Log(hints[i]);
+            }*/
             if (!afterWrong)
             {
                 SetQuestion();
