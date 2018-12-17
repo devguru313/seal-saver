@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine.Networking;
-//using Newtonsoft.Json;
 
 public class QuestionManager : MonoBehaviour
 {
@@ -41,6 +40,7 @@ public class QuestionManager : MonoBehaviour
     public string option2;
     public string option3;
     public string option4;
+    public string hint;
     public string opID1;
     public string opID2;
     public string opID3;
@@ -52,7 +52,6 @@ public class QuestionManager : MonoBehaviour
     public string timeTaken;
     public string uQID;
     public string answerText;
-    public string[] hints = new string[10];
     
     public static bool isStart;
     public bool afterWrong;
@@ -62,6 +61,7 @@ public class QuestionManager : MonoBehaviour
     public Text optionText2;
     public Text optionText3;
     public Text optionText4;
+    public Text hintText;
 
     public Button button1;
     public Button button2;
@@ -84,9 +84,15 @@ public class QuestionManager : MonoBehaviour
     private List<string> inputWrong2 = new List<string>();
     private List<string> inputWrong3 = new List<string>();
     private List<string> inputQuestionSet = new List<string>();
+    private List<string> inputHint = new List<string>();
     private List<string> shuffleTemp = new List<string>();
 
     public Text topicText;
+
+    public static bool hintsOn = true;
+    public Image hintButtonImage;
+    public Sprite hintOnImage;
+    public Sprite hintOffImage;
 
     void Start()
     {
@@ -116,6 +122,14 @@ public class QuestionManager : MonoBehaviour
         outputPath = GetApplicationPath() + userID + "_OutputTable.csv";
         inputQuestionNo = 0;
         topicText.text = SyncTables.knowledgeLevel;
+        if (hintsOn)
+        {
+            hintButtonImage.sprite = hintOnImage;
+        }
+        else
+        {
+            hintButtonImage.sprite = hintOffImage;
+        }
     }
 
     void Update()
@@ -400,7 +414,6 @@ public class QuestionManager : MonoBehaviour
         coinRewardUI.SetActive(false);
         GameSpecificChanges.getCoins = true;
         questionUI.SetActive(false);
-        //ReadInputSQL();
         optionImage1.sprite = defaultButton;
         optionImage2.sprite = defaultButton;
         optionImage3.sprite = defaultButton;
@@ -417,8 +430,6 @@ public class QuestionManager : MonoBehaviour
     {
         questionCount = 0;
         GameSpecificChanges.getCoins = true;
-        //ReadInputSQL();
-        //Debug.Log("Menu OFF");
         questionUI.SetActive(false);
         optionImage1.sprite = defaultButton;
         optionImage2.sprite = defaultButton;
@@ -453,6 +464,7 @@ public class QuestionManager : MonoBehaviour
             inputWrong2.Clear();
             inputWrong3.Clear();
             inputQuestionSet.Clear();
+            inputHint.Clear();
             inputQuestionNo = 0;
             string readInputURL = "https://edplus.net/getNextQuestions";
             var request = new UnityWebRequest(readInputURL, "POST");
@@ -489,10 +501,8 @@ public class QuestionManager : MonoBehaviour
         {
             yield return null;
         }
-        Debug.Log("Response: " + request.downloadHandler.text);
+        //Debug.Log("Response: " + request.downloadHandler.text);
         ReadInputJSONResponse readInputJSONResponse = JsonUtility.FromJson<ReadInputJSONResponse>(request.downloadHandler.text);
-        //var tempvals = JsonConvert.DeserializeObject<Dictionary<string, string>>(request.downloadHandler.text);
-        //Debug.Log(tempvals);
         if (request.downloadHandler.text == "" || request.downloadHandler.text == null)
         {
             ReadInput();
@@ -521,12 +531,7 @@ public class QuestionManager : MonoBehaviour
             wrong2 = cols[4];
             wrong3 = cols[5];
             questionSet = cols[6];
-            //Debug.Log(readInputJSONResponse.hints.Keys);
-            /*for (int i = 0; i < readInputJSONResponse.hints.Length; i++)
-            {
-                //hints[i] = readInputJSONResponse.hints[i];
-                Debug.Log(hints[i]);
-            }*/
+            hint = readInputJSONResponse.Hints[0].Hint;
             if (!afterWrong)
             {
                 SetQuestion();
@@ -542,7 +547,7 @@ public class QuestionManager : MonoBehaviour
                 inputWrong2.Add(values[4]);
                 inputWrong3.Add(values[5]);
                 inputQuestionSet.Add(values[6]);
-                //centralUQID.Add(values[7]);
+                inputHint.Add(readInputJSONResponse.Hints[0].Hint);
             }
             WriteInput(inputPath);
         }
@@ -553,7 +558,7 @@ public class QuestionManager : MonoBehaviour
         var writer = new StreamWriter(path);
         for (int i = 0; i < inputQID.Count; i++)
         {
-            writer.WriteLine(inputQID[i] + "," + inputQuestion[i] + "," + inputCorrectAns[i] + "," + inputWrong1[i] + "," + inputWrong2[i] + "," + inputWrong3[i] + "," + inputQuestionSet[i]/* + "," + centralUQID[i]*/);
+            writer.WriteLine(inputQID[i] + "," + inputQuestion[i] + "," + inputCorrectAns[i] + "," + inputWrong1[i] + "," + inputWrong2[i] + "," + inputWrong3[i] + "," + inputQuestionSet[i] + "," + inputHint[i]);
         }
         writer.Flush();
         writer.Close();
@@ -561,7 +566,6 @@ public class QuestionManager : MonoBehaviour
 
     public void SetQuestion()
     {
-        //ReadInput();
         shuffleTemp.Clear();
         shuffleTemp.Add(correctAns);
         shuffleTemp.Add(wrong1);
@@ -573,6 +577,14 @@ public class QuestionManager : MonoBehaviour
         option3 = shuffleTemp[2];
         option4 = shuffleTemp[3];
         questionText.text = question;
+        if (hintsOn)
+        {
+            hintText.text = hint;
+        }
+        else
+        {
+            hintText.text = "";
+        }
         var temp = option1.Split('@');
         opID1 = temp[0];
         optionText1.text = temp[1];
@@ -617,7 +629,7 @@ public class QuestionManager : MonoBehaviour
             wrong2 = values[4];
             wrong3 = values[5];
             questionSet = values[6];
-            //uQID = values[7];
+            hint = values[7];
         }
         reader.Close();
     }
@@ -749,6 +761,22 @@ public class QuestionManager : MonoBehaviour
             int random = UnityEngine.Random.Range(i, list.Count);
             list[i] = list[random];
             list[random] = temp;
+        }
+    }
+
+    public void HintButton()
+    {
+        if (hintsOn)
+        {
+            hintsOn = false;
+            hintText.text = "";
+            hintButtonImage.sprite = hintOffImage;
+        }
+        else
+        {
+            hintsOn = true;
+            hintText.text = hint;
+            hintButtonImage.sprite = hintOnImage;
         }
     }
     #endregion

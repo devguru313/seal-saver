@@ -6964,6 +6964,7 @@ MonoBehaviour:
   option2: 
   option3: 
   option4: 
+  hint: 
   opID1: 
   opID2: 
   opID3: 
@@ -6981,6 +6982,7 @@ MonoBehaviour:
   optionText2: {fileID: 718622216}
   optionText3: {fileID: 387671013}
   optionText4: {fileID: 1534263241}
+  hintText: {fileID: 1982672569}
   button1: {fileID: 1617368600}
   button2: {fileID: 1617368599}
   button3: {fileID: 1617368598}
@@ -6990,6 +6992,9 @@ MonoBehaviour:
   audioWrong: {fileID: 8300000, guid: 6c5bc38ab57c2994e8bb91ab558d9776, type: 3}
   audioCoins: {fileID: 8300000, guid: ba8d45aa701f2ab48b1a8edece7ec9a2, type: 3}
   topicText: {fileID: 1982672567}
+  hintButtonImage: {fileID: 1982672568}
+  hintOnImage: {fileID: 21300000, guid: 5fd43dd4799bbab4e978f55320c8211f, type: 3}
+  hintOffImage: {fileID: 21300000, guid: 8d602bc7542b62c4e9b808b3de944915, type: 3}
 --- !u!114 &1853914244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8054,6 +8059,11 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1853914244}
+    - target: {fileID: 114939275989539866, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1853914243}
     - target: {fileID: 114585086648495668, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -8080,6 +8090,18 @@ Prefab:
 --- !u!114 &1982672567 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114758575301214310, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1982672566}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &1982672568 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114757323185740538, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1982672566}
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &1982672569 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114818061643527404, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
     type: 2}
   m_PrefabInternal: {fileID: 1982672566}
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ReadInputJSONResponse
 {
@@ -10,7 +11,13 @@ public class ReadInputJSONResponse
     public string data;
     public string phpOrREST;
     public string status;
-    //public string hints;
-    //public List<string> hints = new List<string>();
-    //public Dictionary<string, string> hints;
+    public List<QuestionHint> Hints;
+    //public QuestionHint[] Hints;
+}
+
+[Serializable]
+public class QuestionHint
+{
+    public string QuestionID;
+    public string Hint;
 }
