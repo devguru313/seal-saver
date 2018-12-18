@@ -1642,24 +1642,24 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114569036097609524, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+    - target: {fileID: 22328746, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
+      propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 382868951}
+      objectReference: {fileID: 382868945}
+    - target: {fileID: 11460640, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
+      propertyPath: Loading
+      value: 
+      objectReference: {fileID: 517789878}
     - target: {fileID: 114010922538122820, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 382868951}
-    - target: {fileID: 11460640, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
-      propertyPath: Loading
+    - target: {fileID: 114569036097609524, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 517789878}
-    - target: {fileID: 22328746, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 382868945}
+      objectReference: {fileID: 382868951}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b45f937fb8dc4a1eb9bd283508cdd5f, type: 2}
   m_IsPrefabAsset: 0
@@ -18407,7 +18407,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 71912659}
-        m_MethodName: GoToParentZone
+        m_MethodName: OpenParentGateway
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -12,8 +12,8 @@ public class YearSubjectSelection : MonoBehaviour {
 
     public const int yearMax = 2019;
     public const int yearMin = 1950;
-    public static int currentYear;
-    public static int currentSubject;
+    public static int currentYear = 2012;
+    public static int currentSubject = 0;
 
     private void Update()
     {

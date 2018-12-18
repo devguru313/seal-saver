@@ -179,7 +179,7 @@ public class QuestionManager : MonoBehaviour
             else
             {
                 audioSource.PlayOneShot(audioCorrect);
-                Invoke("ResetOnCorrect", 0.5f);
+                Invoke("ResetOnCorrect", 0.9f);
             }
         }
         else
@@ -243,7 +243,7 @@ public class QuestionManager : MonoBehaviour
             else
             {
                 audioSource.PlayOneShot(audioCorrect);
-                Invoke("ResetOnCorrect", 0.5f);
+                Invoke("ResetOnCorrect", 0.9f);
             }
         }
         else
@@ -307,7 +307,7 @@ public class QuestionManager : MonoBehaviour
             else
             {
                 audioSource.PlayOneShot(audioCorrect);
-                Invoke("ResetOnCorrect", 0.5f);
+                Invoke("ResetOnCorrect", 0.9f);
             }
         }
         else
@@ -371,7 +371,7 @@ public class QuestionManager : MonoBehaviour
             else
             {
                 audioSource.PlayOneShot(audioCorrect);
-                Invoke("ResetOnCorrect", 0.5f);
+                Invoke("ResetOnCorrect", 0.9f);
             }
         }
         else

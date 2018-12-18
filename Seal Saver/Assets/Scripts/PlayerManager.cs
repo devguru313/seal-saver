@@ -11,6 +11,7 @@ public class PlayerManager : MonoBehaviour {
     public GameObject parentZoneBackButton;
     public GameObject parentZoneButton;
     public GameObject logoutButton;
+    public GameObject parentGatewayMenu;
     public int numPlayers;
     public int playerIndex;
     public InputField nameField;
@@ -23,10 +24,14 @@ public class PlayerManager : MonoBehaviour {
     public Text subjectText;
     public Text yearTextUpdate;
     public Text subjectTextUpdate;
+    public Text parentGatewayPinText;
+    public Text parentGatewayErrorText;
     public Text sceneTitle;
     public static bool parentZoneActive;
     public static bool openParentZone = false;
     public Sprite[] avatars = new Sprite[50];
+    public InputField[] parentGatewayFields = new InputField[5];
+    public string[] parentGatewayDigits = new string[5];
 
     private void Start()
     {
@@ -161,7 +166,49 @@ public class PlayerManager : MonoBehaviour {
 
     public void OpenNewNameMenu()
     {
+        YearSubjectSelection.currentYear = 2012;
+        YearSubjectSelection.currentSubject = 0;
         newNameMenu.SetActive(true);
+    }
+
+    public void OpenParentGateway()
+    {
+        string[] words = new string[5];
+        for(int j = 0; j < parentGatewayDigits.Length; j++)
+        {
+            int rand = Random.Range(0, 10);
+            parentGatewayDigits[j] = rand.ToString();
+            words[j] = IntToWord(rand);
+        }
+        parentGatewayPinText.text = words[0] + ", " + words[1] + ", " + words[2] + ", " + words[3] + ", " + words[4];
+        for (int i = 0; i < parentGatewayFields.Length; i++)
+        {
+            parentGatewayFields[i].textComponent.text = "";
+        }
+        parentGatewayMenu.SetActive(true);
+        parentGatewayFields[0].ActivateInputField();
+    }
+
+    public void ParentGatewayCheckField(int fieldNo)
+    {
+        if(fieldNo > 0 && fieldNo < 5)
+        {
+            parentGatewayFields[fieldNo].ActivateInputField();
+        }
+        else
+        {
+            for(int i = 0; i < parentGatewayFields.Length; i++)
+            {
+                if(parentGatewayDigits[i] != parentGatewayFields[i].text)
+                {
+                    parentGatewayErrorText.text = "Wrong pin. Try again.";
+                    parentGatewayFields[0].ActivateInputField();
+                    return;
+                }
+            }
+            parentGatewayMenu.SetActive(false);
+            OpenParentZone();
+        }
     }
 
     public void OpenParentZone()
@@ -208,6 +255,7 @@ public class PlayerManager : MonoBehaviour {
 
     public void UpdatePlayerDetails()
     {
+        CloseParentZone();
         var playerButtons = GameObject.FindGameObjectsWithTag("PlayerButton");
         var playerAvatars = GameObject.FindGameObjectsWithTag("PlayerAvatar");
         string newName;
@@ -258,7 +306,7 @@ public class PlayerManager : MonoBehaviour {
         }
         else
         {
-            Debug.Log(updatePlayerDataJSONResponse.data);
+            //Debug.Log(updatePlayerDataJSONResponse.data);
         }
     }
 
@@ -267,6 +315,35 @@ public class PlayerManager : MonoBehaviour {
         if (!parentZoneActive)
         {
             loadingScreen.SetActive(true);
+        }
+    }
+
+    public string IntToWord(int integer)
+    {
+        switch (integer)
+        {
+            case 0:
+                return "ZERO";
+            case 1:
+                return "ONE";
+            case 2:
+                return "TWO";
+            case 3:
+                return "THREE";
+            case 4:
+                return "FOUR";
+            case 5:
+                return "FIVE";
+            case 6:
+                return "SIX";
+            case 7:
+                return "SEVEN";
+            case 8:
+                return "EIGHT";
+            case 9:
+                return "NINE";
+            default:
+                return "ZERO";
         }
     }
 }
