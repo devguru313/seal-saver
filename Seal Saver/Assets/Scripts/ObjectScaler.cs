@@ -16,7 +16,7 @@ public class ObjectScaler : MonoBehaviour {
         height = Screen.height;
         width = Screen.width;
         ratio = height / width;
-        transform.localScale = transform.localScale * (ratio) / 1.7778f;
-        rect.anchoredPosition = rect.anchoredPosition * (ratio) / 1.7778f;
+        transform.localScale = transform.localScale * (ratio) / 2.1653f;
+        rect.anchoredPosition = rect.anchoredPosition * (ratio) / 2.1653f;
     }
 }

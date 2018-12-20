@@ -30,7 +30,7 @@ public class CameraSize : MonoBehaviour
                 GetComponent<Camera>().orthographicSize = 15.7f;                    //2960:1440
             else if (aspect == 1.71f)
                 GetComponent<Camera>().orthographicSize = 13.05f;                    //1024:600
-            else if (aspect == 2.17f)
+            else if (aspect >= 2.16f && aspect <= 2.17f)
                 GetComponent<Camera>().orthographicSize = 16.45f;                    //iPhone X
         }
     }
