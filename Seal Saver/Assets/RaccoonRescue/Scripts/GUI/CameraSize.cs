@@ -12,7 +12,7 @@ public class CameraSize : MonoBehaviour
         if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("map"))
         {
             Application.targetFrameRate = 60;
-            float aspect = (float)Screen.height / (float)Screen.width;
+            /*float aspect = (float)Screen.height / (float)Screen.width;
             aspect = (float)Math.Round(aspect, 2);
             if (aspect == 1.6f)
                 GetComponent<Camera>().orthographicSize = 12.23f;                   //16:10
@@ -31,7 +31,20 @@ public class CameraSize : MonoBehaviour
             else if (aspect == 1.71f)
                 GetComponent<Camera>().orthographicSize = 13.05f;                    //1024:600
             else if (aspect >= 2.16f && aspect <= 2.17f)
-                GetComponent<Camera>().orthographicSize = 16.45f;                    //iPhone X
+                GetComponent<Camera>().orthographicSize = 16.45f;                    //iPhone X*/
+            Camera.main.orthographicSize = 15.36f / Screen.width * Screen.height / 2f;
+        }
+
+        else if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("game"))
+        {
+            Application.targetFrameRate = 60;
+            float aspect = (float)Screen.height / (float)Screen.width;
+            aspect = (float)Math.Round(aspect, 2);
+            if (aspect == 2.06f)
+                GetComponent<Camera>().orthographicSize = 8f;                    //2960:1440
+            else if (aspect >= 2.16f && aspect <= 2.17f)
+                GetComponent<Camera>().orthographicSize = 8.4f;                    //iPhone X
+            //Camera.main.orthographicSize = 7.7f / Screen.width * Screen.height / 2f;
         }
     }
 

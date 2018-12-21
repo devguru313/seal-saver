@@ -16,12 +16,14 @@ public class Register : MonoBehaviour {
     public GameObject nextButton;
     public GameObject trialText;
     public GameObject bulletPointsText;
+    public GameObject facebookButton;
+    public GameObject orText;
     public string email;
     public string password;
+    public string deviceModel;
     public FirebaseAuth auth;
     public GameObject loadingScreen;
     public GameObject termsConditions;
-    public Toggle termsToggle;
 
     void InitializeFirebase()
     {
@@ -37,8 +39,10 @@ public class Register : MonoBehaviour {
         registerButton.SetActive(false);
         passwordField.SetActive(false);
         termsConditions.SetActive(false);
+        facebookButton.SetActive(false);
+        orText.SetActive(false);
         errorTextSignUp.text = "";
-        string deviceModel = SystemInfo.deviceModel.ToLower();
+        deviceModel = SystemInfo.deviceModel.ToLower();
         //Amazon Device check
         if (!deviceModel.Contains("amazon"))
         {
@@ -53,9 +57,15 @@ public class Register : MonoBehaviour {
         registerButton.SetActive(true);
         passwordField.SetActive(true);
         termsConditions.SetActive(true);
+        orText.SetActive(true);
         nextButton.SetActive(false);
         trialText.SetActive(false);
         bulletPointsText.SetActive(false);
+        //Amazon Device check
+        if (!deviceModel.Contains("amazon"))
+        {
+            facebookButton.SetActive(true);
+        }
     }
 
     public void Launch()
@@ -81,16 +91,10 @@ public class Register : MonoBehaviour {
             loadingScreen.SetActive(false);
             return;
         }
-        else if (!termsToggle.isOn)
-        {
-            errorTextSignUp.text = "Please confirm you have read and accept the terms if you wish to continue";
-            loadingScreen.SetActive(false);
-            return;
-        }
         email = Mail.text.ToLower();
         password = Password.text;
         errorTextSignUp.text = "";
-        string deviceModel = SystemInfo.deviceModel.ToLower();
+        deviceModel = SystemInfo.deviceModel.ToLower();
         //Amazon Device check
         if (!deviceModel.Contains("amazon"))
         {
@@ -154,7 +158,7 @@ public class Register : MonoBehaviour {
     IEnumerator SendDetails()
     {
         //Debug.Log("SEND DETAILS");
-        string registerUserURL = "http://35.177.197.153/registerUser";
+        string registerUserURL = "https://edplus.net/registerUser";
         var request = new UnityWebRequest(registerUserURL, "POST");
         SendAuthDetailsJSON sendAuthDetailsJSON = new SendAuthDetailsJSON()
         {

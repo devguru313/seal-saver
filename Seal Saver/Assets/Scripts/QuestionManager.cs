@@ -121,7 +121,6 @@ public class QuestionManager : MonoBehaviour
         inputPath = GetApplicationPath() + userID + "_InputTable.csv";
         outputPath = GetApplicationPath() + userID + "_OutputTable.csv";
         inputQuestionNo = 0;
-        topicText.text = SyncTables.knowledgeLevel;
         if (hintsOn)
         {
             hintButtonImage.sprite = hintOnImage;
@@ -144,6 +143,7 @@ public class QuestionManager : MonoBehaviour
         }
         outputPath = GetApplicationPath() + userID + "_OutputTable.csv";
         inputPath = GetApplicationPath() + userID + "_InputTable.csv";
+        topicText.text = SyncTables.knowledgeLevel;
     }
 
     #region On Option Select Functions

@@ -559,7 +559,12 @@ public class SyncTables : MonoBehaviour
 
     public void OpenTermsAndConditionsURL()
     {
-        Application.OpenURL("https://edplus.io/privacy/");
+        Application.OpenURL("https://edplus.app/terms/");
+    }
+
+    public void OpenPrivacyPolicyURL()
+    {
+        Application.OpenURL("https://edplus.app/privacy/");
     }
 
     public void OpenParentsDashboardURL()
